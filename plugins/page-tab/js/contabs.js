@@ -257,7 +257,11 @@ $(function () {
         return a.href;
     };
     function isExtUrl(url){
-        var absUrl = getAbsUrl(url);
+        var absUrl = (function(url){
+            var a = document.createElement('a');
+            a.href=url;
+            return a.href;
+        })();
         var webRoot = window.location.protocol + '//' + window.location.host + '/';
         var urlRoot = absUrl.substr(0, webRoot.length);
         return ( ! (urlRoot===webRoot) );
