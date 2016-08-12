@@ -2,13 +2,18 @@
 <html>
 <head>
    <title>Bootstrap 实例 - 标签页（Tab）插件方法</title>
+<<<<<<< HEAD
    <link href="http://libs.baidu.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
+=======
+   <link rel="stylesheet" href="/MiniERP/Public/plugins/bootstrap/css/bootstrap.min.css?v=1">
+>>>>>>> 0dc2ef3aec016855eb9e2ac3ab9455557b8cf92c
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
    <script src="http://libs.baidu.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
    <style>
 
+<<<<<<< HEAD
 .wrapper{
    border-bottom: solid 2px #2f4050;
       }
@@ -30,16 +35,94 @@ li.right-tools {
          right:50px
       }
 
+=======
+
+.tab-panel{
+	position: absolute;
+}
+
+.list {
+   min-width:4000px;
+}
+.btn-option{
+ right:0;
+ border-right: 0;
+}
+.dropdown-toggle{
+ overflow : auto;
+}
+.btn-move-right{
+ right:85px;
+}
+
+.nav-tabs>li{
+	margin-bottom: 0;
+}
+.wrapper{	
+	position: relative;
+}
+.nav-tabs.main{
+	overflow: hidden;
+	margin-bottom: 2px;
+}
+.nav-tabs.main>li {
+    background-color: #fff;
+}
+.nav-tabs.main li.right-tool {
+    position: absolute !important;
+}
+
+.content{
+	width: 50%;
+}
+>>>>>>> 0dc2ef3aec016855eb9e2ac3ab9455557b8cf92c
 
    </style>
 </head>
 <body>
+<<<<<<< HEAD
 
 <div class="wrapper">
 <ul id="myTab" class="nav nav-tabs list">
    <li><a><i class="fa fa-backward"></i></a></li>
    <li class="right-tools dropdown">
       <a href="#" id="myTabDrop1" class="dropdown-toggle" 
+=======
+<div class="content">
+<div class="wrapper">
+<ul  class="nav nav-tabs main">
+	<li><a><i class="fa fa-backward"></i></a></li>
+	<li>
+		<nav class="tab-panel">
+			<ul  class="nav nav-tabs list">
+			   <li class="active"><a href="#home" data-toggle="tab">
+			      W3Cschool Home</a>
+			   </li>
+			   <li><a href="#ios" data-toggle="tab">iOS</a></li>
+			   <li><a href="#ios" data-toggle="tab">iOS</a></li>
+			   <li><a href="#ios" data-toggle="tab">iOS</a></li>
+			   <li><a href="#ios" data-toggle="tab">iOS</a></li>
+			   <li><a href="#ios" data-toggle="tab">iOS</a></li>
+			   <li><a href="#ios" data-toggle="tab">iOS</a></li>
+			   <li><a href="#ios" data-toggle="tab">iOS</a></li>
+			   <li><a href="#ios" data-toggle="tab">iOS</a></li>
+			   <li><a href="#ios" data-toggle="tab">iOS</a></li>
+			   <li><a href="#ios" data-toggle="tab">iOS</a></li>
+			   <li><a href="#ios" data-toggle="tab">iOS</a></li>
+			   <li><a href="#ios" data-toggle="tab">iOS</a></li>
+			   <li><a href="#ios" data-toggle="tab">iOS</a></li>
+			   <li><a href="#ios" data-toggle="tab">iOS</a></li>
+			   <li><a href="#ios" data-toggle="tab">iOS</a></li>
+			   <li><a href="#ios" data-toggle="tab">iOS</a></li>
+			</ul>
+		</nav>
+	</li>
+
+
+   <li class="right-tool btn-move-right"><a><i class="fa fa-forward"></i></a></li>
+   <li class="right-tool dropdown btn-option ">
+      <a href="#"  class="dropdown-toggle" 
+>>>>>>> 0dc2ef3aec016855eb9e2ac3ab9455557b8cf92c
          data-toggle="dropdown">Option<span class="caret"></span>
       </a>
       <ul role="menu" class="dropdown-menu dropdown-menu-right">
@@ -49,6 +132,7 @@ li.right-tools {
         <li class="M_tabCloseOther"><a>Close Other Tabs</a></li>
       </ul>
    </li>
+<<<<<<< HEAD
    <li class="right-tools move-right"><a><i class="fa fa-forward"></i></a></li>
    <li class="active"><a href="#home" data-toggle="tab">
       W3Cschool Home</a>
@@ -70,6 +154,10 @@ li.right-tools {
    <li><a href="#ios" data-toggle="tab">iOS</a></li>
    <li><a href="#ios" data-toggle="tab">iOS</a></li>
 </ul>
+=======
+</ul>
+
+>>>>>>> 0dc2ef3aec016855eb9e2ac3ab9455557b8cf92c
 </div>
 <div id="myTabContent" class="tab-content">
    <div class="tab-pane fade in active" id="home">
@@ -87,6 +175,10 @@ li.right-tools {
       </p>
    </div>
 </div>
+<<<<<<< HEAD
+=======
+</div>
+>>>>>>> 0dc2ef3aec016855eb9e2ac3ab9455557b8cf92c
 <script>
    $(function () {
       $('#myTab li:eq(1) a').tab('show');
