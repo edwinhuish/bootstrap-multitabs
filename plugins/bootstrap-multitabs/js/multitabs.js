@@ -111,19 +111,18 @@ if (typeof jQuery === "undefined") {
         '       </nav>' +
         '       <nav class="mt-tab-panel">' +
         '           <ul  class="nav nav-tabs">' +
-        '               <li class="active"><a href="#" data-toggle="tab" data-content="main" data-index="0">Home</a></li>' +
         '           </ul>' +
         '       </nav>' +
         '       <nav class="mt-tab-tools-right">' +
         '           <ul  class="nav nav-tabs">' +
         '               <li class="mt-move-right"><a><i class="fa fa-forward"></i></a></li>' +
         '               <li class="mt-dropdown-option dropdown">' +
-        '                   <a href="#"  class="dropdown-toggle" data-toggle="dropdown">Option<span class="caret"></span></a>' +
+        '                   <a href="#"  class="dropdown-toggle" data-toggle="dropdown">{option}<span class="caret"></span></a>' +
         '                   <ul role="menu" class="dropdown-menu dropdown-menu-right">' +
-        '                       <li class="mt-show-actived-tab"><a>Show Activated Tab</a></li>' +
+        '                       <li class="mt-show-actived-tab"><a>{showActivedTab}</a></li>' +
         '                       <li class="divider"></li>' +
-        '                       <li class="mt-close-all-tabs"><a>Close All Tabs</a></li>' +
-        '                       <li class="mt-close-other-tabs"><a>Close Other Tabs</a></li>' +
+        '                       <li class="mt-close-all-tabs"><a>{closeAllTabs}</a></li>' +
+        '                       <li class="mt-close-other-tabs"><a>{closeOtherTabs}</a></li>' +
         '                   </ul>' +
         '               </li>' +
         '           </ul>' +
@@ -139,6 +138,10 @@ if (typeof jQuery === "undefined") {
 
     defaultLanguage = {
         title : 'Tab',
+        option : 'Option',
+        showActivedTab : 'Show Activated Tab',
+        closeAllTabs : 'Close All Tabs',
+        closeOtherTabs : 'Close Other Tabs',
     };
     defaultAjaxTabPane = {
         class : '',
@@ -165,15 +168,31 @@ if (typeof jQuery === "undefined") {
         constructor: MultiTabs,
         _init: function (options) {
             var self = this, $el = self.$element;
-            $el.html(options.layoutTemplates.main.replace('{mainClass}', 'main-' + toJoinerStr(options.linkClass)));
+            $el.html(options.layoutTemplates.main
+                .replace('{mainClass}', 'main-' + toJoinerStr(options.linkClass))
+                .replace('{option}' , options.language.option)
+                .replace('{showActivedTab}' , options.language.showActivedTab)
+                .replace('{closeAllTabs}' , options.language.closeAllTabs)
+                .replace('{closeOtherTabs}' , options.language.closeOtherTabs)
+            );
             $el.tabHeader = $el.find('.mt-tab-header:first');
             $el.tabToolsLeft = $el.tabHeader.find('.mt-tab-tools-left:first');
             $el.tabPanel = $el.tabHeader.find('.mt-tab-panel:first');
             $el.tabToolsRight = $el.tabHeader.find('.mt-tab-tools-right:first');
             $el.tabContent = $el.find('.tab-content:first');
+            //set the tab-panel width
             var toolWidth = $el.tabToolsLeft.outerWidth(true) + $el.tabToolsRight.outerWidth(true);
             $el.tabPanel.css('width', 'calc(100% - ' + toolWidth + 'px');
             self.options = options;
+            //check the tab-panel is empty.
+            if(!$el.tabPanel.find('ul.nav-tabs:first li').length){
+                self._create({
+                    title: 'home',
+                    iframe: false,
+                    content: 'main',
+                    url : 'pages/index-ajax-1.html'
+                });
+            }
         },
         _validate: function () {
             var self = this, $exception;
@@ -264,7 +283,7 @@ if (typeof jQuery === "undefined") {
                 $el = self.$element,
                 $editor = $el.tabContent.find('.tab-pane[data-content="editor"]');
             //禁止打开多个edit页面，如果edit页面存在，也禁止覆盖
-            if(options.content == 'editor' && $editor.length && $editor.hasClass('unsave')){
+            if(param.content == 'editor' && $editor.length && $editor.hasClass('unsave')){
                 alert("Please colse or save the Editor before open the other!");
                 //----------------------------------------------------
                 window.location.hash= encodeURI($editor.attr('data-id'));
@@ -438,7 +457,6 @@ if (typeof jQuery === "undefined") {
             $el.tabPanel.find('a[data-content="main"]:first').tab('show');
         },
         _active : function (tab) {
-            var self = this;
             if (!$(tab).hasClass("active")) {
                 $(tab).addClass('active');
                 var href = $(tab).find('a:first').attr('href');
