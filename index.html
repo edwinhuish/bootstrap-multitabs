@@ -16,9 +16,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-  <!-- fullCalendar 2.2.5-->
-  <link rel="stylesheet" href="plugins/fullcalendar/fullcalendar.min.css">
-  <link rel="stylesheet" href="plugins/fullcalendar/fullcalendar.print.css" media="print">
   <!-- Theme style -->
   <link rel="stylesheet" href="dist/css/AdminLTE.min.css">
   <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
@@ -27,75 +24,75 @@ scratch. This page gets rid of all links and provides the needed markup only.
   -->
   <link rel="stylesheet" href="dist/css/skins/skin-blue.min.css">
   <!-- Multi Tabs -->
-  <link rel="stylesheet" href="plugins/multi-tabs/css/style.css?v=8">
+  <link rel="stylesheet" href="plugins/bootstrap-multitabs/css/style.css?v=8">
   
-  <style type="text/css">
-	body,
-	body.full-height-layout div.wrapper,
-	html{
-		height: 100%;
-	}
-	body.full-height-layout div.content-wrapper{
-		height: calc(100% - 140px)
-	}
-	
-	body.full-height-layout div#J_mainContent{
-		height: 100%
-	}
+  <!--<style type="text/css">-->
+	<!--body,-->
+	<!--body.full-height-layout div.wrapper,-->
+	<!--html{-->
+		<!--height: 100%;-->
+	<!--}-->
+	<!--body.full-height-layout div.content-wrapper{-->
+		<!--height: calc(100% - 140px)-->
+	<!--}-->
+	<!---->
+	<!--body.full-height-layout div#J_mainContent{-->
+		<!--height: 100%-->
+	<!--}-->
 
-  body.fixed section.content-header{
-      position : fixed;
-      z-index : 700;
-      top: 50px;
-      right: 0px;
-      left: 0px;
+  <!--body.fixed section.content-header{-->
+      <!--position : fixed;-->
+      <!--z-index : 700;-->
+      <!--top: 50px;-->
+      <!--right: 0px;-->
+      <!--left: 0px;-->
 
-  }
-  body.fixed.sidebar-mini section.content-header{
-      left: 50px;
-  }body.fixed.sidebar-mini section.content-header{
-                left: 50px;
-            }
-            body.fixed #J_mainContent{
-                padding-top : 40px;
-            }
+  <!--}-->
+  <!--body.fixed.sidebar-mini section.content-header{-->
+      <!--left: 50px;-->
+  <!--}body.fixed.sidebar-mini section.content-header{-->
+                <!--left: 50px;-->
+            <!--}-->
+            <!--body.fixed #J_mainContent{-->
+                <!--padding-top : 40px;-->
+            <!--}-->
 
-            @media (max-width: 767px){
-                .main-header .logo{
-                    display :none;
-                }
-                .content-wrapper{
-                    padding-top:50px !important;
-                }
-            }
+            <!--@media (max-width: 767px){-->
+                <!--.main-header .logo{-->
+                    <!--display :none;-->
+                <!--}-->
+                <!--.content-wrapper{-->
+                    <!--padding-top:50px !important;-->
+                <!--}-->
+            <!--}-->
 
-            body.hold-content-transition .content-wrapper,
-            body.hold-content-transition .right-side,
-            body.hold-content-transition .main-footer {
-                -webkit-transition: none;
-                -o-transition: none;
-                transition: none;
-                margin-left: 0px;
-            }
+            <!--body.hold-content-transition .content-wrapper,-->
+            <!--body.hold-content-transition .right-side,-->
+            <!--body.hold-content-transition .main-footer {-->
+                <!-- -webkit-transition: none;-->
+                <!-- -o-transition: none;-->
+                <!--transition: none;-->
+                <!--margin-left: 0px;-->
+            <!--}-->
 
-            body.hold-content-transition.sidebar-mini .content-wrapper,
-            body.hold-content-transition.sidebar-mini .right-side,
-            body.hold-content-transition.sidebar-mini .main-footer {
-                margin-left: 50px;
-            }
-            @media (max-width: 767px) {
-                body.hold-content-transition .content-wrapper,
-                body.hold-content-transition .right-side,
-                body.hold-content-transition .main-footer {
-                    -webkit-transform: none !important;
-                    -ms-transform: none !important;
-                    -o-transform: none !important;
-                    transform: none !important;
-                    margin-left: 0px !important;
-                }
-            }
+            <!--body.hold-content-transition.sidebar-mini .content-wrapper,-->
+            <!--body.hold-content-transition.sidebar-mini .right-side,-->
+            <!--body.hold-content-transition.sidebar-mini .main-footer {-->
+                <!--margin-left: 50px;-->
+            <!--}-->
+            <!--@media (max-width: 767px) {-->
+                <!--body.hold-content-transition .content-wrapper,-->
+                <!--body.hold-content-transition .right-side,-->
+                <!--body.hold-content-transition .main-footer {-->
+                    <!-- -webkit-transform: none !important;-->
+                    <!-- -ms-transform: none !important;-->
+                    <!-- -o-transform: none !important;-->
+                    <!--transform: none !important;-->
+                    <!--margin-left: 0px !important;-->
+                <!--}-->
+            <!--}-->
 
-  </style>
+  <!--</style>-->
 
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -330,37 +327,44 @@ desired effect
         <li class="header">HEADER</li>
         <!-- Optionally, you can add icons to the links -->
         <li class="active">
-                <a class="multi-tabs" data-content="content-main" href="pages/calendar-ajax.html"><i class="fa fa-dashboard"></i> <span> MAIN Tab</span></a>
+                <a class="multi-tabs" href="pages/index-ajax-1.html" data-content="main"><i class="fa fa-dashboard"></i> <span> MAIN Tab</span></a>
             </li>
             <li class="treeview">
                 <a href="#">
-                    <i class="fa fa-briefcase"></i> <span>门户网站</span>
+                    <i class="fa fa-briefcase"></i> <span>External Link</span>
                     <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a class="multi-tabs" data-content="content-info" href="#http://www.163.com" ><i class="fa fa-angle-double-right"></i> 网易</a></li>
-                    <li><a class="multi-tabs" data-content="content-main" href="#http://www.qq.com"><i class="fa fa-angle-double-right"></i> 腾讯</a></li>
+                    <li><a class="multi-tabs" href="http://www.baidu.com" data-content="info"><i class="fa fa-angle-double-right"></i> baidu</a></li>
+                    <li><a class="multi-tabs" href="https://github.com/" data-content="main"><i class="fa fa-angle-double-right"></i> Github</a></li>
                 </ul>
             </li>
             <li class="treeview">
                 <a href="#">
-                    <i class="fa fa-shopping-cart"></i> <span>本地链接用iframe模式</span>
+                    <i class="fa fa-shopping-cart"></i> <span>Local link in iframe mode</span>
                     <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a class="multi-tabs" data-content="content-info" data-iframe="true" href="pages/calendar.html"><i class="fa fa-angle-double-right"></i> iframe INFO tab</a></li>
-                    <li><a class="multi-tabs" data-content="content-main" data-iframe="true" href="pages/widgets.html"><i class="fa fa-angle-double-right"></i> iframe MAIN tab (iframe 无法使用Main Tab)</a></li>
+                    <li><a class="multi-tabs" href="pages/index-1.html" data-content="info" data-iframe="true" ><i class="fa fa-angle-double-right"></i> iframe INFO tab 1</a></li>
+                    <li><a class="multi-tabs" href="pages/index-2.html" data-content="main" data-iframe="true" ><i class="fa fa-angle-double-right"></i> iframe MAIN tab 2 (iframe no allow for Main Tab)</a></li>
+                    <li><a class="multi-tabs" href="pages/index-3.html" data-content="info" data-iframe="true" ><i class="fa fa-angle-double-right"></i> iframe INFO tab 3</a></li>
+                    <li><a class="multi-tabs" href="pages/index-4.html" data-content="info" data-iframe="true" ><i class="fa fa-angle-double-right"></i> iframe INFO tab 4</a></li>
+                    <li><a class="multi-tabs" href="pages/index-5.html" data-content="info" data-iframe="true" ><i class="fa fa-angle-double-right"></i> iframe INFO tab 5</a></li>
+                    <li><a class="multi-tabs" href="pages/index-6.html" data-content="info" data-iframe="true" ><i class="fa fa-angle-double-right"></i> iframe INFO tab 6</a></li>
                 </ul>
             </li>
 			<li class="treeview">
                 <a href="#">
-                    <i class="fa fa-shopping-cart"></i> <span>本地链接用ajax模式</span>
+                    <i class="fa fa-shopping-cart"></i> <span>Local link in ajax mode(default)</span>
                     <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a class="multi-tabs" data-content="content-info" href="#pages/calendar-ajax.html"><i class="fa fa-angle-double-right"></i> ajax INFO Tab 1</a></li>
-                    <li><a class="multi-tabs"  href="#pages/widgets-ajax.html"><i class="fa fa-angle-double-right"></i> ajax INFO Tab 2</a></li>
-                    <li><a class="multi-tabs" data-content="content-main" href="#pages/widgets-ajax.html"><i class="fa fa-angle-double-right"></i> ajax MAIN Tab</a></li>
+                    <li><a class="multi-tabs" href="pages/index-ajax-1.html" data-content="info" ><i class="fa fa-angle-double-right"></i> ajax INFO Tab 1</a></li>
+                    <li><a class="multi-tabs" href="pages/index-ajax-2.html"><i class="fa fa-angle-double-right"></i> ajax INFO Tab 2</a></li>
+                    <li><a class="multi-tabs" href="pages/index-ajax-3.html" data-content="main" ><i class="fa fa-angle-double-right"></i> ajax MAIN Tab 3</a></li>
+                    <li><a class="multi-tabs" href="pages/index-ajax-4.html"><i class="fa fa-angle-double-right"></i> ajax INFO Tab 4</a></li>
+                    <li><a class="multi-tabs" href="pages/index-ajax-5.html"><i class="fa fa-angle-double-right"></i> ajax INFO Tab 5</a></li>
+                    <li><a class="multi-tabs" href="pages/index-ajax-6.html"><i class="fa fa-angle-double-right"></i> ajax INFO Tab 6</a></li>
                 </ul>
             </li>
       </ul>
@@ -470,21 +474,8 @@ desired effect
 <script src="plugins/bootstrap/js/bootstrap.min.js"></script>
 <!-- AdminLTE App -->
 <script src="dist/js/app.js?v=2"></script>
-<!-- Page Tab -->
-<!-- <script src="plugins/page-tab/js/contabs.js?v=6"></script> -->
 <!-- Multi Tabs -->
-<script src="plugins/multi-tabs/js/jquery.multitabs.js?v=19"></script>
-<!-- jQuery UI 1.11.4 -->
-<script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
-<!-- Slimscroll -->
-<script src="plugins/slimScroll/jquery.slimscroll.min.js"></script>
-<!-- FastClick -->
-<script src="plugins/fastclick/fastclick.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="dist/js/demo.js"></script>
-<!-- fullCalendar 2.2.5 -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.6/moment.min.js"></script>
-<script src="plugins/fullcalendar/fullcalendar.min.js"></script>
+<script src="plugins/bootstrap-multitabs/js/multitabs.js?v=52"></script>
 
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the
