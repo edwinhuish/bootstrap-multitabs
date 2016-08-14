@@ -1,15 +1,15 @@
 //Make sure jQuery has been loaded before app.js
 if (typeof jQuery === "undefined") {
     throw new Error("MultiTabs requires jQuery");
-};
+}
 ((function($){
     "use strict";
     var NAMESPACE;
-    var MultiTabs, getNum, handler, getTabIndex, toJoinerStr, toHumpStr, insertRule, isExtUrl, sumWidth, trimLinkText, ifSet;
+    var MultiTabs,  handler, getTabIndex, toJoinerStr, toHumpStr,  isExtUrl, sumWidth, trimText;
     var tabIndex;
-    var defaultLayoutTemplates, defaultLanguage, defaultAjaxTabPane, defaultIframeTabPane;
+    var defaultLayoutTemplates, defaultLanguage, defaultAjaxTabPane, defaultIframeTabPane, defaultTabHeader;
 
-    NAMESPACE = '.multitabs'
+    NAMESPACE = '.multitabs';
 
     handler = function ($selector, event, childSelector, fn, skipNS) {
         var ev = skipNS ? event : event.split(' ').join(NAMESPACE + ' ') + NAMESPACE;
@@ -21,24 +21,27 @@ if (typeof jQuery === "undefined") {
     };
 
     getTabIndex = function(content, capacity){
-       if(content === 'main' || content === 'editor'){
-           return 0;
-       }else{
-           capacity = capacity || 8; //允许多少tab页面，超过则覆盖
-           tabIndex = tabIndex || 0;
-           tabIndex++;
-           tabIndex = tabIndex % capacity;
-           return tabIndex;
-       };
+        if(content === 'main' || content === 'editor') return 0;
+        capacity = capacity || 8; //允许多少tab页面，超过则覆盖
+        tabIndex = tabIndex || 0;
+        tabIndex++;
+        tabIndex = tabIndex % capacity;
+        return tabIndex;
    };
-    trimLinkText = function (text){
+    trimText = function (text, maxLength){
+        maxLength = maxLength || defaultTabHeader.maxTabTitleLength;
         var words = text.split(' ');
-        var newText = '';
-        $.each(words, function(index, value) {
-            if($.trim(value))
-                newText += ($.trim(value) + ' ');
-        });
-        return $.trim(newText);
+        var t = '';
+        for(var i=0; i<words.length; i++ ){
+            var w =  $.trim(words[i]);
+            t += w ? (w + ' ') : '';
+        }
+
+        if(t.length > maxLength) {
+            t = t.substr(0, maxLength);
+            t += '...'
+        }
+        return t;
     };
     sumWidth = function (WidthObjList) {
         var width = 0;
@@ -70,29 +73,8 @@ if (typeof jQuery === "undefined") {
 
     toHumpStr = function(joinerStr){
         return joinerStr.replace(/\./g, '').replace(/\-(\w)/g, function(x){return x.slice(1).toUpperCase();});
-    }
-
-    insertRule = function(selectorText,cssText,position){
-        position = position || 0;
-        var sheet = document.styleSheets[0];
-        if(sheet.insertRule){
-            sheet.insertRule(selectorText+"{" + cssText + "}",position);
-        }
-        else if(sheet.addRule){
-            sheet.addRule(selectorText, cssText, position);
-        }
     };
 
-    getNum = function (num, def) {
-        def = def || 0;
-        if (typeof num === "number") {
-            return num;
-        }
-        if (typeof num === "string") {
-            num = parseFloat(num);
-        }
-        return isNaN(num) ? def : num;
-    };
 
 
     /**
@@ -141,18 +123,18 @@ if (typeof jQuery === "undefined") {
         option : 'Option',
         showActivedTab : 'Show Activated Tab',
         closeAllTabs : 'Close All Tabs',
-        closeOtherTabs : 'Close Other Tabs',
+        closeOtherTabs : 'Close Other Tabs'
+    };
+    defaultTabHeader = {
+        class : '',
+        maxTabs : 8,
+        maxTabTitleLength : 25,
     };
     defaultAjaxTabPane = {
         class : '',
     };
     defaultIframeTabPane = {
         class : '',
-    };
-
-    ifSet = function (opt, options, def) {
-        def = def || '';
-        return (options && typeof options === 'object' && opt in options) ? options[opt] : def;
     };
 
     MultiTabs = function (element, options) {
@@ -255,7 +237,7 @@ if (typeof jQuery === "undefined") {
             if ($.trim(param.url).length == 0) return false;
             param.iframe = param.iframe || isExtUrl(param.url) || options.iframe;
             if(param.iframe || param.content == undefined) param.content = options.content;
-            param.title = trimLinkText($(obj).text()) || options.language.title;
+            param.title = trimText($(obj).text(), options.tabHeader.maxTabTitleLength) || trimText(options.language.title, options.tabHeader.maxTabTitleLength);
             var tab = $el.tabPanel.find('a[data-id="'+ param.url +'"][data-content="'+ param.content +'"]').parent('li');
             var content = $el.tabContent.find('.tab-pane[data-id="'+ param.url +'"][data-content="'+ param.content +'"]');
             if (tab.length && !tab.hasClass("active")) {
@@ -290,7 +272,7 @@ if (typeof jQuery === "undefined") {
                 //----------------------------------------------------
                 return false;
             }
-            var index = getTabIndex(param.content, options.maxTabs);
+            var index = getTabIndex(param.content, options.tabHeader.maxTabs);
             //remove same index tab.
             var tabLi = $el.tabPanel.find('a[data-content="'+ param.content +'"][data-index="'+ index +'"]').parent('li');
             //get layoutTemplates
@@ -329,7 +311,7 @@ if (typeof jQuery === "undefined") {
             }else{
                 $(content).load(param.url);
                 $('body').removeClass('full-height-layout');
-            };
+            }
             self._fixTabPosition($el.tabPanel.find('li.active:first'));
         },
         _fixTabPosition : function (tab) {
@@ -463,16 +445,13 @@ if (typeof jQuery === "undefined") {
                 $(href).addClass('active');
             }
         }
-    }
+    };
 
     /**
      * Main function
      * @param option
      */
     $.fn.multitabs = function(option){
-        var mainFrame = $(this), options = typeof option === 'object' && option;
-
-
         var args = Array.apply(null, arguments), retvals = [];
         args.shift();
 
@@ -508,12 +487,11 @@ if (typeof jQuery === "undefined") {
         content : 'info',
         linkClass : '.multi-tabs',
         iframe : false,                     //iframe mode, default is false, just use iframe for external link
-        maxTabs : 8,
-        maxTabTitleLength : 15,
+        tabHeader : defaultTabHeader,
         ajaxTabPane : defaultAjaxTabPane,
         iframeTabPane : defaultIframeTabPane,
         layoutTemplates : defaultLayoutTemplates,
         language : defaultLanguage,
     };
 
-})(jQuery))
+})(jQuery));
