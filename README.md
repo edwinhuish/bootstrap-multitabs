@@ -17,7 +17,7 @@
 <link rel="stylesheet" href="plugins/bootstrap-multitabs/css/style.css">
 ```
 
-2. 在body底部引用bultitabs的JS
+2. 在body底部引用multitabs的JS
 ```html
 <!-- Multi Tabs -->
 <script src="plugins/bootstrap-multitabs/js/multitabs.js"></script>
@@ -41,7 +41,7 @@
 ##进阶配置
 
 ###链接可添加参数
-1. ```[data-content="info"]``` 指定为content为info，共有3种( main | editor | info ), info 为缺省配置，可以不用指定。另外main和editor分别只能有1个。
+1. ```[data-content="info"]``` 指定为content为info，共有3种( main | editor | info ), info 为缺省配置，可以不用指定，标签数量可以指定，当为1时，整个标签栏隐藏。main和editor分别只能有1个标签。
 2. ```[data-iframe="true"]``` 指定为iframe模式，当值为false的时候，为智能模式，自动判断（内网用ajax，外网用iframe）。缺省为false。
 3. ```[data-title="new tab"]``` 设置后指定标签页的标题，默认读取链接字体。
 4. ```[data-url="index.html"]``` 如果对象不是<a>链接，此值可以指定链接URL
@@ -66,7 +66,7 @@
         iframeTabPane : {
             class : '',                             //为iframe tab-pane 添加class
         },
-        language : {                                //语言设置
+        language : {                                //语言配置
             title : 'Tab',                          //默认tab标题名称
             option : 'Option',                      //选项
             showActivedTab : 'Show Activated Tab',  //显示已激活标签页
