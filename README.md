@@ -92,7 +92,7 @@
             height: 100%;
         }
         body.full-height-layout .content-wrapper{           //使用multitabs的wrapper
-            height: calc(100% - 140px)
+            height: calc(100% - 140px)                      //减去网页header和footer的高度，AdminLTE的为140px
         }
     </style>
 ```
