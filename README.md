@@ -1,10 +1,13 @@
 #bootstrap-multitabs / bootstrap 多标签页
 
 ##效果图
-![Multi Tabs Screenshot](demo.jpg)
+![Multi Tabs Screenshot](screenshot.jpg)
 
-##作用
-通过简单的配置，生成ajax和iframe的多标签页
+##作用与优势
+1. 通过简单的配置，生成可智能适配ajax和iframe的多标签页。
+2. 可以直接套用bootstrap的各种模板样式。
+3. 可避免误刷新造成的当前标签页丢失。也可以直接将链接发送给朋友。（如果设置了需要登录，请先登录后再进行此类操作）
+4. 当标签数量设置为 1 的时候，隐藏便签列表
 
 ##安装需求
 1. [Bootstrap 3.x](http://getbootstrap.com/)
@@ -75,4 +78,21 @@
         },
     });
 </script>
+```
+
+##注意事项
+为了自适应iframe高度，请依照下面这个样式添加CSS。
+
+期中 ```.content-wrapper``` 是当前使用multitabs的wrapper。 ```.wrapper``` 为 ```.content-wrapper``` 的父层，需要将所有父层都添加 ```height: 100%```
+```html
+    <style type="text/css">
+        body,
+        body.full-height-layout .wrapper,
+        html{
+            height: 100%;
+        }
+        body.full-height-layout .content-wrapper{           //使用multitabs的wrapper
+            height: calc(100% - 140px)
+        }
+    </style>
 ```
