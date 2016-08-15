@@ -83,7 +83,7 @@
 ##注意事项
 为了自适应iframe高度，请依照下面这个样式添加CSS。
 
-期中 ```.content-wrapper``` 是当前使用multitabs的wrapper。 ```.wrapper``` 为 ```.content-wrapper``` 的父层，需要将所有父层都添加 ```height: 100%```
+其中 ```.content-wrapper``` 是当前使用multitabs的wrapper。 ```.wrapper``` 为 ```.content-wrapper``` 的父层，需要将所有父层都添加 ```height: 100%```
 ```html
     <style type="text/css">
         body,
