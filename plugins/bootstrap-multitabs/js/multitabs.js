@@ -483,7 +483,7 @@ if (typeof jQuery === "undefined") {
      * @type {{showHash: boolean, mode: string, maxTabs: number, maxTabTitleLength: number, tabTitle: string, content: string}}
      */
     $.fn.multitabs.defaults = {
-        showHash : true,
+        showHash : false,
         content : 'info',
         linkClass : '.multi-tabs',
         iframe : false,                     //iframe mode, default is false, just use iframe for external link
