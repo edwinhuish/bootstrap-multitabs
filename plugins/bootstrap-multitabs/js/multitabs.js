@@ -166,6 +166,11 @@ if (typeof jQuery === "undefined") {
             $el.tabPanel = $el.tabHeader.find('.mt-tab-panel:first');
             $el.tabToolsRight = $el.tabHeader.find('.mt-tab-tools-right:first');
             $el.tabContent = $el.find('.tab-content:first');
+            //hide tab-header if maxTabs less than 1
+            if(options.tabHeader.maxTabs <= 1){
+                options.tabHeader.maxTabs = 1;
+                $el.tabHeader.hide();
+            };
             //set the tab-panel width
             var toolWidth = $el.tabHeader.find('.mt-tab-tools-left:visible:first').outerWidth(true) + $el.tabHeader.find('.mt-tab-tools-right:visible:first').outerWidth(true);
             $el.tabPanel.css('width', 'calc(100% - ' + toolWidth + 'px');
