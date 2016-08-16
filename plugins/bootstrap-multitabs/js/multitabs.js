@@ -114,7 +114,7 @@ if (typeof jQuery === "undefined") {
         '           </ul>' +
         '       </nav>' +
         '   </div>' +
-        '   <div class="tab-content" style="height: 100%;"></div>' +
+        '   <div class="tab-content" ></div>' +
         '</div>',
         tab : '<a href="{href}"  data-content="{content}" data-index="{index}" data-id="{did}">{title}{closeBtn}</a>',
         closeBtn : ' <i class="fa fa-times"></i>',
@@ -174,6 +174,7 @@ if (typeof jQuery === "undefined") {
             //set the tab-panel width
             var toolWidth = $el.tabHeader.find('.mt-tab-tools-left:visible:first').outerWidth(true) + $el.tabHeader.find('.mt-tab-tools-right:visible:first').outerWidth(true);
             $el.tabPanel.css('width', 'calc(100% - ' + toolWidth + 'px');
+            $el.tabContent.css('height', 'calc(100% - ' + $el.tabHeader.outerHeight(true));
             self.options = options;
             //check the tab-panel is empty.
             if(!$el.tabPanel.find('ul.nav-tabs:first li').length){
