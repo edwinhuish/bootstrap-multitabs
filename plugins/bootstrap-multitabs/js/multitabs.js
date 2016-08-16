@@ -198,8 +198,8 @@ if (typeof jQuery === "undefined") {
             		content : 'main'
             	};
             	var $tab = self._create(param);
-            	if(!$el.tabPanel.find('li.active').lenght && !window.location.hash.substr(1)) self._active($tab);
             }
+        	if(!$el.tabPanel.find('li.active').lenght && !window.location.hash.substr(1)) self._active($el.tabPanelUl.find('[data-content="main"]:first').parent('li'));
         },
         _validate: function () {
             var self = this, $exception;
@@ -227,10 +227,11 @@ if (typeof jQuery === "undefined") {
             //active tab
             handler($(document), 'click', '.mt-tab-panel a', function(){
                 event.preventDefault();
+                if($(this).hasClass('mt-icon-close')) return false;
                 self._active($(this).parents('li:first'));
             });
             //close tab
-            handler($(document), 'click', '.mt-tab-panel a > i', function(){
+            handler($(document), 'click', '.mt-tab-panel a i', function(){
                 event.preventDefault();
                 self._close($(this).parents('li:first'));
             });
@@ -459,7 +460,10 @@ if (typeof jQuery === "undefined") {
             }
         },
         _close: function (tab) {
-            var self = this, $el = self.$element, $tab = $(tab), $tabA = $tab.children('a:first');
+            var self = this, $el = self.$element, 
+            	$tab = $(tab), $tabA = $tab.children('a:first'), 
+            	url = $tabA.attr('href').replace('#',''),
+            	content = $tabA.attr('data-content');
             if($tabA.attr('data-content') == 'editor' && $el.tabContent.find('.tab-pane[data-content="editor"]').hasClass('unsave')){
             	if(!self._unsaveConfirm()) return false;
             }
@@ -471,8 +475,6 @@ if (typeof jQuery === "undefined") {
                 }
             }
             $tab.remove();
-            var url = tabA.attr('href').replace('#','');
-            var content = tabA.attr('data-content');
             $el.tabContent.find('.tab-pane[data-content="'+ content +'"][data-id="'+ url +'"]:first').remove();
         },
         _closeOthers : function () {
@@ -505,18 +507,19 @@ if (typeof jQuery === "undefined") {
         },
         _active : function (tab) {
             var self = this, $el = self.$element, options = self.options;
-            var $tab = $(tab);
+            var $tab = $(tab), tabA = $tab.find('a:first'),
+            	url = tabA.attr('href').replace('#',''),
+            	content = tabA.attr('data-content'),
+            	$tabPane = $el.tabContent.find('.tab-pane[data-content="'+ content +'"][data-id="'+ url +'"]:first');
             if (!$tab.hasClass("active")) {
                 $tab.addClass('active').siblings().removeClass('active');
-                var tabA = $tab.find('a:first');
-                var url = tabA.attr('href').replace('#','');
-                var content = tabA.attr('data-content');
-                var $tabPane = $el.tabContent.find('.tab-pane[data-content="'+ content +'"][data-id="'+ url +'"]:first');
+            }
+            if(!$tabPane.hasClass('active')){
                 $tabPane.addClass('active').siblings().removeClass('active');
                 self._fixLayout($tabPane);
-                if(options.showHash == true && url){
-                	window.location.hash = '#' + url;
-                }
+            }
+            if(options.showHash == true && url){
+            	window.location.hash = '#' + url;
             }
         },
         _fixLayout : function(tabPane){
