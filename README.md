@@ -55,6 +55,10 @@
 <script>
     $('.content-wrapper').multitabs({
         showHash : false,                           //当值为true时，显示URL的hash，避免误按F5或者刷新的页面丢失，不过需要注意URL栏参数的泄露。
+        main : {                                    //自定义首页的内容
+            title : '',                             //首页的标题（可选）
+            url : ''                                //首页的链接，不能为外链
+        },
         content : 'info',                           //此处可以指定标签页类型名称，一般不需要修改。
         linkClass : '.multi-tabs',                  //触发multitabs的class，注意需要有"."
         iframe : false,                             //iframe模式的总局设置。当值为false的时候，为智能模式，自动判断（内网用ajax，外网用iframe）。缺省为false。
@@ -74,7 +78,8 @@
             option : 'Option',                      //选项
             showActivedTab : 'Show Activated Tab',  //显示已激活标签页
             closeAllTabs : 'Close All Tabs',        //关闭所有tab
-            closeOtherTabs : 'Close Other Tabs'     //关闭其他tab 
+            closeOtherTabs : 'Close Other Tabs' ，  //关闭其他tab 
+        unsaveEditorWarning : 'Your data is not save, are you sure to lose it?'  //关闭提醒的语句。
         },
     });
 </script>
