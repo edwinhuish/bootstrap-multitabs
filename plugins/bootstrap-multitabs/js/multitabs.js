@@ -459,7 +459,7 @@ if (typeof jQuery === "undefined") {
             }
         },
         _close: function (tab) {
-            var self = this, $el = self.$element, $tab = $(tab), $tabA = $tab.child('a');
+            var self = this, $el = self.$element, $tab = $(tab), $tabA = $tab.children('a:first');
             if($tabA.attr('data-content') == 'editor' && $el.tabContent.find('.tab-pane[data-content="editor"]').hasClass('unsave')){
             	if(!self._unsaveConfirm()) return false;
             }
@@ -471,7 +471,6 @@ if (typeof jQuery === "undefined") {
                 }
             }
             $tab.remove();
-            var tabA = $tab.find("a:first");
             var url = tabA.attr('href').replace('#','');
             var content = tabA.attr('data-content');
             $el.tabContent.find('.tab-pane[data-content="'+ content +'"][data-id="'+ url +'"]:first').remove();
