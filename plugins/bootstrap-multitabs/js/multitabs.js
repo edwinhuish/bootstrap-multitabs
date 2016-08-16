@@ -227,13 +227,13 @@ if (typeof jQuery === "undefined") {
             //active tab
             handler($(document), 'click', '.mt-tab-panel a', function(){
                 event.preventDefault();
-                if($(this).hasClass('mt-icon-close')) return false;
                 self._active($(this).parents('li:first'));
             });
             //close tab
             handler($(document), 'click', '.mt-tab-panel a i', function(){
                 event.preventDefault();
                 self._close($(this).parents('li:first'));
+                return false;
             });
             //move left
             handler($el.tabToolsLeft.find('.mt-move-left:first'), 'click', function(){
