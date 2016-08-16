@@ -96,3 +96,10 @@
         }
     </style>
 ```
+
+## editor标签页
+editor标签页默认只有一个.
+editor标签页```.tab-tape ```内有 ``` .unsave ``` class的时：
+1. 禁止覆盖。
+2. 关闭确认提示
+3. 关闭整个窗口提醒。

@@ -1,8 +1,7 @@
 //Make sure jQuery has been loaded before app.js
 if (typeof jQuery === "undefined") {
     throw new Error("MultiTabs requires jQuery");
-}
-((function($){
+}((function($){
     "use strict";
     var NAMESPACE;
     var MultiTabs,  handler, getTabIndex, toJoinerStr, toHumpStr,  isExtUrl, sumWidth, trimText, jquerySelectorEncode;
@@ -97,6 +96,7 @@ if (typeof jQuery === "undefined") {
         '       </nav>' +
         '       <nav class="mt-tab-panel">' +
         '           <ul  class="nav nav-tabs">' +
+        '				<li><a href="#multitabs-demo-main"  data-content="main" data-index="0" data-id="multitabs-demo-main"> Home </a></li>' +
         '           </ul>' +
         '       </nav>' +
         '       <nav class="mt-tab-tools-right">' +
@@ -114,12 +114,14 @@ if (typeof jQuery === "undefined") {
         '           </ul>' +
         '       </nav>' +
         '   </div>' +
-        '   <div class="tab-content" ></div>' +
+        '   <div class="tab-content" >' +
+        '		<div class="tab-pane active"  data-content="main" data-index="0" data-id="multitabs-demo-main"><h1>Domo page</h1><h2>Welcome to use bootstrap multi-tabs :) </h2></div>' +
+        '	</div>' +
         '</div>',
         tab : '<a href="{href}"  data-content="{content}" data-index="{index}" data-id="{did}">{title}{closeBtn}</a>',
         closeBtn : ' <i class="fa fa-times"></i>',
-        ajaxTabPane : '<div class="tab-pane active {class}"  data-content="{content}" data-index="{index}" data-id="{did}"></div>',
-        iframeTabPane : '<iframe class="tab-pane active {class}"  width="100%" height="100%" frameborder="0" src="{src}" data-content="{content}" data-index="{index}" data-id="{did}" seamless></iframe>',
+        ajaxTabPane : '<div class="tab-pane {class}"  data-content="{content}" data-index="{index}" data-id="{did}"></div>',
+        iframeTabPane : '<iframe class="tab-pane {class}"  width="100%" height="100%" frameborder="0" src="" data-content="{content}" data-index="{index}" data-id="{did}" seamless></iframe>',
     };
 
     defaultLanguage = {
@@ -127,7 +129,8 @@ if (typeof jQuery === "undefined") {
         option : 'Option',
         showActivedTab : 'Show Activated Tab',
         closeAllTabs : 'Close All Tabs',
-        closeOtherTabs : 'Close Other Tabs'
+        closeOtherTabs : 'Close Other Tabs',
+        unsaveEditorWarning : 'Your data is not save, are you sure to lose it?'
     };
     defaultTabHeader = {
         class : '',
@@ -149,6 +152,7 @@ if (typeof jQuery === "undefined") {
         }
         self._init(options);
         self._listen();
+        self._finish();
     };
     MultiTabs.prototype = {
         constructor: MultiTabs,
@@ -163,8 +167,11 @@ if (typeof jQuery === "undefined") {
             );
             $el.tabHeader = $el.find('.mt-tab-header:first');
             $el.tabToolsLeft = $el.tabHeader.find('.mt-tab-tools-left:first');
+            $el.tabToolsLeftUl = $el.tabToolsLeft.find('ul:first');
             $el.tabPanel = $el.tabHeader.find('.mt-tab-panel:first');
+            $el.tabPanelUl = $el.tabPanel.find('ul:first');
             $el.tabToolsRight = $el.tabHeader.find('.mt-tab-tools-right:first');
+            $el.tabToolsRightUl = $el.tabToolsRight.find('ul:first');
             $el.tabContent = $el.find('.tab-content:first');
             //hide tab-header if maxTabs less than 1
             if(options.tabHeader.maxTabs <= 1){
@@ -173,17 +180,25 @@ if (typeof jQuery === "undefined") {
             };
             //set the tab-panel width
             var toolWidth = $el.tabHeader.find('.mt-tab-tools-left:visible:first').outerWidth(true) + $el.tabHeader.find('.mt-tab-tools-right:visible:first').outerWidth(true);
-            $el.tabPanel.css('width', 'calc(100% - ' + toolWidth + 'px');
-            $el.tabContent.css('height', 'calc(100% - ' + $el.tabHeader.outerHeight(true));
+            $el.tabPanel.css('width', 'calc(100% - ' + toolWidth + 'px)');
+            $el.tabContent.css('height', 'calc(100% - ' + $el.tabHeader.outerHeight(true) + 'px)');
             self.options = options;
-            //check the tab-panel is empty.
-            if(!$el.tabPanel.find('ul.nav-tabs:first li').length){
-                self._create({
-                    title: 'home',
-                    iframe: false,
-                    content: 'main',
-                    url : 'pages/index-ajax-1.html'
-                });
+        },
+        _finish : function(){
+            var self = this, $el = self.$element, options = self.options, mainUrl = options.main.url, mainTitle = options.main.title || options.tabHeader.title;
+            if(mainUrl){
+            	if(isExtUrl(mainUrl)) {
+            		throw new Error("Main Tab can not use external page!");
+            		return false;
+            	};
+            	var param = {
+            		url : mainUrl,
+            		title : mainTitle,
+            		iframe : false,
+            		content : 'main'
+            	};
+            	var $tab = self._create(param);
+            	if(!$el.tabPanel.find('li.active').lenght && !window.location.hash.substr(1)) self._active($tab);
             }
         },
         _validate: function () {
@@ -204,7 +219,10 @@ if (typeof jQuery === "undefined") {
             handler($(document), 'click', options.linkClass, function(){
                 event.preventDefault();
                 var param = self._check(this);
-                if(param) self._create(param);
+                if(param) {
+                	var $tab = self._create(param);
+                };
+                if($tab) self._active($tab);
             });
             //active tab
             handler($(document), 'click', '.mt-tab-panel a', function(){
@@ -241,7 +259,33 @@ if (typeof jQuery === "undefined") {
                 event.preventDefault();
                 self._closeOthers();
             });
-
+            //close window warning.
+            handler($(window), 'beforeunload',function(){
+            	if($el.tabContent.find('.tab-pane[data-content="editor"]').hasClass('unsave')){
+            		return options.language.unsaveEditorWarning;
+            	}
+            });
+            //if show hash， bind hash change
+            if(options.showHash){
+	            handler($(window), 'hashchange load', function(){
+	                event.preventDefault();
+	                var hash = window.location.hash;
+	                if(!hash) return false;
+	                var url = hash.replace('#','');
+	                var $tabA = $el.tabPanel.find('[data-id="'+ url +'"]:first');
+	                if($tabA.length){
+	                	return false;
+	                }else{
+		                var a = document.createElement('a');
+		                a.href=url;
+		                var param = self._check(a);
+		                if(param) {
+		                	var $tab = self._create(param);
+		                };
+		                if($tab) self._active($tab);
+	                }
+            	});
+            };
         },
         _check : function (obj) {
             var newTab = true, param;
@@ -282,14 +326,10 @@ if (typeof jQuery === "undefined") {
             //禁止打开多个edit页面，如果edit页面存在，也禁止覆盖
             if(param.content == 'editor' && $editor.length && $editor.hasClass('unsave')){
                 alert("Please colse or save the Editor before open the other!");
-                //----------------------------------------------------
-                window.location.hash= encodeURI($editor.attr('data-id'));
-                //----------------------------------------------------
+                self._active($el.tabPanel.find('a[data-content="editor"]').parent('li'));
                 return false;
             }
             var index = getTabIndex(param.content, options.tabHeader.maxTabs);
-            //remove same index tab.
-            var tabLi = $el.tabPanel.find('a[data-content="'+ param.content +'"][data-index="'+ index +'"]').parent('li');
             //get layoutTemplates
             var tabHtml, closeBtnHtml, tabPaneHtml, iframe, tabId;
             closeBtnHtml = (param.content === 'main') ? '' : options.layoutTemplates.closeBtn; //main content can not colse.
@@ -302,29 +342,33 @@ if (typeof jQuery === "undefined") {
                 .replace('{title}', param.title)
                 .replace('{closeBtn}', closeBtnHtml);
             //tab create
-            $el.tabPanel.find('li').removeClass('active');
-            if($(tabLi).length){
-                $(tabLi).addClass('active').html(tabHtml);
-            }else $el.tabPanel.find('ul:first').append( '<li class="active">' + tabHtml + '</li>');
+            // $el.tabPanel.find('li').removeClass('active')
+            var $tab = $el.tabPanel.find('a[data-content="'+ param.content +'"][data-index="'+ index +'"]').parent('li');
+            if($tab.length){
+                $tab.html(tabHtml);
+            }else $el.tabPanelUl.append( '<li>' + tabHtml + '</li>');
             //tab-pane create
             iframe = param.iframe === undefined ? options.iframe : param.iframe;
             if(iframe){
-                tabPaneHtml = options.layoutTemplates.iframeTabPane.replace('{src}', param.url).replace('{class}', options.iframeTabPane.class);
+                tabPaneHtml = options.layoutTemplates.iframeTabPane.replace('{class}', options.iframeTabPane.class);
             }else{
                 tabPaneHtml = options.layoutTemplates.ajaxTabPane.replace('{class}', options.ajaxTabPane.class);
             }
             tabPaneHtml = tabPaneHtml
-                //.replace('{id}', encodeURI(param.url))
                 .replace('{content}', param.content)
                 .replace('{index}',index)
                 .replace('{did}', param.url);
-            $el.tabContent.children().removeClass('active');
+            // $el.tabContent.children().removeClass('active');
             $el.tabContent.find('.tab-pane[data-content="'+ param.content +'"][data-index="'+index+'"]').remove();//直接移除旧的content，不应重复判断是否同内容。
             $el.tabContent.append(tabPaneHtml);
-            var $content = $el.tabContent.find('.tab-pane.active:first');
-            self._fixLayout($content);
-            if(!iframe) $content.load(param.url);
-            self._fixTabPosition($el.tabPanel.find('li.active:first'));
+            var $tabPane = $el.tabContent.find('.tab-pane[data-content="'+ param.content +'"][data-index="'+index+'"]');
+            self._fixLayout($tabPane);
+            if(iframe){
+            	setTimeout(function(){
+            		$tabPane.attr('src', param.url);
+            	}, 300);
+            }else $tabPane.load(param.url);
+            return $el.tabPanel.find('a[data-content="'+ param.content +'"][data-index="'+ index +'"]').parent('li');
         },
         _fixTabPosition : function (tab) {
             var self = this, $el = self.$element;
@@ -354,13 +398,13 @@ if (typeof jQuery === "undefined") {
                     }
                 }
             }
-            $el.tabPanel.find('ul:first').animate({
+            $el.tabPanelUl.animate({
                 marginLeft : 0 - px + "px"
             }, "fast");
         },
         _moveLeft : function () {
             var self = this, $el = self.$element;
-            var tabPanelMarginLeft = Math.abs(parseInt($el.tabPanel.find('ul:first').css("margin-left")));
+            var tabPanelMarginLeft = Math.abs(parseInt($el.tabPanelUl.css("margin-left")));
             var tabPanelWidth = $el.tabPanel.outerWidth(true);
             var totalTabsWidth = sumWidth($el.tabPanel.find('li'));
             var px = 0;
@@ -382,13 +426,13 @@ if (typeof jQuery === "undefined") {
                     px = sumWidth($(_tab).prevAll())
                 }
             }
-            $el.tabPanel.find('ul:first').animate({
+            $el.tabPanelUl.animate({
                 marginLeft : 0 - px + "px"
             }, "fast")
         },
         _moveRight : function () {
             var self = this, $el = self.$element;
-            var tabPanelMarginLeft = Math.abs(parseInt($el.tabPanel.find('ul:first').css("margin-left")));
+            var tabPanelMarginLeft = Math.abs(parseInt($el.tabPanelUl.css("margin-left")));
             var tabPanelWidth = $el.tabPanel.outerWidth(true);
             var totalTabsWidth = sumWidth($el.tabPanel.find('li'));
             var px = 0;
@@ -408,14 +452,17 @@ if (typeof jQuery === "undefined") {
                 }
                 px = sumWidth($(_tab).prevAll());
                 if (px > 0) {
-                    $el.tabPanel.find('ul:first').animate({
+                    $el.tabPanelUl.animate({
                         marginLeft : 0 - px + "px"
                     }, "fast")
                 }
             }
         },
         _close: function (tab) {
-            var self = this, $el = self.$element, $tab = $(tab);
+            var self = this, $el = self.$element, $tab = $(tab), $tabA = $tab.child('a');
+            if($tabA.attr('data-content') == 'editor' && $el.tabContent.find('.tab-pane[data-content="editor"]').hasClass('unsave')){
+            	if(!self._unsaveConfirm()) return false;
+            }
             if ($tab.hasClass("active")) {
                 if ($tab.next("li").size()) {
                     self._active($tab.next("li:first"));
@@ -438,7 +485,7 @@ if (typeof jQuery === "undefined") {
                 $el.tabContent.find('.tab-pane[data-content="'+ content +'"][data-id="'+ url +'"]:first').remove();
                 $tabA.parent('li').remove()
             });
-            $el.tabPanel.find('ul:first').css("margin-left", "0");
+            $el.tabPanelUl.css("margin-left", "0");
         },
         _showActive : function () {
             var self = this, $el = self.$element;
@@ -458,7 +505,7 @@ if (typeof jQuery === "undefined") {
             self._active($el.tabPanel.find('a[data-content="main"]:first').parent('li'));
         },
         _active : function (tab) {
-            var self = this, $el = self.$element;
+            var self = this, $el = self.$element, options = self.options;
             var $tab = $(tab);
             if (!$tab.hasClass("active")) {
                 $tab.addClass('active').siblings().removeClass('active');
@@ -468,6 +515,9 @@ if (typeof jQuery === "undefined") {
                 var $tabPane = $el.tabContent.find('.tab-pane[data-content="'+ content +'"][data-id="'+ url +'"]:first');
                 $tabPane.addClass('active').siblings().removeClass('active');
                 self._fixLayout($tabPane);
+                if(options.showHash == true && url){
+                	window.location.hash = '#' + url;
+                }
             }
         },
         _fixLayout : function(tabPane){
@@ -477,6 +527,10 @@ if (typeof jQuery === "undefined") {
             }else{
                 $('body').removeClass('full-height-layout');
             }
+        },
+        _unsaveConfirm : function(){
+            var self = this, options = self.options;
+        	return confirm(options.language.unsaveEditorWarning);
         }
     };
 
@@ -516,6 +570,10 @@ if (typeof jQuery === "undefined") {
      * @type {{showHash: boolean, mode: string, maxTabs: number, maxTabTitleLength: number, tabTitle: string, content: string}}
      */
     $.fn.multitabs.defaults = {
+    	main : {
+    		title : '',
+    		url : ''
+    	},
         showHash : false,
         content : 'info',
         linkClass : '.multi-tabs',

@@ -30,10 +30,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
         body,
         body.full-height-layout .wrapper,
         html{
-            height: 100% !important;
+            height: 100% ;
         }
         body.full-height-layout .content-wrapper{
-            height: calc(100% - 140px) !important;
+            height: calc(100% - 140px) ;
         }
 
         /*body.fixed section.content-header{*/
@@ -474,7 +474,7 @@ desired effect
 <!-- AdminLTE App -->
 <script src="dist/js/app.js?v=2"></script>
 <!-- Multi Tabs -->
-<script src="plugins/bootstrap-multitabs/js/multitabs.js?v=79"></script>
+<script src="plugins/bootstrap-multitabs/js/multitabs.js?v=95"></script>
 
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the
@@ -482,7 +482,13 @@ desired effect
      fixed layout. -->
 
 <script>
-    $('.content-wrapper').multitabs();
+    $('.content-wrapper').multitabs({
+        showHash : true,
+        main : {
+            title : '主页',
+            url : 'http://localhost/MiniERP/Dashboard/index.html'
+        }
+    });
 </script>
 
 </body>
