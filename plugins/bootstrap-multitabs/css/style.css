@@ -22,3 +22,6 @@
 .mt-tab-tools-right ul{
     padding-left: 5px;
 }
+a{
+    cursor: pointer;
+}
