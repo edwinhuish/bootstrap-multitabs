@@ -5,7 +5,7 @@ if (typeof jQuery === "undefined") {
 ((function($){
     "use strict";
     var NAMESPACE;
-    var MultiTabs,  handler, getTabIndex, toJoinerStr, toHumpStr,  isExtUrl, sumWidth, trimText;
+    var MultiTabs,  handler, getTabIndex, toJoinerStr, toHumpStr,  isExtUrl, sumWidth, trimText, jquerySelectorEncode;
     var tabIndex;
     var defaultLayoutTemplates, defaultLanguage, defaultAjaxTabPane, defaultIframeTabPane, defaultTabHeader;
 
@@ -62,6 +62,10 @@ if (typeof jQuery === "undefined") {
         return ( ! (urlRoot===webRoot) );
     };
 
+    jquerySelectorEncode = function(str){
+        return str.replace(/\./g, "\\\\.").replace(/\//g, "\\\\/").replace(/\[/g, "\\\\[").replace(/\]/g, '\\\\]');
+    };
+
     /**
      * 将驼峰式string 转化为带'-'连接符的字符串
      * @param humpStr
@@ -84,7 +88,7 @@ if (typeof jQuery === "undefined") {
         /**
          * Main Layout
          */
-        main : '<div class="mt-tab-wrapper {mainClass}">' +
+        main : '<div class="mt-tab-wrapper {mainClass}" style="height: 100%;">' +
         '   <div class="mt-tab-header">' +
         '       <nav class="mt-tab-tools-left">' +
         '           <ul  class="nav nav-tabs">' +
@@ -110,12 +114,12 @@ if (typeof jQuery === "undefined") {
         '           </ul>' +
         '       </nav>' +
         '   </div>' +
-        '   <div class="tab-content"></div>' +
+        '   <div class="tab-content" ></div>' +
         '</div>',
-        tab : '<a href="{href}" data-toggle="tab" data-content="{content}" data-index="{index}" data-id="{did}">{title}{closeBtn}</a>',
+        tab : '<a href="{href}"  data-content="{content}" data-index="{index}" data-id="{did}">{title}{closeBtn}</a>',
         closeBtn : ' <i class="fa fa-times"></i>',
-        ajaxTabPane : '<div class="tab-pane active {class}" id="{id}" data-content="{content}" data-index="{index}" data-id="{did}"></div>',
-        iframeTabPane : '<iframe class="tab-pane active {class}" id="{id}" width="100%" height="100%" frameborder="0" src="{src}" data-content="{content}" data-index="{index}" data-id="{did}" seamless></iframe>',
+        ajaxTabPane : '<div class="tab-pane active {class}"  data-content="{content}" data-index="{index}" data-id="{did}"></div>',
+        iframeTabPane : '<iframe class="tab-pane active {class}"  width="100%" height="100%" frameborder="0" src="{src}" data-content="{content}" data-index="{index}" data-id="{did}" seamless></iframe>',
     };
 
     defaultLanguage = {
@@ -162,9 +166,15 @@ if (typeof jQuery === "undefined") {
             $el.tabPanel = $el.tabHeader.find('.mt-tab-panel:first');
             $el.tabToolsRight = $el.tabHeader.find('.mt-tab-tools-right:first');
             $el.tabContent = $el.find('.tab-content:first');
+            //hide tab-header if maxTabs less than 1
+            if(options.tabHeader.maxTabs <= 1){
+                options.tabHeader.maxTabs = 1;
+                $el.tabHeader.hide();
+            };
             //set the tab-panel width
-            var toolWidth = $el.tabToolsLeft.outerWidth(true) + $el.tabToolsRight.outerWidth(true);
+            var toolWidth = $el.tabHeader.find('.mt-tab-tools-left:visible:first').outerWidth(true) + $el.tabHeader.find('.mt-tab-tools-right:visible:first').outerWidth(true);
             $el.tabPanel.css('width', 'calc(100% - ' + toolWidth + 'px');
+            $el.tabContent.css('height', 'calc(100% - ' + $el.tabHeader.outerHeight(true));
             self.options = options;
             //check the tab-panel is empty.
             if(!$el.tabPanel.find('ul.nav-tabs:first li').length){
@@ -196,8 +206,13 @@ if (typeof jQuery === "undefined") {
                 var param = self._check(this);
                 if(param) self._create(param);
             });
+            //active tab
+            handler($(document), 'click', '.mt-tab-panel a', function(){
+                event.preventDefault();
+                self._active($(this).parents('li:first'));
+            });
             //close tab
-            handler($(document), 'click', '.nav-tabs a>i.fa-times', function(){
+            handler($(document), 'click', '.mt-tab-panel a > i', function(){
                 event.preventDefault();
                 self._close($(this).parents('li:first'));
             });
@@ -278,8 +293,9 @@ if (typeof jQuery === "undefined") {
             //get layoutTemplates
             var tabHtml, closeBtnHtml, tabPaneHtml, iframe, tabId;
             closeBtnHtml = (param.content === 'main') ? '' : options.layoutTemplates.closeBtn; //main content can not colse.
-            tabId = toHumpStr(options.linkClass) + '_' + param.content + '_' +  index;
-            tabHtml = options.layoutTemplates.tab.replace('{href}', '#'+ tabId)
+            //tabId = toHumpStr(options.linkClass) + '_' + param.content + '_' +  index;
+            //tabId = jquerySelectorEncode(encodeURI(param.url));
+            tabHtml = options.layoutTemplates.tab.replace('{href}', '#'+ param.url)
                 .replace('{content}', param.content)
                 .replace('{index}',index)
                 .replace('{did}', param.url)
@@ -298,20 +314,16 @@ if (typeof jQuery === "undefined") {
                 tabPaneHtml = options.layoutTemplates.ajaxTabPane.replace('{class}', options.ajaxTabPane.class);
             }
             tabPaneHtml = tabPaneHtml
-                .replace('{id}', tabId)
+                //.replace('{id}', encodeURI(param.url))
                 .replace('{content}', param.content)
                 .replace('{index}',index)
                 .replace('{did}', param.url);
             $el.tabContent.children().removeClass('active');
             $el.tabContent.find('.tab-pane[data-content="'+ param.content +'"][data-index="'+index+'"]').remove();//直接移除旧的content，不应重复判断是否同内容。
             $el.tabContent.append(tabPaneHtml);
-            var content = $el.tabContent.find('.tab-pane.active:first');
-            if($(content).is('iframe')){
-                $('body').addClass('full-height-layout');
-            }else{
-                $(content).load(param.url);
-                $('body').removeClass('full-height-layout');
-            }
+            var $content = $el.tabContent.find('.tab-pane.active:first');
+            self._fixLayout($content);
+            if(!iframe) $content.load(param.url);
             self._fixTabPosition($el.tabPanel.find('li.active:first'));
         },
         _fixTabPosition : function (tab) {
@@ -403,23 +415,28 @@ if (typeof jQuery === "undefined") {
             }
         },
         _close: function (tab) {
-            var self = this;
-            var href = $(tab).find("a:first").attr('href');
-            if (tab.hasClass("active")) {
-                if (tab.next("li").size()) {
-                    self._active(tab.next("li:first"));
-                }else if (tab.prev("li").size()) {
-                    self._active(tab.prev("li:last"));
+            var self = this, $el = self.$element, $tab = $(tab);
+            if ($tab.hasClass("active")) {
+                if ($tab.next("li").size()) {
+                    self._active($tab.next("li:first"));
+                }else if ($tab.prev("li").size()) {
+                    self._active($tab.prev("li:last"));
                 }
             }
-            tab.remove();
-            $(href).remove();
+            $tab.remove();
+            var tabA = $tab.find("a:first");
+            var url = tabA.attr('href').replace('#','');
+            var content = tabA.attr('data-content');
+            $el.tabContent.find('.tab-pane[data-content="'+ content +'"][data-id="'+ url +'"]:first').remove();
         },
         _closeOthers : function () {
             var self = this, $el = self.$element;
             $el.tabPanel.find('li:not(.active)').find('a:not([data-content="main"]):not([data-content="editor"])').each(function () {
-                $el.tabContent.children('#'+ $(this).attr("id") ).remove();
-                $(this).parent('li').remove()
+                var $tabA = $(this);
+                var url = $tabA.attr('href').replace('#','');
+                var content = $tabA.attr('data-content');
+                $el.tabContent.find('.tab-pane[data-content="'+ content +'"][data-id="'+ url +'"]:first').remove();
+                $tabA.parent('li').remove()
             });
             $el.tabPanel.find('ul:first').css("margin-left", "0");
         },
@@ -431,18 +448,34 @@ if (typeof jQuery === "undefined") {
         _closeAll : function(){
             var self = this, $el = self.$element;
             $el.tabPanel.find('a:not([data-content="main"]):not([data-content="editor"])').each(function(){
-                var tab = $(this).parent('li');
-                var href = $(this).attr('href');
-                $(href).remove(); //remove tab-content
-                $(tab).remove();  //remove
+                var $tabA = $(this);
+                var $tab = $tabA.parent('li');
+                var url = $tabA.attr('href').replace('#','');
+                var content = $tabA.attr('data-content');
+                $el.tabContent.find('.tab-pane[data-content="'+ content +'"][data-id="'+ url +'"]:first').remove(); //remove tab-content
+                $tab.remove();  //remove
             });
-            $el.tabPanel.find('a[data-content="main"]:first').tab('show');
+            self._active($el.tabPanel.find('a[data-content="main"]:first').parent('li'));
         },
         _active : function (tab) {
-            if (!$(tab).hasClass("active")) {
-                $(tab).addClass('active');
-                var href = $(tab).find('a:first').attr('href');
-                $(href).addClass('active');
+            var self = this, $el = self.$element;
+            var $tab = $(tab);
+            if (!$tab.hasClass("active")) {
+                $tab.addClass('active').siblings().removeClass('active');
+                var tabA = $tab.find('a:first');
+                var url = tabA.attr('href').replace('#','');
+                var content = tabA.attr('data-content');
+                var $tabPane = $el.tabContent.find('.tab-pane[data-content="'+ content +'"][data-id="'+ url +'"]:first');
+                $tabPane.addClass('active').siblings().removeClass('active');
+                self._fixLayout($tabPane);
+            }
+        },
+        _fixLayout : function(tabPane){
+            var $tabPane = $(tabPane);
+            if($tabPane.is('iframe')){
+                $('body').addClass('full-height-layout');
+            }else{
+                $('body').removeClass('full-height-layout');
             }
         }
     };
@@ -483,7 +516,7 @@ if (typeof jQuery === "undefined") {
      * @type {{showHash: boolean, mode: string, maxTabs: number, maxTabTitleLength: number, tabTitle: string, content: string}}
      */
     $.fn.multitabs.defaults = {
-        showHash : true,
+        showHash : false,
         content : 'info',
         linkClass : '.multi-tabs',
         iframe : false,                     //iframe mode, default is false, just use iframe for external link
