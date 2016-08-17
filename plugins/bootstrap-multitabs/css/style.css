@@ -10,15 +10,19 @@
 .mt-tab-panel{
     margin-right: -1px; //避免将右边挤到第二行
     overflow: hidden;
+    display: inline-block;
+    float: left;
 }
 .mt-tab-panel ul{
     width: 10000px;
 }
 .mt-tab-tools-left{
-   
+    display: inline-block;
+    float : left;
 }
 .mt-tab-tools-right{
-    
+    display: inline-block;
+    float: right;
 }
 .mt-tab-tools-right ul{
     padding-left: 5px;

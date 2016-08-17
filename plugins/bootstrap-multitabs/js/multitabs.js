@@ -285,6 +285,11 @@ if (typeof jQuery === "undefined") {
 	                }
             	});
             };
+            if(options.fixed){
+                handler($(window), 'resize', function(){
+
+                });
+            };
         },
         _check : function (obj) {
             var newTab = true, param;
@@ -516,11 +521,11 @@ if (typeof jQuery === "undefined") {
                 $tabPane.addClass('active').siblings().removeClass('active');
                 self._fixTabContentLayout($tabPane);
             }
-            if(options.showHash == true && url){
+            if(options.showHash && url){
             	window.location.hash = '#' + url;
             }
         },
-        _fixTabHeaderLayout : function(){
+        _fixedTabHeader : function(){
             var position = $el.tabHeader.position();
             var wrapperWidth = $el.width();
             $el.tabHeader.css({left : position.left, top : position.top, width : wrapperWidth})
