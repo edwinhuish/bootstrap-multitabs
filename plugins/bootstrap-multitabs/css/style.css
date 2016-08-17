@@ -3,25 +3,31 @@
 }
 .mt-tab-header {
     line-height : 0;
-}
-.mt-tab-header nav{
     display: inline-block;
+    width : 100%;
+    z-index: 1000;
 }
 .mt-tab-panel{
+    margin-right: -1px; //避免将右边挤到第二行
     overflow: hidden;
-    position: absolute;
 }
 .mt-tab-panel ul{
     width: 10000px;
 }
+.mt-tab-tools-left{
+   
+}
 .mt-tab-tools-right{
-    position: absolute;
-    right: 0;
-    top: 0;
+    
 }
 .mt-tab-tools-right ul{
     padding-left: 5px;
 }
 a{
     cursor: pointer;
+}
+.mt-fixed{
+    position:fixed; 
+    top:100px; 
+    left:0;
 }
