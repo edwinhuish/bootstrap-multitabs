@@ -38,7 +38,7 @@
 <a class="multi-tabs" href="pages/index-ajax-2.html">ajax INFO Tab 2</a>
 ```
 
-**至此，最简单的bootstrap-multitabs配置成功！**
+** 至此，最简单的bootstrap-multitabs配置成功！**
 
 
 ##进阶配置
@@ -55,13 +55,14 @@
 <script>
     $('.content-wrapper').multitabs({
         showHash : false,                           //当值为true时，显示URL的hash，避免误按F5或者刷新的页面丢失，不过需要注意URL栏参数的泄露。
-        main : {                                    //自定义首页的内容
-            title : '',                             //首页的标题（可选）
-            url : ''                                //首页的链接，不能为外链
-        },
+        fixed : false,                              //固定标签列表
         content : 'info',                           //此处可以指定标签页类型名称，一般不需要修改。
         linkClass : '.multi-tabs',                  //触发multitabs的class，注意需要有"."
         iframe : false,                             //iframe模式的总局设置。当值为false的时候，为智能模式，自动判断（内网用ajax，外网用iframe）。缺省为false。
+        main : {                                    //自定义首页的内容
+            title : '',                             //首页的标题（可选）
+            url : ''                                //首页的链接，不能为外链
+        },        
         tabHeader : {
             class : '',                             //为tabHeader添加class
             maxTabs : 8,                            //最多tab数量。（main和editor不计算在内)
