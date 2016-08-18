@@ -8,30 +8,34 @@
     z-index: 1000;
 }
 .mt-tab-panel{
-    margin-right: -1px; //避免将右边挤到第二行
     overflow: hidden;
     display: inline-block;
-    float: left;
+    margin-right : -10px;
 }
 .mt-tab-panel ul{
     width: 10000px;
 }
 .mt-tab-tools-left{
     display: inline-block;
-    float : left;
+    margin-right : -5px;
+}
+.mt-tab-tools-left ul{
+    padding-right : 5px;
 }
 .mt-tab-tools-right{
     display: inline-block;
     float: right;
 }
-.mt-tab-tools-right ul{
-    padding-left: 5px;
-}
 a{
     cursor: pointer;
 }
-.mt-fixed{
+/*.mt-fixed{
     position:fixed; 
     top:100px; 
     left:0;
+}*/
+@media (max-width: 767px){
+    .mt-tab-header {
+        display: none;
+    }
 }
