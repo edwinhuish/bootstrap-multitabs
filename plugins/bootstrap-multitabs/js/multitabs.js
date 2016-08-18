@@ -216,6 +216,7 @@ if (typeof jQuery === "undefined") {
      */
     defaultIframeTabPane = {
         class : '',                 //class，默认为空，可自行添加
+        otherHeight : 0             //其他高度，iframe需要剔除的高度，如footer
     };
 
     /**
@@ -278,7 +279,8 @@ if (typeof jQuery === "undefined") {
                 $el.addClass('mt-fixed');
                 self._fixedTabHeader();
             }
-            $el.tabContent.css('height', 'calc(100% - ' + $el.tabHeader.outerHeight(true) + 'px)');
+            var otherHeight = parseInt(options.iframeTabPane.otherHeight);
+            $el.tabContent.css('height', 'calc(100% - ' + otherHeight + 'px)');
             self.options = options;
         },
 

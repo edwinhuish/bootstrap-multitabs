@@ -73,6 +73,7 @@
         },
         iframeTabPane : {
             class : '',                             //为iframe tab-pane 添加class
+            otherHeight : 0                         //其他高度，iframe需要剔除的高度，如footer
         },
         language : {                                //语言配置
             title : 'Tab',                          //默认tab标题名称
