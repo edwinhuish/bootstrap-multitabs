@@ -79,7 +79,7 @@
             option : 'Option',                      //选项
             showActivedTab : 'Show Activated Tab',  //显示已激活标签页
             closeAllTabs : 'Close All Tabs',        //关闭所有tab
-            closeOtherTabs : 'Close Other Tabs' ，  //关闭其他tab 
+            closeOtherTabs : 'Close Other Tabs' ,   //关闭其他tab 
             unsaveEditorWarning : 'Your data is not save, are you sure to lose it?'  //关闭提醒的语句。
         },
     });
