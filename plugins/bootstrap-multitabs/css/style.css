@@ -30,11 +30,6 @@
 a{
     cursor: pointer;
 }
-/*.mt-tab-header.fixed,
-.mt-tab-header.fixed .mt-tab-tools-right{
-    position:fixed; 
-    z-index : 10000;
-}*/
 @media (max-width: 767px){
     .mt-tab-header {
         display: none;

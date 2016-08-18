@@ -4,7 +4,7 @@ if (typeof jQuery === "undefined") {
 }((function($){
     "use strict";
     var NAMESPACE;
-    var MultiTabs,  handler, getTabIndex, toJoinerStr, toHumpStr,  isExtUrl, sumWidth, trimText, jquerySelectorEncode;
+    var MultiTabs,  handler, getTabIndex, toJoinerStr, toHumpStr,  isExtUrl, sumWidth, trimText, insertRule;
     var tabIndex;
     var defaultLayoutTemplates, defaultLanguage, defaultAjaxTabPane, defaultIframeTabPane, defaultTabHeader;
 
@@ -61,9 +61,17 @@ if (typeof jQuery === "undefined") {
         return ( ! (urlRoot===webRoot) );
     };
 
-    jquerySelectorEncode = function(str){
-        return str.replace(/\./g, "\\\\.").replace(/\//g, "\\\\/").replace(/\[/g, "\\\\[").replace(/\]/g, '\\\\]');
-    };
+    insertRule = function (selectorText, cssText, position) {
+        var sheet = document.styleSheets[0];
+        position = position || 0;
+        if (sheet.insertRule) {
+            sheet.insertRule(selectorText + "{" + cssText + "}", position);
+        } else if (sheet.addRule) {
+            sheet.addRule(selectorText, cssText, poistion);
+        }
+    }
+
+
 
     /**
      * 将驼峰式string 转化为带'-'连接符的字符串
@@ -114,7 +122,7 @@ if (typeof jQuery === "undefined") {
         '           </ul>' +
         '       </div>' +
         '   </div>' +
-        '   <div class="tab-content" >' +
+        '   <div class="tab-content mt-tab-content" >' +
         '		<div class="tab-pane active"  data-content="main" data-index="0" data-id="multitabs-demo-main"><h1>Demo page</h1><h2>Welcome to use bootstrap multi-tabs :) </h2></div>' +
         '	</div>' +
         '</div>',
@@ -180,9 +188,10 @@ if (typeof jQuery === "undefined") {
             var toolWidth = $el.tabHeader.find('.mt-tab-tools-left:visible:first').outerWidth(true) + $el.tabHeader.find('.mt-tab-tools-right:visible:first').outerWidth(true);
             $el.tabPanel.parent('.mt-tab-panel').css('width', 'calc(100% - ' + toolWidth + 'px)');
             if(options.fixed){
+                $el.addClass('mt-fixed');
                 self._fixedTabHeader();
             }
-            $el.tabContent.css('min-height', 'calc(100% - ' + $el.tabHeader.outerHeight(true) + 'px)');
+            $el.tabContent.css('height', 'calc(100% - ' + $el.tabHeader.outerHeight(true) + 'px)');
             self.options = options;
         },
         _finish : function(){
@@ -280,6 +289,8 @@ if (typeof jQuery === "undefined") {
 	                }else{
 		                var a = document.createElement('a');
 		                a.href=url;
+                        var $a = $(a);
+
 		                var param = self._check(a);
 		                if(param) {
 		                	var $tab = self._create(param);
@@ -298,7 +309,8 @@ if (typeof jQuery === "undefined") {
             if ($.trim(param.url).length == 0) return false;
             param.iframe = param.iframe || isExtUrl(param.url) || options.iframe;
             if(param.iframe || param.content == undefined) param.content = options.content;
-            param.title = trimText($(obj).text(), options.tabHeader.maxTabTitleLength) || trimText(options.language.title, options.tabHeader.maxTabTitleLength);
+            param.title = param.title || $(obj).text() || param.url.replace('http://', '').replace('https://', '') || options.language.title;
+            param.title = trimText(param.title, options.tabHeader.maxTabTitleLength);
             var tab = $el.tabPanel.find('a[data-id="'+ param.url +'"][data-content="'+ param.content +'"]').parent('li');
             var content = $el.tabContent.find('.tab-pane[data-id="'+ param.url +'"][data-content="'+ param.content +'"]');
             if (tab.length && !tab.hasClass("active")) {
@@ -307,11 +319,7 @@ if (typeof jQuery === "undefined") {
             if(content.length || content.is('iframe')){
                 $(content).addClass('active').siblings(".tab-pane").removeClass('active');
                 newTab = false;
-                if(content.is('iframe')){
-                    $('body').addClass('full-height-layout');
-                }else{
-                    $('body').removeClass('full-height-layout');
-                }
+                self._fixTabContentLayout(content);
             }
 
             if ( !tab.length || !content.length || newTab ) {
@@ -335,8 +343,6 @@ if (typeof jQuery === "undefined") {
             //get layoutTemplates
             var tabHtml, closeBtnHtml, tabPaneHtml, iframe, tabId;
             closeBtnHtml = (param.content === 'main') ? '' : options.layoutTemplates.closeBtn; //main content can not colse.
-            //tabId = toHumpStr(options.linkClass) + '_' + param.content + '_' +  index;
-            //tabId = jquerySelectorEncode(encodeURI(param.url));
             tabHtml = options.layoutTemplates.tab.replace('{href}', '#'+ param.url)
                 .replace('{content}', param.content)
                 .replace('{index}',index)
@@ -531,15 +537,21 @@ if (typeof jQuery === "undefined") {
             var right = $(window).width() - position.left - $el.outerWidth(true);
             var tabHeaderHeight = $el.tabHeader.outerHeight(true);
             var paddingTop =  parseInt($el.tabContent.css('paddingTop'));
-            $el.tabHeader.css({"position" : "fixed", "top" : top + 'px', "left" : 'auto'});
-            $el.tabHeader.find('.mt-tab-tools-right:first').css({"position" : "fixed", "top" : top + 'px',  "right" : right + 'px'});
-            $el.tabContent.css('paddingTop', paddingTop + tabHeaderHeight + 'px');
+            insertRule('.mt-fixed .mt-tab-header', 'position : fixed; top : ' + top + 'px; left : auto;');
+            insertRule('.mt-fixed .mt-tab-tools-right', 'position : fixed; top : ' + top + 'px; right : ' + right + 'px;');
+            insertRule('.mt-fixed .mt-tab-content', 'padding-top : ' + paddingTop + tabHeaderHeight + 'px;');
+            // $el.tabHeader.css({ "top" : top + 'px', "left" : 'auto'});
+            // $el.tabHeader.find('.mt-tab-tools-right:first').css({ "top" : top + 'px',  "right" : right + 'px'});
+            // $el.tabContent.css('paddingTop', paddingTop + tabHeaderHeight + 'px');
         },
         _fixTabContentLayout : function(tabPane){
+            var self = this, $el = self.$element, options = self.options;
             var $tabPane = $(tabPane);
             if($tabPane.is('iframe')){
+                $el.removeClass('mt-fixed');
                 $('body').addClass('full-height-layout');
             }else{
+                if(options.fixed) $el.addClass('mt-fixed');
                 $('body').removeClass('full-height-layout');
             }
         },
