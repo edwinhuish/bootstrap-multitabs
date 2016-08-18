@@ -99,7 +99,7 @@ if (typeof jQuery === "undefined") {
         '				<li><a href="#multitabs-demo-main"  data-content="main" data-index="0" data-id="multitabs-demo-main"> Home </a></li>' +
         '           </ul>' +
         '       </nav>' +
-        '       <div class="mt-tab-tools-right">' +
+        '       <div class="mt-tab-tools-right" style="background-color : {backgroundColor};">' +
         '           <ul  class="nav nav-tabs">' +
         '               <li class="mt-move-right"><a><i class="fa fa-forward"></i></a></li>' +
         '               <li class="mt-dropdown-option dropdown">' +
@@ -115,7 +115,7 @@ if (typeof jQuery === "undefined") {
         '       </div>' +
         '   </div>' +
         '   <div class="tab-content" >' +
-        '		<div class="tab-pane active"  data-content="main" data-index="0" data-id="multitabs-demo-main"><h1>Domo page</h1><h2>Welcome to use bootstrap multi-tabs :) </h2></div>' +
+        '		<div class="tab-pane active"  data-content="main" data-index="0" data-id="multitabs-demo-main"><h1>Demo page</h1><h2>Welcome to use bootstrap multi-tabs :) </h2></div>' +
         '	</div>' +
         '</div>',
         tab : '<a href="{href}"  data-content="{content}" data-index="{index}" data-id="{did}">{title}{closeBtn}</a>',
@@ -160,7 +160,7 @@ if (typeof jQuery === "undefined") {
             var self = this, $el = self.$element
             $el.html(options.layoutTemplates.main
                 .replace('{mainClass}', 'main-' + toJoinerStr(options.linkClass))
-                .replace('{backgroundColor}', options.backgroundColor)
+                .replace(/\{backgroundColor\}/g, options.backgroundColor)
                 .replace('{option}' , options.language.option)
                 .replace('{showActivedTab}' , options.language.showActivedTab)
                 .replace('{closeAllTabs}' , options.language.closeAllTabs)
@@ -179,7 +179,10 @@ if (typeof jQuery === "undefined") {
             //set the tab-panel width
             var toolWidth = $el.tabHeader.find('.mt-tab-tools-left:visible:first').outerWidth(true) + $el.tabHeader.find('.mt-tab-tools-right:visible:first').outerWidth(true);
             $el.tabPanel.parent('.mt-tab-panel').css('width', 'calc(100% - ' + toolWidth + 'px)');
-            $el.tabContent.css('height', 'calc(100% - ' + $el.tabHeader.outerHeight(true) + 'px)');
+            if(options.fixed){
+                self._fixedTabHeader();
+            }
+            $el.tabContent.css('min-height', 'calc(100% - ' + $el.tabHeader.outerHeight(true) + 'px)');
             self.options = options;
         },
         _finish : function(){
@@ -284,11 +287,6 @@ if (typeof jQuery === "undefined") {
 		                if($tab) self._active($tab);
 	                }
             	});
-            };
-            if(options.fixed){
-                handler($(window), 'resize', function(){
-
-                });
             };
         },
         _check : function (obj) {
@@ -526,9 +524,16 @@ if (typeof jQuery === "undefined") {
             }
         },
         _fixedTabHeader : function(){
-            var position = $el.tabHeader.position();
-            var wrapperWidth = $el.width();
-            $el.tabHeader.css({left : position.left, top : position.top, width : wrapperWidth})
+            var self = this, $el = self.$element;
+            var position = $el.position();
+            // var left = position.left + parseInt($el.css('marginLeft').replace('px','')) + parseInt($el.css('borderLeft').replace('px','')) + parseInt($el.css('paddingLeft').replace('px',''));
+            var top = position.top + parseInt($el.css('marginTop').replace('px','')) + parseInt($el.css('borderTop').replace('px','')) + parseInt($el.css('paddingTop').replace('px',''));
+            var right = $(window).width() - position.left - $el.outerWidth(true);
+            var tabHeaderHeight = $el.tabHeader.outerHeight(true);
+            var paddingTop =  parseInt($el.tabContent.css('paddingTop'));
+            $el.tabHeader.css({"position" : "fixed", "top" : top + 'px', "left" : 'auto'});
+            $el.tabHeader.find('.mt-tab-tools-right:first').css({"position" : "fixed", "top" : top + 'px',  "right" : right + 'px'});
+            $el.tabContent.css('paddingTop', paddingTop + tabHeaderHeight + 'px');
         },
         _fixTabContentLayout : function(tabPane){
             var $tabPane = $(tabPane);

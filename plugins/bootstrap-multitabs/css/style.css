@@ -25,14 +25,15 @@
 .mt-tab-tools-right{
     display: inline-block;
     float: right;
+    z-index: 1000;
 }
 a{
     cursor: pointer;
 }
-/*.mt-fixed{
+/*.mt-tab-header.fixed,
+.mt-tab-header.fixed .mt-tab-tools-right{
     position:fixed; 
-    top:100px; 
-    left:0;
+    z-index : 10000;
 }*/
 @media (max-width: 767px){
     .mt-tab-header {
