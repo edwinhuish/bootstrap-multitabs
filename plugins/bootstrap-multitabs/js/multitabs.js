@@ -155,7 +155,7 @@ if (typeof jQuery === "undefined") {
         '       </div>' +
         '       <nav class="mt-tab-panel">' +
         '           <ul  class="nav nav-tabs">' +
-        '				<li><a href="#multitabs-demo-main"  data-content="main" data-index="0" data-id="multitabs-demo-main"> Home </a></li>' +
+        '				<li><a href="#welcome_to_use_multitabs"  data-content="main" data-index="0" data-id="welcome_to_use_multitabs"> Home </a></li>' +
         '           </ul>' +
         '       </nav>' +
         '       <div class="mt-tab-tools-right" style="background-color : {backgroundColor};">' +
@@ -174,7 +174,7 @@ if (typeof jQuery === "undefined") {
         '       </div>' +
         '   </div>' +
         '   <div class="tab-content mt-tab-content" >' +
-        '		<div class="tab-pane active"  data-content="main" data-index="0" data-id="multitabs-demo-main"><h1>Demo page</h1><h2>Welcome to use bootstrap multi-tabs :) </h2></div>' +
+        '		<div class="tab-pane active"  data-content="main" data-index="0" data-id="welcome_to_use_multitabs"><h1>Demo page</h1><h2>Welcome to use bootstrap multi-tabs :) </h2></div>' +
         '	</div>' +
         '</div>',
         tab : '<a href="{href}"  data-content="{content}" data-index="{index}" data-id="{did}">{title}{closeBtn}</a>',
@@ -255,7 +255,7 @@ if (typeof jQuery === "undefined") {
         _init: function (options) {
             var self = this, $el = self.$element
             $el.html(options.layoutTemplates.main
-                .replace('{mainClass}', 'main-' + toJoinerStr(options.linkClass))
+                .replace('{mainClass}', toJoinerStr(options.class))
                 .replace(/\{backgroundColor\}/g, options.backgroundColor)
                 .replace('{option}' , options.language.option)
                 .replace('{showActivedTab}' , options.language.showActivedTab)
@@ -332,7 +332,7 @@ if (typeof jQuery === "undefined") {
         _listen: function () {
             var self = this, $el = self.$element, options = self.options;
             //create tab
-            handler($(document), 'click', options.linkClass, function(){
+            handler($(document), 'click', options.link, function(){
                 event.preventDefault();
                 var param = self._check(this);
                 if(param) {
@@ -783,7 +783,8 @@ if (typeof jQuery === "undefined") {
         backgroundColor: '#fff',
         showHash : false,
         content : 'info',
-        linkClass : '.multi-tabs',
+        link : '.multi-tabs',
+        class : '',
         iframe : false,                     //iframe mode, default is false, just use iframe for external link
         tabHeader : defaultTabHeader,
         ajaxTabPane : defaultAjaxTabPane,

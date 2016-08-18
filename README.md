@@ -57,8 +57,9 @@
         showHash : false,                           //当值为true时，显示URL的hash，避免误按F5或者刷新的页面丢失，不过需要注意URL栏参数的泄露。
         fixed : false,                              //固定标签列表
         content : 'info',                           //此处可以指定标签页类型名称，一般不需要修改。
-        linkClass : '.multi-tabs',                  //触发multitabs的class，注意需要有"."
+        link : '.multi-tabs',                       //触发multitabs的selector text，注意需要有".","#"等
         iframe : false,                             //iframe模式的总局设置。当值为false的时候，为智能模式，自动判断（内网用ajax，外网用iframe）。缺省为false。
+        class :                                     //主框架的class
         main : {                                    //自定义首页的内容
             title : '',                             //首页的标题（可选）
             url : ''                                //首页的链接，不能为外链
