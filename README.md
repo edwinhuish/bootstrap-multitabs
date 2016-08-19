@@ -54,8 +54,8 @@
 ```html
 <script>
     $('.content-wrapper').multitabs({
-        showHash : false,                           //当值为true时，显示URL的hash，避免误按F5或者刷新的页面丢失，不过需要注意URL栏参数的泄露。
-        fixed : false,                              //固定标签列表
+        showHash : true,                            //当值为true时，显示URL的hash，避免误按F5或者刷新的页面丢失，不过需要注意URL栏参数的泄露。
+        fixed : true ,                              //固定标签头列表
         content : 'info',                           //此处可以指定标签页类型名称，一般不需要修改。
         link : '.multi-tabs',                       //触发multitabs的selector text，注意需要有".","#"等
         iframe : false,                             //iframe模式的总局设置。当值为false的时候，为智能模式，自动判断（内网用ajax，外网用iframe）。缺省为false。
