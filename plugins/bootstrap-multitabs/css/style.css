@@ -1,5 +1,6 @@
 .mt-tab-wrapper{
     position: relative;
+    z-index: 1;
 }
 .mt-tab-header {
     line-height : 0;
