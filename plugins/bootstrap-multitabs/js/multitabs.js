@@ -781,7 +781,7 @@ if (typeof jQuery === "undefined") {
         },
         fixed : true,
         backgroundColor: '#fff',
-        showHash : false,
+        showHash : true,
         content : 'info',
         link : '.multi-tabs',
         class : '',
