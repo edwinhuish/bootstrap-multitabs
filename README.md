@@ -60,10 +60,15 @@
         link : '.multi-tabs',                       //触发multitabs的selector text，注意需要有".","#"等
         iframe : false,                             //iframe模式的总局设置。当值为false的时候，为智能模式，自动判断（内网用ajax，外网用iframe）。缺省为false。
         class : '',                                 //主框架的class
-        main : {                                    //自定义首页的内容
-            title : '',                             //首页的标题（可选）
-            url : ''                                //首页的链接，不能为外链
-        },        
+        init : [
+            {                                       //需要在初始加载的tab
+                content :'',                        //标签页的类型，有 main | info | editor
+                title : '',                         //标题（可选），没有则显示网址
+                url : ''                            //链接，如为外链，强制为info页
+            }, 
+            {    ......    },                       //依次添加需要的页面
+            {    ......    },
+        ]       
         tabHeader : {
             class : '',                             //为tabHeader添加class
             maxTabs : 8,                            //最多tab数量。（main和editor不计算在内)
