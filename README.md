@@ -68,7 +68,7 @@
             }, 
             {    ......    },                       //依次添加需要的页面
             {    ......    },
-        ]       
+        ],       
         tabHeader : {
             class : '',                             //为tabHeader添加class
             maxTabs : 8,                            //最多tab数量。（main和editor不计算在内)
