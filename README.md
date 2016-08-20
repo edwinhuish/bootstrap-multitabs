@@ -82,16 +82,18 @@
             otherHeight : 0                         //其他高度，iframe需要剔除的高度，如footer
         },
         language : {                                //语言配置
-            title : 'Tab',                          //默认tab标题名称
-            option : 'Option',                      //选项
-            showActivedTab : 'Show Activated Tab',  //显示已激活标签页
-            closeAllTabs : 'Close All Tabs',        //关闭所有tab
-            closeOtherTabs : 'Close Other Tabs' ,   //关闭其他tab 
+            tabHeader : {
+                title : 'Tab',                                  //默认的标签页名称
+                option : 'Option',                              //标签栏的下拉菜单名称
+                showActivedTab : 'Show Activated Tab',          //下拉菜单的显示激活页面
+                closeAllTabs : 'Close All Tabs',                //下拉菜单的关闭所有页面
+                closeOtherTabs : 'Close Other Tabs',            //下拉菜单的关闭其他页面
+            },
             editorUnsave: {
                 colse : 'Your data is not save, are you sure to lose it?',   //关闭未保存editor标签页的警示
                 cover : 'Can not cover Editor without saving the old one!'   //覆盖未保存editor标签页的警示
             }
-        },
+        }
     });
 </script>
 ```
