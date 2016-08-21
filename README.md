@@ -60,6 +60,7 @@
         link : '.multi-tabs',                       //触发multitabs的selector text，注意需要有".","#"等
         iframe : false,                             //iframe模式的总局设置。当值为false的时候，为智能模式，自动判断（内网用ajax，外网用iframe）。缺省为false。
         class : '',                                 //主框架的class
+        backgroundColor : '#fff',                   //默认为白色背景
         init : [
             {                                       //需要在初始加载的tab
                 content :'',                        //标签页的类型，有 main | info | editor
