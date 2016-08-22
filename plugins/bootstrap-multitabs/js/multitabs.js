@@ -207,7 +207,8 @@ if (typeof jQuery === "undefined") {
     defaultNavBar = {
         class : '',                 //class，默认为空，可以自行添加
         maxTabs : 8,                //默认可容纳标签数为8
-        maxTitleLength : 25,     //默认最长tab tittle为25
+        maxTitleLength : 25,        //默认最长tab tittle为25
+        backgroundColor: '#fff'     //背景颜色
     };
 
     /**
@@ -792,7 +793,6 @@ if (typeof jQuery === "undefined") {
     $.fn.multitabs.defaults = {
         init :[],
         fixed : true,
-        backgroundColor: '#fff',
         showHash : true,
         content : 'info',
         link : '.multi-tabs',
