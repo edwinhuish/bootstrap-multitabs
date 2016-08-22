@@ -55,55 +55,55 @@ The following is the default configuration, you can modify as you want.
 ```html
 <script>
     $('.content-wrapper').multitabs({
-        showHash : true,                            //当值为true时，显示URL的hash，避免误按F5或者刷新的页面丢失，不过需要注意URL栏参数的泄露。
-        fixed : true ,                              //固定标签头列表
-        content : 'info',                           //此处可以指定标签页类型名称，一般不需要修改。
-        link : '.multi-tabs',                       //触发multitabs的selector text，注意需要有".","#"等
-        iframe : false,                             //iframe模式的总局设置。当值为false的时候，为智能模式，自动判断（内网用ajax，外网用iframe）。缺省为false。
-        class : '',                                 //主框架的class
-        backgroundColor : '#fff',                   //默认为白色背景
-        init : [
-            {                                       //需要在初始加载的tab
-                content :'',                        //标签页的类型，有 main | info | editor
-                title : '',                         //标题（可选），没有则显示网址
-                url : ''                            //链接，如为外链，强制为info页
+        showHash : true,                            //While is true, show hash in URL, in case refresh or F5, can stay in same tab page.
+        fixed : true ,                              //fixed the nav-bar
+        content : 'info',                           //change the data-content name, is not necessary to change.
+        link : '.multi-tabs',                       //selector text to trigger multitabs. 
+        iframe : false,                             //Global iframe mode, default is false, is the auto mode (for the self page, use ajax, and the external, use iframe)
+        class : '',                                 //class for whole multitabs
+        init : [                                    //tabs in initial
+            {                                       
+                content :'',                        //content type, may be main | info | editor, if empty, default is 'info'
+                title : '',                         //title of tab, if empty, show the URL
+                url : ''                            //URL, if it's external link, content type change to 'info'
             }, 
-            {    ......    },                       //依次添加需要的页面
+            {    ......    },                       //add more page.
             {    ......    },
         ],       
-        tabHeader : {
-            class : '',                             //为tabHeader添加class
-            maxTabs : 8,                            //最多tab数量。（main和editor不计算在内)
-            maxTabTitleLength : 25,                 //tab标题的最大长度
+        navBar : {
+            class : '',                             //class of navBar
+            maxTabs : 8,                            //Max tabs number (without counting main and editor)
+            maxTitleLength : 25,                    //Max title length of tab
+            backgroundColor : '#fff',               //background-color for nav-bar.
         },
         ajaxTabPane : {
-            class : '',                             //为ajax tab-pane 添加class
+            class : '',                             //Class for ajax tab-pane
         },
         iframeTabPane : {
-            class : '',                             //为iframe tab-pane 添加class
-            otherHeight : 0                         //其他高度，iframe需要剔除的高度，如footer
+            class : '',                             //Class for iframe tab-pane 
+            otherHeight : 0                         //other height for iframe, example: footer or header
         },
-        language : {                                //语言配置
-            tabHeader : {
-                title : 'Tab',                                  //默认的标签页名称
-                option : 'Option',                              //标签栏的下拉菜单名称
-                showActivedTab : 'Show Activated Tab',          //下拉菜单的显示激活页面
-                closeAllTabs : 'Close All Tabs',                //下拉菜单的关闭所有页面
-                closeOtherTabs : 'Close Other Tabs',            //下拉菜单的关闭其他页面
+        language : {                                //language setting
+            navBar : {
+                title : 'Tab',                                  //default tab's tittle
+                option : 'Option',                              //right tools dropdown name
+                showActivedTab : 'Show Activated Tab',          //show active tab
+                closeAllTabs : 'Close All Tabs',                //close all tabs
+                closeOtherTabs : 'Close Other Tabs',            //close other tabs
             },
             editorUnsave: {
-                colse : 'Your data is not save, are you sure to lose it?',   //关闭未保存editor标签页的警示
-                cover : 'Can not cover Editor without saving the old one!'   //覆盖未保存editor标签页的警示
+                colse : 'Your data is not save, are you sure to lose it?',   //the warning of closing editor without save
+                cover : 'Can not cover Editor without saving the old one!'   //the warning of open another editor without save the old one.
             }
         }
     });
 </script>
 ```
 
-##注意事项
-为了自适应iframe高度，请依照下面这个样式添加CSS。
+##Attention
+For iframe's auto-height, please add CSS as blew to your page.
 
-其中 ```.content-wrapper``` 是当前使用multitabs的wrapper。 ```.wrapper``` 为 ```.content-wrapper``` 的父层，需要将所有父层都添加 ```height: 100%```
+```.content-wrapper``` is the selector using multitabs. ```.wrapper``` is parent of ```.content-wrapper``` , all parent of wrapper multitabs must add ```height: 100%```
 ```html
     <style type="text/css">
         body,
@@ -111,16 +111,16 @@ The following is the default configuration, you can modify as you want.
         html{
             height: 100%;
         }
-        body.full-height-layout .content-wrapper{           //使用multitabs的wrapper
-            height: calc(100% - 140px)                      //减去网页header和footer的高度，AdminLTE的为140px
+        body.full-height-layout .content-wrapper{           //the wrrapper using multitabs
+            height: calc(100% - 140px)                      //Excluding header and footer's height, for AdminLTE, total is 140px
         }
     </style>
 ```
 
-## editor标签页
-editor标签页默认只有一个.
+## editor tab
+editor tab just can be 1.
 
-editor标签页```.tab-tape ```内有 ``` .unsave ``` class的时：
-1. 禁止覆盖。
-2. 关闭确认提示
-3. 关闭整个窗口提醒。
+While editor tab ```.tab-tape ``` have ``` .unsave ``` class:
+1. Disallow overriding.
+2. close confirm
+3. close/refresh window confirm.

@@ -60,9 +60,8 @@
         link : '.multi-tabs',                       //触发multitabs的selector text，注意需要有".","#"等
         iframe : false,                             //iframe模式的总局设置。当值为false的时候，为智能模式，自动判断（内网用ajax，外网用iframe）。缺省为false。
         class : '',                                 //主框架的class
-        backgroundColor : '#fff',                   //默认为白色背景
-        init : [
-            {                                       //需要在初始加载的tab
+        init : [                                    //需要在初始加载的tab
+            {                                       
                 content :'',                        //标签页的类型，有 main | info | editor
                 title : '',                         //标题（可选），没有则显示网址
                 url : ''                            //链接，如为外链，强制为info页
@@ -70,10 +69,11 @@
             {    ......    },                       //依次添加需要的页面
             {    ......    },
         ],       
-        tabHeader : {
-            class : '',                             //为tabHeader添加class
+        navBar : {
+            class : '',                             //为navBar添加class
             maxTabs : 8,                            //最多tab数量。（main和editor不计算在内)
             maxTabTitleLength : 25,                 //tab标题的最大长度
+            backgroundColor : '#fff',               //默认为白色背景
         },
         ajaxTabPane : {
             class : '',                             //为ajax tab-pane 添加class
@@ -83,7 +83,7 @@
             otherHeight : 0                         //其他高度，iframe需要剔除的高度，如footer
         },
         language : {                                //语言配置
-            tabHeader : {
+            navBar : {
                 title : 'Tab',                                  //默认的标签页名称
                 option : 'Option',                              //标签栏的下拉菜单名称
                 showActivedTab : 'Show Activated Tab',          //下拉菜单的显示激活页面

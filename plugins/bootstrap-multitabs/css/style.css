@@ -1,29 +1,29 @@
-.mt-tab-wrapper{
+.mt-wrapper{
     position: relative;
     z-index: 1;
 }
-.mt-tab-header {
+.mt-nav-bar {
     line-height : 0;
     display: inline-block;
     width : 100%;
     z-index: 200;
 }
-.mt-tab-panel{
+.mt-nav-panel{
     overflow: hidden;
     display: inline-block;
     margin-right : -10px;
 }
-.mt-tab-panel ul{
+.mt-nav-panel ul{
     width: 10000px;
 }
-.mt-tab-tools-left{
+.mt-nav-tools-left{
     display: inline-block;
     margin-right : -5px;
 }
-.mt-tab-tools-left ul{
+.mt-nav-tools-left ul{
     padding-right : 5px;
 }
-.mt-tab-tools-right{
+.mt-nav-tools-right{
     display: inline-block;
     float: right;
     z-index: 200;
@@ -32,7 +32,7 @@ a{
     cursor: pointer;
 }
 @media (max-width: 767px){
-    .mt-tab-header {
+    .mt-nav-bar {
         display: none;
     }
 }
