@@ -1,4 +1,5 @@
 #bootstrap-multitabs
+For chinese README.md, please read [简体中文](README_cn.md)
 
 ##Screenshot
 ![Multi Tabs Screenshot](screenshot.jpg)
