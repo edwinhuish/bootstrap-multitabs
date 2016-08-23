@@ -284,7 +284,7 @@ if (typeof jQuery === "undefined") {
             $el.navPanel.parent('.mt-nav-panel').css('width', 'calc(100% - ' + toolWidth + 'px)');
             if(options.fixed){
                 $el.addClass('mt-fixed');
-                self._fixedTabHeader();
+                self.fixNavBar();
             }
             var otherHeight = parseInt(options.iframeTabPane.otherHeight);
             $el.tabContent.css('height', 'calc(100% - ' + otherHeight + 'px)');
@@ -328,7 +328,7 @@ if (typeof jQuery === "undefined") {
                 '<h4>Duplicate Instance</h4>' +
                 'MultiTabs only can be 1 Instance.' +
                 '</div>';
-            self.$element.after($exception);
+            self.$element.before($exception);
             return false;
         },
 
@@ -448,6 +448,12 @@ if (typeof jQuery === "undefined") {
             return false
         },
 
+        /**
+         * get tab-pane from tab
+         * @param tab
+         * @returns {*}
+         * @private
+         */
         _getTabPane : function(tab){
             var self = this, $el = self.$element, $tabA = $(tab).children('a:first'), url = $tabA.attr('href').replace('#',''), content = $tabA.attr('data-content');
             return $el.tabContent.find('.tab-pane[data-content="'+ content +'"][data-id="'+ url +'"]:first');
@@ -712,19 +718,19 @@ if (typeof jQuery === "undefined") {
         },
 
         /**
-         * 固定tab标签头
-         * @private
+         * fix nav-bar rule.
          */
-        _fixedTabHeader : function(){
+        fixNavBar : function(){
             var self = this, $el = self.$element;
             var position = $el.position();
             // var left = position.left + parseInt($el.css('marginLeft').replace('px','')) + parseInt($el.css('borderLeft').replace('px','')) + parseInt($el.css('paddingLeft').replace('px',''));
             var top = position.top + parseInt($el.css('marginTop').replace('px','')) + parseInt($el.css('borderTop').replace('px','')) + parseInt($el.css('paddingTop').replace('px',''));
-            var right = $(window).width() - position.left - $el.outerWidth(true);
+            // var right = $(window).width() - position.left - $el.outerWidth(true);
             var navBarHeight = $el.navBar.outerHeight(true);
             var paddingTop =  parseInt($el.tabContent.css('paddingTop'));
-            insertRule('.mt-fixed .mt-nav-bar', 'position : fixed; top : ' + top + 'px; left : auto;');
-            insertRule('.mt-fixed .mt-nav-tools-right', 'position : fixed; top : ' + top + 'px; right : ' + right + 'px;');
+            var width = $el.width();
+            insertRule('.mt-fixed .mt-nav-bar', 'position : fixed; top : ' + top + 'px; left : auto; width : ' + width + 'px;');
+            insertRule('.mt-fixed .mt-nav-tools-right', 'position : fixed; top : ' + top + 'px; right : auto;');
             insertRule('.mt-fixed .mt-tab-content', 'padding-top : ' + paddingTop + navBarHeight + 'px;');
         },
 
@@ -760,30 +766,13 @@ if (typeof jQuery === "undefined") {
      * @param option
      */
     $.fn.multitabs = function(option){
-        var args = Array.apply(null, arguments), retvals = [];
-        args.shift();
-
-        $(this).each(function () {
-            var self = $(this), data = self.data('multitabs'), options = typeof option === 'object' && option,
-                opts;
-
-            if (!data) {
-                opts = $.extend(true, {}, $.fn.multitabs.defaults, options, self.data());
-                data = new MultiTabs(this, opts);
-                self.data('multitabs', data);
-            }
-            if (typeof option === 'string') {
-                retvals.push(data[option].apply(data, args));
-            }
-        });
-        switch (retvals.length) {
-            case 0:
-                return this;
-            case 1:
-                return retvals[0];
-            default:
-                return retvals;
+        var self = $(this), data = self.data('multitabs'), options = typeof option === 'object' && option, opts;
+        if (!data) {
+            opts = $.extend(true, {}, $.fn.multitabs.defaults, options, self.data());
+            data = new MultiTabs(this, opts);
+            self.data('multitabs', data);
         }
+        return self.data('multitabs');
     };
 
     /**
