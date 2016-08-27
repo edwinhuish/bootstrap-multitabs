@@ -159,7 +159,7 @@ if (typeof jQuery === "undefined") {
         '				<li><a href="#welcome_to_use_multitabs"  data-content="main" data-index="0" data-id="welcome_to_use_multitabs"> Home </a></li>' +
         '           </ul>' +
         '       </nav>' +
-        '       <div class="mt-nav-tools-right" style="background-color : {backgroundColor};">' +
+        '       <div class="mt-nav-tools-right">' +
         '           <ul  class="nav nav-tabs">' +
         '               <li class="mt-move-right"><a><i class="fa fa-forward"></i></a></li>' +
         '               <li class="mt-dropdown-option dropdown">' +
