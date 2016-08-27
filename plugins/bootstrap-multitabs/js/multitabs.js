@@ -451,7 +451,7 @@ if (typeof jQuery === "undefined") {
             var param, tab;
             param = self._getParam(obj);
             if(!param) return false;
-            tab = $el.navPanelList.find('a[data-id="'+ param.url +'"][data-content="'+ param.content +'"]').parent('li');
+            tab = $el.navPanelList.find('a[data-id="'+ param.url +'"]').closest('li'); //仅判断data-id是否与URL一致，即使data-content不一样也激活。避免打开两个同样的data-id的内容引起冲突。
             if ( ! self._active(tab)  ) return param;  //如果无法激活tab，则返回param。
             return false
         },
