@@ -405,6 +405,8 @@ if (typeof jQuery === "undefined") {
                     var url = hash.replace('#','');
                     var $tabA = $el.navPanelList.find('[data-id="'+ url +'"]:first');
                     if($tabA.length){
+                        var $tab = $tabA.closest('li');
+                        if(!$tab.hasClass('active')) self._active($tab);
                         return false;
                     }else{
                         var a = document.createElement('a');
