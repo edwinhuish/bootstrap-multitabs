@@ -269,11 +269,13 @@ if (typeof jQuery === "undefined") {
                 .replace('{closeAllTabs}' , options.language.navBar.closeAllTabs)
                 .replace('{closeOtherTabs}' , options.language.navBar.closeOtherTabs)
             );
-            $el.navBar = $el.find('.mt-nav-bar:first');
-            $el.navToolsLeft = $el.navBar.find('.mt-nav-tools-left:first ul');
-            $el.navPanel = $el.navBar.find('.mt-nav-panel:first ul');
-            $el.navToolsRight = $el.navBar.find('.mt-nav-tools-right:first ul');
-            $el.tabContent = $el.find('.tab-content:first');
+            $el.wrapper       = $el.find('.mt-wrapper:first');
+            $el.navBar        = $el.find('.mt-nav-bar:first');
+            $el.navToolsLeft  = $el.navBar.find('.mt-nav-tools-left:first');
+            $el.navPanel      = $el.navBar.find('.mt-nav-panel:first');
+            $el.navPanelList  = $el.navBar.find('.mt-nav-panel:first ul');
+            $el.navToolsRight = $el.navBar.find('.mt-nav-tools-right:first');
+            $el.tabContent    = $el.find('.tab-content:first');
             //hide tab-header if maxTabs less than 1
             if(options.navBar.maxTabs <= 1){
                 options.navBar.maxTabs = 1;
@@ -281,13 +283,7 @@ if (typeof jQuery === "undefined") {
             };
             //set the nav-panel width
             var toolWidth = $el.navBar.find('.mt-nav-tools-left:visible:first').outerWidth(true) + $el.navBar.find('.mt-nav-tools-right:visible:first').outerWidth(true);
-            $el.navPanel.parent('.mt-nav-panel').css('width', 'calc(100% - ' + toolWidth + 'px)');
-            if(options.fixed){
-                $el.addClass('mt-fixed');
-                self.fixNavBar();
-            }
-            var otherHeight = parseInt(options.iframeTabPane.otherHeight);
-            $el.tabContent.css('height', 'calc(100% - ' + otherHeight + 'px)');
+            $el.navPanel.css('width', 'calc(100% - ' + toolWidth + 'px)');
             self.options = options;
         },
 
@@ -311,7 +307,7 @@ if (typeof jQuery === "undefined") {
                 });
             };
             //没有任何标签激活的，就激活首页。
-            if(!$el.navPanel.find('li.active').length && !window.location.hash.substr(1)) self._active($el.navPanel.find('[data-content="main"]:first').parent('li'));
+            if(!$el.navPanelList.children('li.active').length && !window.location.hash.substr(1)) self._active($el.navPanelList.find('[data-content="main"]:first').parent('li'));
         },
 
         /**
@@ -390,6 +386,16 @@ if (typeof jQuery === "undefined") {
                     return options.language.editorUnsave.close;
                 }
             });
+            //fixed the nav-bar
+            if(options.fixed){
+                var navBarHeight = $el.navBar.outerHeight();
+                $el.tabContent.css('paddingTop', navBarHeight);
+                handler($(window), 'scroll', function(){
+                    var scrollTop = $(this).scrollTop();
+                    scrollTop = scrollTop < ($el.wrapper.height() - navBarHeight) ? scrollTop + 'px' : 'auto';
+                    $el.navBar.css('top',scrollTop);
+                });
+            };
             //if show hash， bind hash change
             if(options.showHash){
                 handler($(window), 'hashchange load', function(){
@@ -397,7 +403,7 @@ if (typeof jQuery === "undefined") {
                     var hash = window.location.hash;
                     if(!hash) return false;
                     var url = hash.replace('#','');
-                    var $tabA = $el.navPanel.find('[data-id="'+ url +'"]:first');
+                    var $tabA = $el.navPanelList.find('[data-id="'+ url +'"]:first');
                     if($tabA.length){
                         return false;
                     }else{
@@ -443,7 +449,7 @@ if (typeof jQuery === "undefined") {
             var param, tab;
             param = self._getParam(obj);
             if(!param) return false;
-            tab = $el.navPanel.find('a[data-id="'+ param.url +'"][data-content="'+ param.content +'"]').parent('li');
+            tab = $el.navPanelList.find('a[data-id="'+ param.url +'"][data-content="'+ param.content +'"]').parent('li');
             if ( ! self._active(tab)  ) return param;  //如果无法激活tab，则返回param。
             return false
         },
@@ -472,7 +478,7 @@ if (typeof jQuery === "undefined") {
             var tabHtml, closeBtnHtml, tabPaneHtml, iframe, index;
             //禁止打开多个edit页面，如果edit页面存在，也禁止覆盖
             if(param.content === 'editor' && $editor.length && $editor.hasClass('unsave')){
-                var $tab = $el.navPanel.find('a[data-content="editor"]').parent('li');
+                var $tab = $el.navPanelList.find('a[data-content="editor"]').parent('li');
                 self._active($tab);
                 var $tabPane = self._getTabPane($tab);
                 $tabPane.before('<div class="help-block alert alert-warning">' + options.language.editorUnsave.cover + '</div>');
@@ -488,11 +494,11 @@ if (typeof jQuery === "undefined") {
                 .replace('{title}', param.title)
                 .replace('{closeBtn}', closeBtnHtml);
             //tab create
-            var $tab = $el.navPanel.find('a[data-content="'+ param.content +'"][data-index="'+ index +'"]').parent('li');
+            var $tab = $el.navPanelList.find('a[data-content="'+ param.content +'"][data-index="'+ index +'"]').parent('li');
             if($tab.length){
                 $tab.html(tabHtml);
-            }else $el.navPanel.append( '<li>' + tabHtml + '</li>');
-            $tab = $el.navPanel.find('a[data-content="'+ param.content +'"][data-index="'+ index +'"]').closest('li');
+            }else $el.navPanelList.append( '<li>' + tabHtml + '</li>');
+            $tab = $el.navPanelList.find('a[data-content="'+ param.content +'"][data-index="'+ index +'"]').closest('li');
             //tab-pane create
             iframe = param.iframe === undefined ? options.iframe : param.iframe;
             if(iframe){
@@ -523,7 +529,7 @@ if (typeof jQuery === "undefined") {
             var tabMarginLeft = sumWidth($(tab).prevAll());
             var tabMarginRight = sumWidth($(tab).nextAll());
             var navPanelWidth = $el.navPanel.outerWidth(true);
-            var totalTabsWidth = sumWidth($el.navPanel.find('li'));
+            var totalTabsWidth = sumWidth($el.navPanelList.children('li'));
             var px = 0;
             if (totalTabsWidth < navPanelWidth) {
                 px = 0
@@ -543,7 +549,7 @@ if (typeof jQuery === "undefined") {
                     }
                 }
             }
-            $el.navPanel.animate({
+            $el.navPanelList.animate({
                 marginLeft : 0 - px + "px"
             }, "fast");
         },
@@ -555,16 +561,16 @@ if (typeof jQuery === "undefined") {
          */
         _moveLeft : function () {
             var self = this, $el = self.$element;
-            var navPanelMarginLeft = Math.abs(parseInt($el.navPanel.css("margin-left")));
+            var navPanelListMarginLeft = Math.abs(parseInt($el.navPanelList.css("margin-left")));
             var navPanelWidth = $el.navPanel.outerWidth(true);
-            var totalTabsWidth = sumWidth($el.navPanel.find('li'));
+            var totalTabsWidth = sumWidth($el.navPanelList.children('li'));
             var px = 0;
             if (totalTabsWidth < navPanelWidth) {
                 return false
             } else {
-                var _tab = $el.navPanel.find('li:first');
+                var _tab = $el.navPanelList.children('li:first');
                 var marginLeft = 0;
-                while ((marginLeft + _tab.width()) <= navPanelMarginLeft) {
+                while ((marginLeft + _tab.width()) <= navPanelListMarginLeft) {
                     marginLeft += _tab.outerWidth(true);
                     _tab = $(_tab).next()
                 }
@@ -577,7 +583,7 @@ if (typeof jQuery === "undefined") {
                     px = sumWidth($(_tab).prevAll())
                 }
             }
-            $el.navPanel.animate({
+            $el.navPanelList.animate({
                 marginLeft : 0 - px + "px"
             }, "fast")
         },
@@ -588,16 +594,16 @@ if (typeof jQuery === "undefined") {
          */
         _moveRight : function () {
             var self = this, $el = self.$element;
-            var navPanelMarginLeft = Math.abs(parseInt($el.navPanel.css("margin-left")));
+            var navPanelListMarginLeft = Math.abs(parseInt($el.navPanelList.css("margin-left")));
             var navPanelWidth = $el.navPanel.outerWidth(true);
-            var totalTabsWidth = sumWidth($el.navPanel.find('li'));
+            var totalTabsWidth = sumWidth($el.navPanelList.children('li'));
             var px = 0;
             if (totalTabsWidth < navPanelWidth) {
                 return false;
             } else {
-                var _tab = $el.navPanel.find('li:first');
+                var _tab = $el.navPanelList.children('li:first');
                 var marginLeft = 0;
-                while ((marginLeft + _tab.width()) <= navPanelMarginLeft) {
+                while ((marginLeft + _tab.width()) <= navPanelListMarginLeft) {
                     marginLeft += _tab.outerWidth(true);
                     _tab = $(_tab).next()
                 }
@@ -608,7 +614,7 @@ if (typeof jQuery === "undefined") {
                 }
                 px = sumWidth($(_tab).prevAll());
                 if (px > 0) {
-                    $el.navPanel.animate({
+                    $el.navPanelList.animate({
                         marginLeft : 0 - px + "px"
                     }, "fast")
                 }
@@ -644,14 +650,14 @@ if (typeof jQuery === "undefined") {
          */
         _closeOthers : function () {
             var self = this, $el = self.$element;
-            $el.navPanel.find('li:not(.active)').find('a:not([data-content="main"]):not([data-content="editor"])').each(function () {
+            $el.navPanelList.find('li:not(.active)').find('a:not([data-content="main"]):not([data-content="editor"])').each(function () {
                 var $tabA = $(this);
                 var url = $tabA.attr('href').replace('#','');
                 var content = $tabA.attr('data-content');
                 $el.tabContent.find('.tab-pane[data-content="'+ content +'"][data-id="'+ url +'"]:first').remove();
                 $tabA.parent('li').remove()
             });
-            $el.navPanel.css("margin-left", "0");
+            $el.navPanelList.css("margin-left", "0");
         },
 
         /**
@@ -660,7 +666,7 @@ if (typeof jQuery === "undefined") {
          */
         _showActive : function () {
             var self = this, $el = self.$element;
-            var tab = $el.navPanel.find('li.active:first');
+            var tab = $el.navPanelList.find('li.active:first');
             self._fixTabPosition(tab);
         },
 
@@ -670,7 +676,7 @@ if (typeof jQuery === "undefined") {
          */
         _closeAll : function(){
             var self = this, $el = self.$element;
-            $el.navPanel.find('a:not([data-content="main"]):not([data-content="editor"])').each(function(){
+            $el.navPanelList.find('a:not([data-content="main"]):not([data-content="editor"])').each(function(){
                 var $tabA = $(this);
                 var $tab = $tabA.parent('li');
                 var url = $tabA.attr('href').replace('#','');
@@ -678,7 +684,7 @@ if (typeof jQuery === "undefined") {
                 $el.tabContent.find('.tab-pane[data-content="'+ content +'"][data-id="'+ url +'"]:first').remove(); //remove tab-content
                 $tab.remove();  //remove
             });
-            self._active($el.navPanel.find('a[data-content="main"]:first').parent('li'));
+            self._active($el.navPanelList.find('a[data-content="main"]:first').parent('li'));
         },
 
         /**
@@ -718,23 +724,6 @@ if (typeof jQuery === "undefined") {
         },
 
         /**
-         * fix nav-bar rule.
-         */
-        fixNavBar : function(){
-            var self = this, $el = self.$element;
-            var position = $el.position();
-            // var left = position.left + parseInt($el.css('marginLeft').replace('px','')) + parseInt($el.css('borderLeft').replace('px','')) + parseInt($el.css('paddingLeft').replace('px',''));
-            var top = position.top + parseInt($el.css('marginTop').replace('px','')) + parseInt($el.css('borderTop').replace('px','')) + parseInt($el.css('paddingTop').replace('px',''));
-            // var right = $(window).width() - position.left - $el.outerWidth(true);
-            var navBarHeight = $el.navBar.outerHeight(true);
-            var paddingTop =  parseInt($el.tabContent.css('paddingTop'));
-            var width = $el.width();
-            insertRule('.mt-fixed .mt-nav-bar', 'position : fixed; top : ' + top + 'px; left : auto; width : ' + width + 'px;');
-            insertRule('.mt-fixed .mt-nav-tools-right', 'position : fixed; top : ' + top + 'px; right : auto;');
-            insertRule('.mt-fixed .mt-tab-content', 'padding-top : ' + paddingTop + navBarHeight + 'px;');
-        },
-
-        /**
          * 判断tab-pane是否iframe，并根据状态添加/删除对应的class
          * @param tabPane
          * @private
@@ -743,10 +732,8 @@ if (typeof jQuery === "undefined") {
             var self = this, $el = self.$element, options = self.options;
             var $tabPane = $(tabPane);
             if($tabPane.is('iframe')){
-                $el.removeClass('mt-fixed');
                 $('body').addClass('full-height-layout');
             }else{
-                if(options.fixed) $el.addClass('mt-fixed');
                 $('body').removeClass('full-height-layout');
             }
         },

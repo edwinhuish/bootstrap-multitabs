@@ -7,6 +7,7 @@
     display: inline-block;
     width : 100%;
     z-index: 200;
+    position: absolute;
 }
 .mt-nav-panel{
     overflow: hidden;
@@ -27,6 +28,9 @@
     display: inline-block;
     float: right;
     z-index: 200;
+}
+.tab-content{
+    height: 100%;
 }
 a{
     cursor: pointer;
