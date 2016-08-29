@@ -2,7 +2,12 @@
 For chinese README.md, please read [简体中文](README_cn.md)
 
 ##Screenshot
-![Multi Tabs Screenshot](screenshot.jpg)
+###default
+![Multi Tabs Screenshot](screenshot-default.jpg)
+###classic
+![Multi Tabs Screenshot](screenshot-classic.jpg)
+###simple
+![Multi Tabs Screenshot](screenshot-simple.jpg)
 
 ##Role and Benefits
 1. Zero configuration.
@@ -57,11 +62,13 @@ The following is the default configuration, you can modify as you want.
 <script>
     $('.content-wrapper').multitabs({
         showHash : true,                            //While is true, show hash in URL, in case refresh or F5, can stay in same tab page.
+        showClose : false,                          //while is false, show close button in hover, if true, show close button always
         fixed : true ,                              //fixed the nav-bar
         content : 'info',                           //change the data-content name, is not necessary to change.
         link : '.multi-tabs',                       //selector text to trigger multitabs. 
         iframe : false,                             //Global iframe mode, default is false, is the auto mode (for the self page, use ajax, and the external, use iframe)
         class : '',                                 //class for whole multitabs
+        layout : 'default',                         //it can be 'default' and 'classic' (all hidden tab in dropdown list)
         init : [                                    //tabs in initial
             {                                       
                 content :'',                        //content type, may be main | info | editor, if empty, default is 'info'
@@ -73,8 +80,9 @@ The following is the default configuration, you can modify as you want.
         ],       
         navBar : {
             class : '',                             //class of navBar
-            maxTabs : 8,                            //Max tabs number (without counting main and editor)
+            maxTabs : 15,                            //Max tabs number (without counting main and editor)
             maxTitleLength : 25,                    //Max title length of tab
+            backgroundColor : '#ecf0f5',            //default nav-bar background color
         },
         ajaxTabPane : {
             class : '',                             //Class for ajax tab-pane
@@ -86,7 +94,7 @@ The following is the default configuration, you can modify as you want.
         language : {                                //language setting
             navBar : {
                 title : 'Tab',                                  //default tab's tittle
-                option : 'Option',                              //right tools dropdown name
+                dropdown : '<i class="fa fa-bars"></i>',        //right tools dropdown name
                 showActivedTab : 'Show Activated Tab',          //show active tab
                 closeAllTabs : 'Close All Tabs',                //close all tabs
                 closeOtherTabs : 'Close Other Tabs',            //close other tabs

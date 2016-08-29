@@ -1,7 +1,12 @@
 #bootstrap-multitabs / bootstrap 多标签页
 
 ##效果图
-![Multi Tabs Screenshot](screenshot.jpg)
+###default
+![Multi Tabs Screenshot](screenshot-default.jpg)
+###classic
+![Multi Tabs Screenshot](screenshot-classic.jpg)
+###simple
+![Multi Tabs Screenshot](screenshot-simple.jpg)
 
 ##作用与优势
 1. 通过简单的配置，生成可智能适配ajax和iframe的多标签页。
@@ -55,9 +60,11 @@
 <script>
     $('.content-wrapper').multitabs({
         showHash : true,                            //当值为true时，显示URL的hash，避免误按F5或者刷新的页面丢失，不过需要注意URL栏参数的泄露。
+        showClose : false,                          //当值为false，仅在鼠标悬浮时显示关闭按钮。true时一直显示
         fixed : true ,                              //固定标签头列表
         content : 'info',                           //此处可以指定标签页类型名称，一般不需要修改。
         link : '.multi-tabs',                       //触发multitabs的selector text，注意需要有".","#"等
+        layout : 'default',                         //有两种模式，'default' 和 'classic'(所有隐藏tab都在下拉菜单里)
         iframe : false,                             //iframe模式的总局设置。当值为false的时候，为智能模式，自动判断（内网用ajax，外网用iframe）。缺省为false。
         class : '',                                 //主框架的class
         init : [                                    //需要在初始加载的tab
@@ -73,6 +80,7 @@
             class : '',                             //为navBar添加class
             maxTabs : 8,                            //最多tab数量。（main和editor不计算在内)
             maxTabTitleLength : 25,                 //tab标题的最大长度
+            backgroundColor : '#ecf0f5',            //默认nav-bar 背景颜色
         },
         ajaxTabPane : {
             class : '',                             //为ajax tab-pane 添加class
@@ -84,7 +92,7 @@
         language : {                                //语言配置
             navBar : {
                 title : 'Tab',                                  //默认的标签页名称
-                option : 'Option',                              //标签栏的下拉菜单名称
+                dropdown : '<i class="fa fa-bars"></i>',                              //标签栏的下拉菜单名称
                 showActivedTab : 'Show Activated Tab',          //下拉菜单的显示激活页面
                 closeAllTabs : 'Close All Tabs',                //下拉菜单的关闭所有页面
                 closeOtherTabs : 'Close Other Tabs',            //下拉菜单的关闭其他页面

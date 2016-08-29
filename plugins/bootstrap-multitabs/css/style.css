@@ -32,6 +32,21 @@
 .tab-content{
     height: 100%;
 }
+.mt-close-tab {
+    position: absolute;
+    font-size: 10px;
+    top: 2px;
+    right: 5px;
+    color: #94A6B0;
+    cursor: pointer;
+    display: none;
+}
+li:hover .mt-close-tab {
+    display: inline;
+}
+.mt-hidden-list .mt-close-tab {
+    display: none !important;
+}
 a{
     cursor: pointer;
 }

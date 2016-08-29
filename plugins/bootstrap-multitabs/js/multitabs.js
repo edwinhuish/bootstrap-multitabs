@@ -147,8 +147,8 @@ if (typeof jQuery === "undefined") {
         /**
          * Main Layout
          */
-        main : '<div class="mt-wrapper {mainClass}" style="height: 100%;" >' +
-        '   <div class="mt-nav-bar">' +
+        default : '<div class="mt-wrapper {mainClass}" style="height: 100%;" >' +
+        '   <div class="mt-nav-bar {navBarClass}" style="background-color: {backgroundColor};">' +
         '       <div class="mt-nav-tools-left">' +
         '           <ul  class="nav nav-tabs">' +
         '               <li class="mt-move-left"><a><i class="fa fa-backward"></i></a></li>' +
@@ -162,8 +162,8 @@ if (typeof jQuery === "undefined") {
         '       <div class="mt-nav-tools-right">' +
         '           <ul  class="nav nav-tabs">' +
         '               <li class="mt-move-right"><a><i class="fa fa-forward"></i></a></li>' +
-        '               <li class="mt-dropdown-option dropdown">' +
-        '                   <a href="#"  class="dropdown-toggle" data-toggle="dropdown">{option}<span class="caret"></span></a>' +
+        '               <li class="mt-dropdown dropdown">' +
+        '                   <a href="#"  class="dropdown-toggle" data-toggle="dropdown">{dropdown}<span class="caret"></span></a>' +
         '                   <ul role="menu" class="dropdown-menu dropdown-menu-right">' +
         '                       <li class="mt-show-actived-tab"><a>{showActivedTab}</a></li>' +
         '                       <li class="divider"></li>' +
@@ -174,12 +174,44 @@ if (typeof jQuery === "undefined") {
         '           </ul>' +
         '       </div>' +
         '   </div>' +
-        '   <div class="tab-content mt-tab-content" >' +
+        '   <div class="tab-content mt-tab-content " >' +
         '		<div class="tab-pane active"  data-content="main" data-index="0" data-id="welcome_to_use_multitabs"><h1>Demo page</h1><h2>Welcome to use bootstrap multi-tabs :) </h2></div>' +
         '	</div>' +
         '</div>',
-        tab : '<a href="{href}"  data-content="{content}" data-index="{index}" data-id="{did}">{title}{closeBtn}</a>',
-        closeBtn : ' <i class="fa fa-times"></i>',
+        classic : '<div class="mt-wrapper {mainClass}" style="height: 100%;" >' +
+        '   <div class="mt-nav-bar {navBarClass}" style="background-color: {backgroundColor};">' +
+        '       <nav class="mt-nav-panel">' +
+        '           <ul  class="nav nav-tabs">' +
+        '               <li><a href="#welcome_to_use_multitabs"  data-content="main" data-index="0" data-id="welcome_to_use_multitabs"> Home </a></li>' +
+        '           </ul>' +
+        '       </nav>' +
+        '       <div class="mt-nav-tools-right">' +
+        '           <ul  class="nav nav-tabs">' +
+        '               <li class="mt-dropdown dropdown">' +
+        '                   <a href="#"  class="dropdown-toggle" data-toggle="dropdown">{dropdown}<span class="caret"></span></a>' +
+        '                   <ul role="menu" class="mt-hidden-list dropdown-menu dropdown-menu-right"></ul>' +
+        '               </li>' +
+        '           </ul>' +
+        '       </div>' +
+        '   </div>' +
+        '   <div class="tab-content mt-tab-content " >' +
+        '       <div class="tab-pane active"  data-content="main" data-index="0" data-id="welcome_to_use_multitabs"><h1>Demo page</h1><h2>Welcome to use bootstrap multi-tabs :) </h2></div>' +
+        '   </div>' +
+        '</div>',
+        simple : '<div class="mt-wrapper {mainClass}" style="height: 100%;" >' +
+        '   <div class="mt-nav-bar {navBarClass}" style="background-color: {backgroundColor};">' +
+        '       <nav class="mt-nav-panel">' +
+        '           <ul  class="nav nav-tabs">' +
+        '               <li><a href="#welcome_to_use_multitabs"  data-content="main" data-index="0" data-id="welcome_to_use_multitabs"> Home </a></li>' +
+        '           </ul>' +
+        '       </nav>' +
+        '   </div>' +
+        '   <div class="tab-content mt-tab-content " >' +
+        '       <div class="tab-pane active"  data-content="main" data-index="0" data-id="welcome_to_use_multitabs"><h1>Demo page</h1><h2>Welcome to use bootstrap multi-tabs :) </h2></div>' +
+        '   </div>' +
+        '</div>',
+        tab : '<a href="{href}"  data-content="{content}" data-index="{index}" data-id="{did}">{title}</a>',
+        closeBtn : ' <i class="mt-close-tab fa fa-times" style="{style}"></i>',
         ajaxTabPane : '<div class="tab-pane {class}"  data-content="{content}" data-index="{index}" data-id="{did}"></div>',
         iframeTabPane : '<iframe class="tab-pane {class}"  width="100%" height="100%" frameborder="0" src="" data-content="{content}" data-index="{index}" data-id="{did}" seamless></iframe>',
     };
@@ -189,11 +221,11 @@ if (typeof jQuery === "undefined") {
      */
     defaultLanguage = {
         navBar : {
-            title : 'Tab',                                  //默认的标签页名称
-            option : 'Option',                              //标签栏的下拉菜单名称
-            showActivedTab : 'Show Activated Tab',          //下拉菜单的显示激活页面
-            closeAllTabs : 'Close All Tabs',                //下拉菜单的关闭所有页面
-            closeOtherTabs : 'Close Other Tabs',            //下拉菜单的关闭其他页面
+            title          : 'Tab',                             //默认的标签页名称
+            dropdown       : '<i class="fa fa-bars"></i>',      //标签栏的下拉菜单名称
+            showActivedTab : 'Show Activated Tab',              //下拉菜单的显示激活页面
+            closeAllTabs   : 'Close All Tabs',                  //下拉菜单的关闭所有页面
+            closeOtherTabs : 'Close Other Tabs',                //下拉菜单的关闭其他页面
         },
         editorUnsave: {
             colse : 'Your data is not save, are you sure to lose it?',   //关闭未保存editor标签页的警示
@@ -205,10 +237,10 @@ if (typeof jQuery === "undefined") {
      * 默认的标签头选项
      */
     defaultNavBar = {
-        class : '',                 //class，默认为空，可以自行添加
-        maxTabs : 8,                //默认可容纳标签数为8
-        maxTitleLength : 25,        //默认最长tab tittle为25
-        backgroundColor: '#fff'     //背景颜色
+        class : '',                     //class，默认为空，可以自行添加
+        maxTabs : 15,                   //默认可容纳标签数为15
+        maxTitleLength : 25,            //默认最长tab tittle为25
+        backgroundColor : '#ecf0f5',    //默认nav-bar 背景颜色
     };
 
     /**
@@ -261,9 +293,11 @@ if (typeof jQuery === "undefined") {
          */
         _init: function (options) {
             var self = this, $el = self.$element
-            $el.html(options.layoutTemplates.main
+            $el.html(defaultLayoutTemplates[options.layout]
                 .replace('{mainClass}', toJoinerStr(options.class))
-                .replace('{option}' , options.language.navBar.option)
+                .replace('{navBarClass}' , options.navBar.class)
+                .replace(/\{backgroundColor\}/g, options.navBar.backgroundColor)
+                .replace('{dropdown}' , options.language.navBar.dropdown)
                 .replace('{showActivedTab}' , options.language.navBar.showActivedTab)
                 .replace('{closeAllTabs}' , options.language.navBar.closeAllTabs)
                 .replace('{closeOtherTabs}' , options.language.navBar.closeOtherTabs)
@@ -349,7 +383,7 @@ if (typeof jQuery === "undefined") {
                 self._active($(this).parents('li:first'));
             });
             //close tab
-            handler($(document), 'click', '.mt-nav-panel a i', function(){
+            handler($(document), 'click', '.mt-close-tab', function(){
                 event.preventDefault();
                 self._close($(this).parents('li:first'));
                 return false;
@@ -418,6 +452,21 @@ if (typeof jQuery === "undefined") {
                     }
                 });
             };
+            //if layout === 'classic' show hide list in dropdown menu
+            if(options.layout === 'classic'){
+                handler($('.mt-dropdown'), 'click',function(){
+                    var list = self._getHiddenList();
+                    var $dropDown  = $('.mt-hidden-list').empty();
+                    if(list) {  //当$list的值不为false才进行下面的操作
+                        while(list.prevList.length){
+                            $dropDown.append(list.prevList.shift()[0].outerHTML);
+                        }
+                        while(list.nextList.length){
+                            $dropDown.append(list.nextList.shift()[0].outerHTML);
+                        }
+                    }
+                });
+            }
         },
 
         /**
@@ -476,7 +525,7 @@ if (typeof jQuery === "undefined") {
                 options = self.options,
                 $el = self.$element,
                 $editor = $el.tabContent.find('.tab-pane[data-content="editor"]');
-            var tabHtml, closeBtnHtml, tabPaneHtml, iframe, index;
+            var tabHtml, closeBtnHtml, display, tabPaneHtml, iframe, index;
             //禁止打开多个edit页面，如果edit页面存在，也禁止覆盖
             if(param.content === 'editor' && $editor.length && $editor.hasClass('unsave')){
                 var $tab = $el.navPanelList.find('a[data-content="editor"]').parent('li');
@@ -487,13 +536,14 @@ if (typeof jQuery === "undefined") {
             }
             index = getTabIndex(param.content, options.navBar.maxTabs);
             //get layoutTemplates
-            closeBtnHtml = (param.content === 'main') ? '' : options.layoutTemplates.closeBtn; //main content can not colse.
-            tabHtml = options.layoutTemplates.tab.replace('{href}', '#'+ param.url)
+            display = options.showClose ? 'display:inline;' : '';
+            closeBtnHtml = (param.content === 'main') ? '' : defaultLayoutTemplates.closeBtn.replace('{style}', display); //main content can not colse.
+            tabHtml = defaultLayoutTemplates.tab.replace('{href}', '#'+ param.url)
                 .replace('{content}', param.content)
                 .replace('{index}',index)
                 .replace('{did}', param.url)
-                .replace('{title}', param.title)
-                .replace('{closeBtn}', closeBtnHtml);
+                .replace('{title}', param.title) + 
+                closeBtnHtml;
             //tab create
             var $tab = $el.navPanelList.find('a[data-content="'+ param.content +'"][data-index="'+ index +'"]').parent('li');
             if($tab.length){
@@ -503,9 +553,9 @@ if (typeof jQuery === "undefined") {
             //tab-pane create
             iframe = param.iframe === undefined ? options.iframe : param.iframe;
             if(iframe){
-                tabPaneHtml = options.layoutTemplates.iframeTabPane.replace('{class}', options.iframeTabPane.class);
+                tabPaneHtml = defaultLayoutTemplates.iframeTabPane.replace('{class}', options.iframeTabPane.class);
             }else{
-                tabPaneHtml = options.layoutTemplates.ajaxTabPane.replace('{class}', options.ajaxTabPane.class);
+                tabPaneHtml = defaultLayoutTemplates.ajaxTabPane.replace('{class}', options.ajaxTabPane.class);
             }
             tabPaneHtml = tabPaneHtml
                 .replace('{content}', param.content)
@@ -556,16 +606,53 @@ if (typeof jQuery === "undefined") {
         },
 
         /**
+         * 隐藏的tab下拉列表
+         * @returns {boolean}
+         * @private
+         */
+        _getHiddenList : function(){
+            var self = this, $el = self.$element,
+            navPanelListMarginLeft = Math.abs(parseInt($el.navPanelList.css("margin-left"))),
+            navPanelWidth = $el.navPanel.outerWidth(true),
+            totalTabsWidth = sumWidth($el.navPanelList.children('li')),
+            tabPrevList = [], tabNextList = [], px = 0, $tab, marginLeft;
+            if (totalTabsWidth < navPanelWidth) {
+                return false
+            } else {
+                $tab = $el.navPanelList.children('li:first');
+                //overflow hidden left part
+                marginLeft = 0; 
+                while ((marginLeft + $tab.width()) <= navPanelListMarginLeft) {
+                    marginLeft += $tab.outerWidth(true);
+                    tabPrevList.push($tab);
+                    $tab = $tab.next()
+                }
+                //overflow hidden right part
+                if(totalTabsWidth > marginLeft){ //判断右侧是否有隐藏tab
+                    $tab = $el.navPanelList.children('li:last');
+                    marginLeft = totalTabsWidth; //将margin-left预设为最右边，然后依次递减
+                    while(marginLeft > (navPanelListMarginLeft + navPanelWidth) ){
+                        marginLeft -= $tab.outerWidth(true);
+                        tabNextList.unshift($tab);
+                        $tab = $tab.prev()
+                    }
+                }
+                return {prevList : tabPrevList, nextList : tabNextList};
+            }
+
+        },
+
+        /**
          * 向左边移动
          * @returns {boolean}
          * @private
          */
         _moveLeft : function () {
-            var self = this, $el = self.$element;
-            var navPanelListMarginLeft = Math.abs(parseInt($el.navPanelList.css("margin-left")));
-            var navPanelWidth = $el.navPanel.outerWidth(true);
-            var totalTabsWidth = sumWidth($el.navPanelList.children('li'));
-            var px = 0;
+            var self = this, $el = self.$element,
+            navPanelListMarginLeft = Math.abs(parseInt($el.navPanelList.css("margin-left"))),
+            navPanelWidth = $el.navPanel.outerWidth(true),
+            totalTabsWidth = sumWidth($el.navPanelList.children('li')),
+            px = 0;
             if (totalTabsWidth < navPanelWidth) {
                 return false
             } else {
@@ -771,14 +858,15 @@ if (typeof jQuery === "undefined") {
         init :[],
         fixed : true,
         showHash : true,
+        showClose : false,
         content : 'info',
         link : '.multi-tabs',
         class : '',
         iframe : false,                     //iframe mode, default is false, just use iframe for external link
+        layout : 'default', 
         navBar : defaultNavBar,
         ajaxTabPane : defaultAjaxTabPane,
         iframeTabPane : defaultIframeTabPane,
-        layoutTemplates : defaultLayoutTemplates,
         language : defaultLanguage,
     };
 
