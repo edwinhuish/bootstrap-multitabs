@@ -576,33 +576,32 @@ if (typeof jQuery === "undefined") {
             var self = this, $el = self.$element,
             $tab = tab,
             tabWidth = $tab.outerWidth(true),
-            tabNextWidth = $tab.next().outerWidth(true),
-            tabPrevWidth = $tab.prev().outerWidth(true),
-            tabMarginLeft = sumWidth($tab.prevAll()),
-            tabMarginRight = sumWidth($tab.nextAll()),
+            nextWidth = $tab.next().outerWidth(true),
+            prevWidth = $tab.prev().outerWidth(true),
+            sumPrevWidth = sumWidth($tab.prevAll()),
+            sumNextWidth = sumWidth($tab.nextAll()),
             navPanelWidth = $el.navPanel.outerWidth(true),
-            totalTabsWidth = sumWidth($el.navPanelList.children('li')),
+            sumTabsWidth = sumWidth($el.navPanelList.children('li')),
             px = 0;
-            if (totalTabsWidth < navPanelWidth) {
+            if (sumTabsWidth < navPanelWidth) {
                 px = 0
             } else {
-                if (tabMarginRight <= (navPanelWidth - tabWidth - tabNextWidth)) {
-                    if ((navPanelWidth - tabNextWidth) > tabMarginRight) {
-                        px = tabMarginLeft;
-                        while ((px - $tab.outerWidth()) > (totalTabsWidth - navPanelWidth)) {
-                            px -= $tab.prev().outerWidth();
-                            $tab = $tab.prev()
+                //当nav-panel能够容纳所有右边的tab
+                if (sumNextWidth <= (navPanelWidth - tabWidth - nextWidth)) {
+                    if ((navPanelWidth - nextWidth) > sumNextWidth) {
+                        px = sumPrevWidth;
+                        while ((px - $tab.outerWidth()) > (sumTabsWidth - navPanelWidth)) {
+                            $tab = $tab.prev();
+                            px -= $tab.outerWidth()
                         }
                     }
                 } else {
-                    if (tabMarginLeft > (navPanelWidth - tabWidth - tabPrevWidth)) {
-                        px = tabMarginLeft - tabPrevWidth
+                    if (sumPrevWidth > (navPanelWidth - tabWidth - prevWidth)) {
+                        px = sumPrevWidth - tabWidth - prevWidth
                     }
                 }
             }
-            $el.navPanelList.animate({
-                marginLeft : 0 - px + "px"
-            }, "fast");
+            $el.navPanelList.animate({marginLeft : 0 - px + "px"}, "fast");
         },
 
         /**
@@ -614,9 +613,9 @@ if (typeof jQuery === "undefined") {
             var self = this, $el = self.$element,
             navPanelListMarginLeft = Math.abs(parseInt($el.navPanelList.css("margin-left"))),
             navPanelWidth = $el.navPanel.outerWidth(true),
-            totalTabsWidth = sumWidth($el.navPanelList.children('li')),
+            sumTabsWidth = sumWidth($el.navPanelList.children('li')),
             tabPrevList = [], tabNextList = [], px = 0, $tab, marginLeft;
-            if (totalTabsWidth < navPanelWidth) {
+            if (sumTabsWidth < navPanelWidth) {
                 return false;
             } else {
                 $tab = $el.navPanelList.children('li:first');
@@ -628,9 +627,9 @@ if (typeof jQuery === "undefined") {
                     $tab = $tab.next();
                 }
                 //overflow hidden right part
-                if(totalTabsWidth > marginLeft){ //判断右侧是否有隐藏tab
+                if(sumTabsWidth > marginLeft){ //判断右侧是否有隐藏tab
                     $tab = $el.navPanelList.children('li:last');
-                    marginLeft = totalTabsWidth; //将margin-left预设为最右边，然后依次递减
+                    marginLeft = sumTabsWidth; //将margin-left预设为最右边，然后依次递减
                     while(marginLeft > (navPanelListMarginLeft + navPanelWidth) ){
                         marginLeft -= $tab.outerWidth(true);
                         tabNextList.unshift($tab);
@@ -651,9 +650,9 @@ if (typeof jQuery === "undefined") {
             var self = this, $el = self.$element,
             navPanelListMarginLeft = Math.abs(parseInt($el.navPanelList.css("margin-left"))),
             navPanelWidth = $el.navPanel.outerWidth(true),
-            totalTabsWidth = sumWidth($el.navPanelList.children('li')),
+            sumTabsWidth = sumWidth($el.navPanelList.children('li')),
             px = 0, marginLeft = 0, $tab;
-            if (totalTabsWidth < navPanelWidth) {
+            if (sumTabsWidth < navPanelWidth) {
                 return false
             } else {
                 $tab = $el.navPanelList.children('li:first');
@@ -670,9 +669,7 @@ if (typeof jQuery === "undefined") {
                     px = sumWidth($tab.prevAll());
                 }
             }
-            $el.navPanelList.animate({
-                marginLeft : 0 - px + "px"
-            }, "fast")
+            $el.navPanelList.animate({marginLeft : 0 - px + "px"}, "fast")
         },
         /**
          * 向右边移动
@@ -683,9 +680,9 @@ if (typeof jQuery === "undefined") {
             var self = this, $el = self.$element,
             navPanelListMarginLeft = Math.abs(parseInt($el.navPanelList.css("margin-left"))),
             navPanelWidth = $el.navPanel.outerWidth(true),
-            totalTabsWidth = sumWidth($el.navPanelList.children('li')),
+            sumTabsWidth = sumWidth($el.navPanelList.children('li')),
             px = 0, $tab, marginLeft;
-            if (totalTabsWidth < navPanelWidth) {
+            if (sumTabsWidth < navPanelWidth) {
                 return false;
             } else {
                 $tab = $el.navPanelList.children('li:first');
@@ -701,9 +698,7 @@ if (typeof jQuery === "undefined") {
                 }
                 px = sumWidth($tab.prevAll());
                 if (px > 0) {
-                    $el.navPanelList.animate({
-                        marginLeft : 0 - px + "px"
-                    }, "fast");
+                    $el.navPanelList.animate({marginLeft : 0 - px + "px"}, "fast");
                 }
             }
         },
