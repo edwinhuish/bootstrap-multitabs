@@ -573,25 +573,25 @@ if (typeof jQuery === "undefined") {
          * @private
          */
         _fixTabPosition : function (tab) {
-            var self = this, $el = self.$element;
-            var tabWidth = $(tab).outerWidth(true);
-            var tabNextWidth = $(tab).next().outerWidth(true);
-            var tabPrevWidth = $(tab).prev().outerWidth(true);
-            var tabMarginLeft = sumWidth($(tab).prevAll());
-            var tabMarginRight = sumWidth($(tab).nextAll());
-            var navPanelWidth = $el.navPanel.outerWidth(true);
-            var totalTabsWidth = sumWidth($el.navPanelList.children('li'));
-            var px = 0;
+            var self = this, $el = self.$element,
+            $tab = tab,
+            tabWidth = $tab.outerWidth(true),
+            tabNextWidth = $tab.next().outerWidth(true),
+            tabPrevWidth = $tab.prev().outerWidth(true),
+            tabMarginLeft = sumWidth($tab.prevAll()),
+            tabMarginRight = sumWidth($tab.nextAll()),
+            navPanelWidth = $el.navPanel.outerWidth(true),
+            totalTabsWidth = sumWidth($el.navPanelList.children('li')),
+            px = 0;
             if (totalTabsWidth < navPanelWidth) {
                 px = 0
             } else {
                 if (tabMarginRight <= (navPanelWidth - tabWidth - tabNextWidth)) {
                     if ((navPanelWidth - tabNextWidth) > tabMarginRight) {
                         px = tabMarginLeft;
-                        var _tab = tab;
-                        while ((px - $(_tab).outerWidth()) > (totalTabsWidth - navPanelWidth)) {
-                            px -= $(_tab).prev().outerWidth();
-                            _tab = $(_tab).prev()
+                        while ((px - $tab.outerWidth()) > (totalTabsWidth - navPanelWidth)) {
+                            px -= $tab.prev().outerWidth();
+                            $tab = $tab.prev()
                         }
                     }
                 } else {
@@ -617,7 +617,7 @@ if (typeof jQuery === "undefined") {
             totalTabsWidth = sumWidth($el.navPanelList.children('li')),
             tabPrevList = [], tabNextList = [], px = 0, $tab, marginLeft;
             if (totalTabsWidth < navPanelWidth) {
-                return false
+                return false;
             } else {
                 $tab = $el.navPanelList.children('li:first');
                 //overflow hidden left part
@@ -625,7 +625,7 @@ if (typeof jQuery === "undefined") {
                 while ((marginLeft + $tab.width()) <= navPanelListMarginLeft) {
                     marginLeft += $tab.outerWidth(true);
                     tabPrevList.push($tab);
-                    $tab = $tab.next()
+                    $tab = $tab.next();
                 }
                 //overflow hidden right part
                 if(totalTabsWidth > marginLeft){ //判断右侧是否有隐藏tab
@@ -634,7 +634,7 @@ if (typeof jQuery === "undefined") {
                     while(marginLeft > (navPanelListMarginLeft + navPanelWidth) ){
                         marginLeft -= $tab.outerWidth(true);
                         tabNextList.unshift($tab);
-                        $tab = $tab.prev()
+                        $tab = $tab.prev();
                     }
                 }
                 return {prevList : tabPrevList, nextList : tabNextList};
@@ -652,23 +652,22 @@ if (typeof jQuery === "undefined") {
             navPanelListMarginLeft = Math.abs(parseInt($el.navPanelList.css("margin-left"))),
             navPanelWidth = $el.navPanel.outerWidth(true),
             totalTabsWidth = sumWidth($el.navPanelList.children('li')),
-            px = 0;
+            px = 0, marginLeft = 0, $tab;
             if (totalTabsWidth < navPanelWidth) {
                 return false
             } else {
-                var _tab = $el.navPanelList.children('li:first');
-                var marginLeft = 0;
-                while ((marginLeft + _tab.width()) <= navPanelListMarginLeft) {
-                    marginLeft += _tab.outerWidth(true);
-                    _tab = $(_tab).next()
+                $tab = $el.navPanelList.children('li:first');
+                while ((marginLeft + $tab.width()) <= navPanelListMarginLeft) {
+                    marginLeft += $tab.outerWidth(true);
+                    $tab = $tab.next();
                 }
                 marginLeft = 0;
-                if (sumWidth($(_tab).prevAll()) > navPanelWidth) {
-                    while (( (marginLeft + _tab.width()) < navPanelWidth) && _tab.length > 0) {
-                        marginLeft += _tab.outerWidth(true);
-                        _tab = $(_tab).prev()
+                if (sumWidth($tab.prevAll()) > navPanelWidth) {
+                    while (( (marginLeft + $tab.width()) < navPanelWidth) && $tab.length > 0) {
+                        marginLeft += $tab.outerWidth(true);
+                        $tab = $tab.prev();
                     }
-                    px = sumWidth($(_tab).prevAll())
+                    px = sumWidth($tab.prevAll());
                 }
             }
             $el.navPanelList.animate({
@@ -681,30 +680,30 @@ if (typeof jQuery === "undefined") {
          * @private
          */
         _moveRight : function () {
-            var self = this, $el = self.$element;
-            var navPanelListMarginLeft = Math.abs(parseInt($el.navPanelList.css("margin-left")));
-            var navPanelWidth = $el.navPanel.outerWidth(true);
-            var totalTabsWidth = sumWidth($el.navPanelList.children('li'));
-            var px = 0;
+            var self = this, $el = self.$element,
+            navPanelListMarginLeft = Math.abs(parseInt($el.navPanelList.css("margin-left"))),
+            navPanelWidth = $el.navPanel.outerWidth(true),
+            totalTabsWidth = sumWidth($el.navPanelList.children('li')),
+            px = 0, $tab, marginLeft;
             if (totalTabsWidth < navPanelWidth) {
                 return false;
             } else {
-                var _tab = $el.navPanelList.children('li:first');
-                var marginLeft = 0;
-                while ((marginLeft + _tab.width()) <= navPanelListMarginLeft) {
-                    marginLeft += _tab.outerWidth(true);
-                    _tab = $(_tab).next()
+                $tab = $el.navPanelList.children('li:first');
+                marginLeft = 0;
+                while ((marginLeft + $tab.width()) <= navPanelListMarginLeft) {
+                    marginLeft += $tab.outerWidth(true);
+                    $tab = $tab.next();
                 }
                 marginLeft = 0;
-                while (( (marginLeft + _tab.width()) < navPanelWidth) && _tab.length > 0) {
-                    marginLeft += _tab.outerWidth(true);
-                    _tab = $(_tab).next()
+                while (( (marginLeft + $tab.width()) < navPanelWidth) && $tab.length > 0) {
+                    marginLeft += $tab.outerWidth(true);
+                    $tab = $tab.next();
                 }
-                px = sumWidth($(_tab).prevAll());
+                px = sumWidth($tab.prevAll());
                 if (px > 0) {
                     $el.navPanelList.animate({
                         marginLeft : 0 - px + "px"
-                    }, "fast")
+                    }, "fast");
                 }
             }
         },
@@ -800,9 +799,6 @@ if (typeof jQuery === "undefined") {
                     $tabPane.load(url);
                 } else {
                     if(!$tabPane.attr('src')){
-                        // setTimeout(function(){
-                        //     $tabPane.attr('src', url);
-                        // }, 500);
                         $tabPane.attr('src', url);
                     }
                 }
