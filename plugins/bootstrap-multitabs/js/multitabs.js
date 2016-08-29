@@ -454,7 +454,7 @@ if (typeof jQuery === "undefined") {
             };
             //if layout === 'classic' show hide list in dropdown menu
             if(options.layout === 'classic'){
-                handler($('.mt-dropdown'), 'click',function(){
+                handler($el.navToolsRight, 'click', '.mt-dropdown:not(.open)', function(){ //just trigger when dropdown not open.
                     var list = self._getHiddenList();
                     var $dropDown  = $('.mt-hidden-list').empty();
                     if(list) {  //当$list的值不为false才进行下面的操作
