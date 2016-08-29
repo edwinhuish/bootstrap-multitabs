@@ -378,14 +378,14 @@ if (typeof jQuery === "undefined") {
                 return false;
             });
             //active tab
-            handler($(document), 'click', '.mt-nav-panel a', function(){
+            handler($(document), 'click', '.mt-nav-panel li', function(){
                 event.preventDefault();
-                self._active($(this).parents('li:first'));
+                self._active(this);
             });
             //close tab
             handler($(document), 'click', '.mt-close-tab', function(){
                 event.preventDefault();
-                self._close($(this).parents('li:first'));
+                self._close($(this).closest('li'));
                 return false;
             });
             //move left
