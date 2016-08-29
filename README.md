@@ -68,7 +68,7 @@ The following is the default configuration, you can modify as you want.
         link : '.multi-tabs',                       //selector text to trigger multitabs. 
         iframe : false,                             //Global iframe mode, default is false, is the auto mode (for the self page, use ajax, and the external, use iframe)
         class : '',                                 //class for whole multitabs
-        layout : 'default',                         //it can be 'default' and 'classic' (all hidden tab in dropdown list)
+        layout : 'default',                         //it can be 'default', 'classic' (all hidden tab in dropdown list), and simple
         init : [                                    //tabs in initial
             {                                       
                 content :'',                        //content type, may be main | info | editor, if empty, default is 'info'
