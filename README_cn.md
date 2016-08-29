@@ -73,7 +73,6 @@
             class : '',                             //为navBar添加class
             maxTabs : 8,                            //最多tab数量。（main和editor不计算在内)
             maxTabTitleLength : 25,                 //tab标题的最大长度
-            backgroundColor : '#fff',               //默认为白色背景
         },
         ajaxTabPane : {
             class : '',                             //为ajax tab-pane 添加class

@@ -148,7 +148,7 @@ if (typeof jQuery === "undefined") {
          * Main Layout
          */
         main : '<div class="mt-wrapper {mainClass}" style="height: 100%;" >' +
-        '   <div class="mt-nav-bar" style="background-color : {backgroundColor};">' +
+        '   <div class="mt-nav-bar">' +
         '       <div class="mt-nav-tools-left">' +
         '           <ul  class="nav nav-tabs">' +
         '               <li class="mt-move-left"><a><i class="fa fa-backward"></i></a></li>' +
@@ -263,7 +263,6 @@ if (typeof jQuery === "undefined") {
             var self = this, $el = self.$element
             $el.html(options.layoutTemplates.main
                 .replace('{mainClass}', toJoinerStr(options.class))
-                .replace(/\{backgroundColor\}/g, options.navBar.backgroundColor)
                 .replace('{option}' , options.language.navBar.option)
                 .replace('{showActivedTab}' , options.language.navBar.showActivedTab)
                 .replace('{closeAllTabs}' , options.language.navBar.closeAllTabs)

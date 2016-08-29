@@ -75,7 +75,6 @@ The following is the default configuration, you can modify as you want.
             class : '',                             //class of navBar
             maxTabs : 8,                            //Max tabs number (without counting main and editor)
             maxTitleLength : 25,                    //Max title length of tab
-            backgroundColor : '#fff',               //background-color for nav-bar.
         },
         ajaxTabPane : {
             class : '',                             //Class for ajax tab-pane
