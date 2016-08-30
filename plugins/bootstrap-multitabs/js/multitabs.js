@@ -292,7 +292,8 @@ if (typeof jQuery === "undefined") {
          * @private
          */
         _init: function (options) {
-            var self = this, $el = self.$element
+            var self = this, $el = self.$element;
+            options.layout = options.layout || 'default';
             $el.html(defaultLayoutTemplates[options.layout]
                 .replace('{mainClass}', toJoinerStr(options.class))
                 .replace('{navBarClass}' , options.navBar.class)
