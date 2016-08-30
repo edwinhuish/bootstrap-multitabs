@@ -2,9 +2,9 @@
 For chinese README.md, please read [简体中文](README_cn.md)
 
 ##Screenshot
-###default
+###default  (with left/right/option button)
 ![Multi Tabs Screenshot](screenshot-default.jpg)
-###classic
+###classic (fold hidden tabs)
 ![Multi Tabs Screenshot](screenshot-classic.jpg)
 ###simple
 ![Multi Tabs Screenshot](screenshot-simple.jpg)

@@ -1,9 +1,9 @@
 #bootstrap-multitabs / bootstrap 多标签页
 
 ##效果图
-###default
+###default/默认 (带有向左、向右移动以及选项菜单)
 ![Multi Tabs Screenshot](screenshot-default.jpg)
-###classic
+###classic/折叠 (折叠隐藏tab)
 ![Multi Tabs Screenshot](screenshot-classic.jpg)
 ###simple
 ![Multi Tabs Screenshot](screenshot-simple.jpg)
