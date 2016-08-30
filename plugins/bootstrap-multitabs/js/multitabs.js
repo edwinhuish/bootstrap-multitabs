@@ -29,13 +29,14 @@ if (typeof jQuery === "undefined") {
     };
 
     /**
+     *
      * 获取tab标签的index
      * @param content   content的类型。 main和editor仅能为一个
      * @param capacity  允许多少tab，main和editor不计在内
-     * @returns index   返回tab index
+     * @returns {*}     返回tab index
      */
     getTabIndex = function(content, capacity){
-        if(content === 'main' || content === 'editor') return 0;
+        if(content === 'main' || content === 'editor') return false;
         capacity = capacity || 8; //允许多少tab页面，超过则覆盖
         tabIndex = tabIndex || 0;
         tabIndex++;
@@ -213,7 +214,7 @@ if (typeof jQuery === "undefined") {
         tab : '<a href="{href}"  data-content="{content}" data-index="{index}" data-id="{did}">{title}</a>',
         closeBtn : ' <i class="mt-close-tab fa fa-times" style="{style}"></i>',
         ajaxTabPane : '<div class="tab-pane {class}"  data-content="{content}" data-index="{index}" data-id="{did}"></div>',
-        iframeTabPane : '<iframe class="tab-pane {class}"  width="100%" height="100%" frameborder="0" src="" data-content="{content}" data-index="{index}" data-id="{did}" seamless></iframe>',
+        iframeTabPane : '<iframe class="tab-pane {class}"  width="100%" height="100%" frameborder="0" src="" data-content="{content}" data-index="{index}" data-id="{did}" seamless></iframe>'
     };
 
     /**
@@ -225,7 +226,7 @@ if (typeof jQuery === "undefined") {
             dropdown       : '<i class="fa fa-bars"></i>',      //标签栏的下拉菜单名称
             showActivedTab : 'Show Activated Tab',              //下拉菜单的显示激活页面
             closeAllTabs   : 'Close All Tabs',                  //下拉菜单的关闭所有页面
-            closeOtherTabs : 'Close Other Tabs',                //下拉菜单的关闭其他页面
+            closeOtherTabs : 'Close Other Tabs'                 //下拉菜单的关闭其他页面
         },
         editorUnsave: {
             colse : 'Your data is not save, are you sure to lose it?',   //关闭未保存editor标签页的警示
@@ -240,14 +241,14 @@ if (typeof jQuery === "undefined") {
         class : '',                     //class，默认为空，可以自行添加
         maxTabs : 15,                   //默认可容纳标签数为15
         maxTitleLength : 25,            //默认最长tab tittle为25
-        backgroundColor : '#ecf0f5',    //默认nav-bar 背景颜色
+        backgroundColor : '#ecf0f5'     //默认nav-bar 背景颜色
     };
 
     /**
      * 默认的ajax tab-pane 选项
      */
     defaultAjaxTabPane = {
-        class : '',                 //class，默认为空，可自行添加
+        class : ''                  //class，默认为空，可自行添加
     };
 
     /**
@@ -314,7 +315,7 @@ if (typeof jQuery === "undefined") {
             if(options.navBar.maxTabs <= 1){
                 options.navBar.maxTabs = 1;
                 $el.navBar.hide();
-            };
+            }
             //set the nav-panel width
             var toolWidth = $el.navBar.find('.mt-nav-tools-left:visible:first').outerWidth(true) + $el.navBar.find('.mt-nav-tools-right:visible:first').outerWidth(true);
             $el.navPanel.css('width', 'calc(100% - ' + toolWidth + 'px)');
@@ -339,7 +340,7 @@ if (typeof jQuery === "undefined") {
                     param.title = trimText(param.title, options.navBar.maxTitleLength);
                     self._create(param);
                 });
-            };
+            }
             //没有任何标签激活的，就激活首页。
             if(!$el.navPanelList.children('li.active').length && !window.location.hash.substr(1)) self._active($el.navPanelList.find('[data-content="main"]:first').parent('li'));
         },
@@ -374,7 +375,7 @@ if (typeof jQuery === "undefined") {
                 var param = self._check(this);
                 if(param) {
                     var $tab = self._create(param);
-                };
+                }
                 if($tab) self._active($tab);
                 return false;
             });
@@ -429,30 +430,32 @@ if (typeof jQuery === "undefined") {
                     scrollTop = scrollTop < ($el.wrapper.height() - navBarHeight) ? scrollTop + 'px' : 'auto';
                     $el.navBar.css('top',scrollTop);
                 });
-            };
+            }
             //if show hash， bind hash change
             if(options.showHash){
                 handler($(window), 'hashchange load', function(){
                     event.preventDefault();
-                    var hash = window.location.hash;
+                    var hash, url, $tab, $tabA, a, param;
+                    hash = window.location.hash;
                     if(!hash) return false;
-                    var url = hash.replace('#','');
-                    var $tabA = $el.navPanelList.find('[data-id="'+ url +'"]:first');
+                    url = hash.replace('#','');
+                    $tabA = $el.navPanelList.find('[data-id="'+ url +'"]:first');
                     if($tabA.length){
-                        var $tab = $tabA.closest('li');
+                        $tab = $tabA.closest('li');
                         if(!$tab.hasClass('active')) self._active($tab);
                         return false;
                     }else{
-                        var a = document.createElement('a');
+                        a = document.createElement('a');
                         a.href=url;
-                        var param = self._check(a);
+                        param = self._check(a);
                         if(param) {
-                            var $tab = self._create(param);
-                        };
+                            $tab = self._create(param);
+                        }
                         if($tab) self._active($tab);
+                        return false;
                     }
                 });
-            };
+            }
             //if layout === 'classic' show hide list in dropdown menu
             if(options.layout === 'classic'){
                 handler($el.navToolsRight, 'click', '.mt-dropdown:not(.open)', function(){ //just trigger when dropdown not open.
@@ -477,7 +480,7 @@ if (typeof jQuery === "undefined") {
          * @private
          */
         _getParam : function(obj){
-            var self = this, $el = self.$element, options = self.options, param;
+            var self = this,  options = self.options, param;
             param = $(obj).data() || {};
             param.url = param.url || $(obj).attr('href');
             param.url = decodeURIComponent(param.url.replace('#', ''));
@@ -496,7 +499,7 @@ if (typeof jQuery === "undefined") {
          * @private
          */
         _check : function (obj) {
-            var self = this, $el = self.$element, options = self.options;
+            var self = this, $el = self.$element;
             var param, tab;
             param = self._getParam(obj);
             if(!param) return false;
@@ -526,12 +529,12 @@ if (typeof jQuery === "undefined") {
                 options = self.options,
                 $el = self.$element,
                 $editor = $el.tabContent.find('.tab-pane[data-content="editor"]');
-            var tabHtml, closeBtnHtml, display, tabPaneHtml, iframe, index;
+            var tabHtml, closeBtnHtml, display, tabPaneHtml, iframe, index, $tab, $tabPane;
             //禁止打开多个edit页面，如果edit页面存在，也禁止覆盖
             if(param.content === 'editor' && $editor.length && $editor.hasClass('unsave')){
-                var $tab = $el.navPanelList.find('a[data-content="editor"]').parent('li');
+                $tab = $el.navPanelList.find('a[data-content="editor"]').parent('li');
                 self._active($tab);
-                var $tabPane = self._getTabPane($tab);
+                $tabPane = self._getTabPane($tab);
                 $tabPane.before('<div class="help-block alert alert-warning">' + options.language.editorUnsave.cover + '</div>');
                 return false;
             }
@@ -540,13 +543,13 @@ if (typeof jQuery === "undefined") {
             display = options.showClose ? 'display:inline;' : '';
             closeBtnHtml = (param.content === 'main') ? '' : defaultLayoutTemplates.closeBtn.replace('{style}', display); //main content can not colse.
             tabHtml = defaultLayoutTemplates.tab.replace('{href}', '#'+ param.url)
-                .replace('{content}', param.content)
-                .replace('{index}',index)
-                .replace('{did}', param.url)
-                .replace('{title}', param.title) + 
+                    .replace('{content}', param.content)
+                    .replace('{index}',index)
+                    .replace('{did}', param.url)
+                    .replace('{title}', param.title) +
                 closeBtnHtml;
             //tab create
-            var $tab = $el.navPanelList.find('a[data-content="'+ param.content +'"][data-index="'+ index +'"]').parent('li');
+            $tab = $el.navPanelList.find('a[data-content="'+ param.content +'"][data-index="'+ index +'"]').parent('li');
             if($tab.length){
                 $tab.html(tabHtml);
             }else $el.navPanelList.append( '<li>' + tabHtml + '</li>');
@@ -575,15 +578,15 @@ if (typeof jQuery === "undefined") {
          */
         _fixTabPosition : function (tab) {
             var self = this, $el = self.$element,
-            $tab = tab,
-            tabWidth = $tab.outerWidth(true),
-            prevWidth = $tab.prev().outerWidth(true),
-            pprevWidth = $tab.prev().prev().outerWidth(true),
-            sumPrevWidth = sumWidth($tab.prevAll()),
-            sumNextWidth = sumWidth($tab.nextAll()),
-            navPanelWidth = $el.navPanel.outerWidth(true),
-            sumTabsWidth = sumWidth($el.navPanelList.children('li')),
-            leftWidth = 0;
+                $tab = tab,
+                tabWidth = $tab.outerWidth(true),
+                prevWidth = $tab.prev().outerWidth(true),
+                pprevWidth = $tab.prev().prev().outerWidth(true),
+                sumPrevWidth = sumWidth($tab.prevAll()),
+                sumNextWidth = sumWidth($tab.nextAll()),
+                navPanelWidth = $el.navPanel.outerWidth(true),
+                sumTabsWidth = sumWidth($el.navPanelList.children('li')),
+                leftWidth = 0;
             //所有tab的宽度不超过nav-panel的宽度
             if (sumTabsWidth < navPanelWidth) {
                 leftWidth = 0
@@ -599,7 +602,7 @@ if (typeof jQuery === "undefined") {
                 } else { //nav-panel不能容纳当前tab和其右边所有tab
                     //当tab左边和其左边的总宽度大于nav-panel的话，nav-panel应该将当前tab，2个tab之前的所有宽度设为margin-left。
                     if ( (sumPrevWidth + tabWidth ) > navPanelWidth ) {
-                        leftWidth = sumPrevWidth - prevWidth -pprevWidth 
+                        leftWidth = sumPrevWidth - prevWidth -pprevWidth
                     }
                 }
             }
@@ -609,22 +612,22 @@ if (typeof jQuery === "undefined") {
 
         /**
          * 隐藏的tab下拉列表
-         * @returns {boolean}
+         * @returns {*}
          * @private
          */
         _getHiddenList : function(){
             var self = this, $el = self.$element,
-            navPanelListMarginLeft = Math.abs(parseInt($el.navPanelList.css("margin-left"))),
-            navPanelWidth = $el.navPanel.outerWidth(true),
-            sumTabsWidth = sumWidth($el.navPanelList.children('li')),
-            tabPrevList = [], tabNextList = [], px = 0, $tab, marginLeft;
+                navPanelListMarginLeft = Math.abs(parseInt($el.navPanelList.css("margin-left"))),
+                navPanelWidth = $el.navPanel.outerWidth(true),
+                sumTabsWidth = sumWidth($el.navPanelList.children('li')),
+                tabPrevList = [], tabNextList = [],  $tab, marginLeft;
             //所有tab的宽度不超过nav-panel的宽度
             if (sumTabsWidth < navPanelWidth) {
                 return false;
             } else {
                 $tab = $el.navPanelList.children('li:first');
                 //overflow hidden left part
-                marginLeft = 0; 
+                marginLeft = 0;
                 //从第一个tab开始，逐个遍历左边的隐藏tab
                 while ((marginLeft + $tab.width()) <= navPanelListMarginLeft) {
                     marginLeft += $tab.outerWidth(true);
@@ -654,10 +657,10 @@ if (typeof jQuery === "undefined") {
          */
         _moveLeft : function () {
             var self = this, $el = self.$element,
-            navPanelListMarginLeft = Math.abs(parseInt($el.navPanelList.css("margin-left"))),
-            navPanelWidth = $el.navPanel.outerWidth(true),
-            sumTabsWidth = sumWidth($el.navPanelList.children('li')),
-            leftWidth = 0, marginLeft = 0, $tab;
+                navPanelListMarginLeft = Math.abs(parseInt($el.navPanelList.css("margin-left"))),
+                navPanelWidth = $el.navPanel.outerWidth(true),
+                sumTabsWidth = sumWidth($el.navPanelList.children('li')),
+                leftWidth = 0, marginLeft = 0, $tab;
             if (sumTabsWidth < navPanelWidth) {
                 return false
             } else {
@@ -684,10 +687,10 @@ if (typeof jQuery === "undefined") {
          */
         _moveRight : function () {
             var self = this, $el = self.$element,
-            navPanelListMarginLeft = Math.abs(parseInt($el.navPanelList.css("margin-left"))),
-            navPanelWidth = $el.navPanel.outerWidth(true),
-            sumTabsWidth = sumWidth($el.navPanelList.children('li')),
-            leftWidth = 0, $tab, marginLeft;
+                navPanelListMarginLeft = Math.abs(parseInt($el.navPanelList.css("margin-left"))),
+                navPanelWidth = $el.navPanel.outerWidth(true),
+                sumTabsWidth = sumWidth($el.navPanelList.children('li')),
+                leftWidth = 0, $tab, marginLeft;
             if (sumTabsWidth < navPanelWidth) {
                 return false;
             } else {
@@ -715,7 +718,7 @@ if (typeof jQuery === "undefined") {
          * @returns {boolean}
          */
         _close: function (tab) {
-            var self = this, $el = self.$element, $tab = $(tab), $tabPane = self._getTabPane($tab);
+            var self = this,  $tab = $(tab), $tabPane = self._getTabPane($tab);
             if($tab.length && $tabPane.length){
                 if($tabPane.attr('data-content') === 'editor' && $tabPane.hasClass('unsave')){
                     if(!self._unsaveConfirm()) return false;
@@ -781,7 +784,7 @@ if (typeof jQuery === "undefined") {
          * @returns {boolean}
          */
         _active : function (tab) {
-            var self = this, $el = self.$element, options = self.options;
+            var self = this,  options = self.options;
             var $tab = $(tab);
             if(!$tab.length) return false;
             var tabA = $tab.find('a:first'),
@@ -804,7 +807,7 @@ if (typeof jQuery === "undefined") {
                     }
                 }
 
-            };
+            }
             return $tab;
         },
 
@@ -814,7 +817,6 @@ if (typeof jQuery === "undefined") {
          * @private
          */
         _fixTabContentLayout : function(tabPane){
-            var self = this, $el = self.$element, options = self.options;
             var $tabPane = $(tabPane);
             if($tabPane.is('iframe')){
                 $('body').addClass('full-height-layout');
@@ -860,11 +862,11 @@ if (typeof jQuery === "undefined") {
         link : '.multi-tabs',
         class : '',
         iframe : false,                     //iframe mode, default is false, just use iframe for external link
-        layout : 'default', 
+        layout : 'default',
         navBar : defaultNavBar,
         ajaxTabPane : defaultAjaxTabPane,
         iframeTabPane : defaultIframeTabPane,
-        language : defaultLanguage,
+        language : defaultLanguage
     };
 
 })(jQuery));

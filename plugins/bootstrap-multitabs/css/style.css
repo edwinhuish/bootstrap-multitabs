@@ -29,7 +29,7 @@
     float: right;
     z-index: 200;
 }
-.tab-content{
+.mt-tab-content{
     height: 100%;
 }
 .mt-close-tab {
@@ -53,5 +53,8 @@ a{
 @media (max-width: 767px){
     .mt-nav-bar {
         display: none;
+    }
+    .mt-tab-content{
+        padding-top: 0 !important;
     }
 }
