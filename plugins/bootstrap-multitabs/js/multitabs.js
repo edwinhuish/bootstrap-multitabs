@@ -157,7 +157,7 @@ if (typeof jQuery === "undefined") {
         '       </div>' +
         '       <nav class="mt-nav mt-nav-panel">' +
         '           <ul  class="nav {nav-tabs}">' +
-        '				<li><a href="#welcome_to_use_multitabs"  data-content="main" data-index="0" data-id="welcome_to_use_multitabs"> Home </a></li>' +
+        '               <li><a href="#welcome_to_use_multitabs"  data-content="main" data-index="0" data-id="welcome_to_use_multitabs"> Home </a></li>' +
         '           </ul>' +
         '       </nav>' +
         '       <div class="mt-nav mt-nav-tools-right">' +
@@ -176,8 +176,8 @@ if (typeof jQuery === "undefined") {
         '       </div>' +
         '   </div>' +
         '   <div class="tab-content mt-tab-content " >' +
-        '		<div class="tab-pane active"  data-content="main" data-index="0" data-id="welcome_to_use_multitabs"><h1>Demo page</h1><h2>Welcome to use bootstrap multi-tabs :) </h2></div>' +
-        '	</div>' +
+        '       <div class="tab-pane active"  data-content="main" data-index="0" data-id="welcome_to_use_multitabs"><h1>Demo page</h1><h2>Welcome to use bootstrap multi-tabs :) </h2></div>' +
+        '   </div>' +
         '</div>',
         classic : '<div class="mt-wrapper {mainClass}" style="height: 100%;" >' +
         '   <div class="mt-nav-bar {navBarClass}" style="background-color: {backgroundColor};">' +
@@ -328,18 +328,18 @@ if (typeof jQuery === "undefined") {
          * @private
          */
         _finish : function(){
-            var self = this, $el = self.$element, options = self.options, init = options.init;
-            if(Array(init).length){
-                $.each(init, function(key, param){
-                    if(!param.url) return false;
-                    param.url = decodeURIComponent(param.url.replace('#', ''));
-                    if (!$.trim(param.url).length) return false;
-                    param.iframe = param.iframe || isExtUrl(param.url) || options.iframe;
-                    if(param.iframe || !param.content) param.content = options.content;
-                    param.title = param.title || param.url.replace('http://', '').replace('https://', '') || options.language.navBar.title;
-                    param.title = trimText(param.title, options.navBar.maxTitleLength);
-                    self._create(param);
-                });
+            var self = this, $el = self.$element, options = self.options, init = options.init, param;
+            init = (init instanceof Array) ? init : [];
+            for(var i = 0; i < init.length; i++){
+                param = init[i];
+                if(!param.url) continue;
+                param.url = decodeURIComponent(param.url.replace('#', ''));
+                if (!$.trim(param.url).length) continue;
+                param.iframe = param.iframe || isExtUrl(param.url) || options.iframe;
+                if(param.iframe || !param.content) param.content = options.content;
+                param.title = param.title || param.url.replace('http://', '').replace('https://', '') || options.language.navBar.title;
+                param.title = trimText(param.title, options.navBar.maxTitleLength);
+                self._create(param);
             }
             //没有任何标签激活的，就激活首页。
             if(!$el.navPanelList.children('li.active').length && !window.location.hash.substr(1)) self._active($el.navPanelList.find('[data-content="main"]:first').parent('li'));
