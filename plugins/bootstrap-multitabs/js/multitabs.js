@@ -33,10 +33,10 @@ if (typeof jQuery === "undefined") {
      * 获取tab标签的index
      * @param content   content的类型。 main和editor仅能为一个
      * @param capacity  允许多少tab，main和editor不计在内
-     * @returns {*}     返回tab index
+     * @returns int     返回tab index
      */
     getTabIndex = function(content, capacity){
-        if(content === 'main' || content === 'editor') return false;
+        if(content === 'main' || content === 'editor') return 0;
         capacity = capacity || 8; //允许多少tab页面，超过则覆盖
         tabIndex = tabIndex || 0;
         tabIndex++;
