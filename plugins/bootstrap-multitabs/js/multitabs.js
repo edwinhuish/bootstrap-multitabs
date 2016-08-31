@@ -241,7 +241,7 @@ if (typeof jQuery === "undefined") {
         class : '',                     //class，默认为空，可以自行添加
         maxTabs : 15,                   //默认可容纳标签数为15
         maxTitleLength : 25,            //默认最长tab tittle为25
-        backgroundColor : '#ecf0f5'     //默认nav-bar 背景颜色
+        backgroundColor : '#f5f5f5'     //默认nav-bar 背景颜色
     };
 
     /**
