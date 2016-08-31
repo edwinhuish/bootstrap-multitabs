@@ -182,12 +182,12 @@ if (typeof jQuery === "undefined") {
         classic : '<div class="mt-wrapper {mainClass}" style="height: 100%;" >' +
         '   <div class="mt-nav-bar {navBarClass}" style="background-color: {backgroundColor};">' +
         '       <nav class="mt-nav-panel">' +
-        '           <ul  class="nav nav-tabs">' +
+        '           <ul  class="nav {nav-tabs}">' +
         '               <li><a href="#welcome_to_use_multitabs"  data-content="main" data-index="0" data-id="welcome_to_use_multitabs"> Home </a></li>' +
         '           </ul>' +
         '       </nav>' +
         '       <div class="mt-nav-tools-right">' +
-        '           <ul  class="nav nav-tabs">' +
+        '           <ul  class="nav {nav-tabs}">' +
         '               <li class="mt-dropdown dropdown">' +
         '                   <a href="#"  class="dropdown-toggle" data-toggle="dropdown">{dropdown}<span class="caret"></span></a>' +
         '                   <ul role="menu" class="mt-hidden-list dropdown-menu dropdown-menu-right"></ul>' +
@@ -202,7 +202,7 @@ if (typeof jQuery === "undefined") {
         simple : '<div class="mt-wrapper {mainClass}" style="height: 100%;" >' +
         '   <div class="mt-nav-bar {navBarClass}" style="background-color: {backgroundColor};">' +
         '       <nav class="mt-nav-panel">' +
-        '           <ul  class="nav nav-tabs">' +
+        '           <ul  class="nav {nav-tabs}">' +
         '               <li><a href="#welcome_to_use_multitabs"  data-content="main" data-index="0" data-id="welcome_to_use_multitabs"> Home </a></li>' +
         '           </ul>' +
         '       </nav>' +
