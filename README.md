@@ -64,11 +64,12 @@ The following is the default configuration, you can modify as you want.
         showHash : true,                            //While is true, show hash in URL, in case refresh or F5, can stay in same tab page.
         showClose : false,                          //while is false, show close button in hover, if true, show close button always
         fixed : true ,                              //fixed the nav-bar
-        content : 'info',                           //change the data-content name, is not necessary to change.
+        layout : 'default',                         //it can be 'default', 'classic' (all hidden tab in dropdown list), and simple
+        type : 'nav-tabs',                          //can be nav-tabs or nav-pills
         link : '.multi-tabs',                       //selector text to trigger multitabs. 
         iframe : false,                             //Global iframe mode, default is false, is the auto mode (for the self page, use ajax, and the external, use iframe)
         class : '',                                 //class for whole multitabs
-        layout : 'default',                         //it can be 'default', 'classic' (all hidden tab in dropdown list), and simple
+        content : 'info',                           //change the data-content name, is not necessary to change.
         init : [                                    //tabs in initial
             {                                       
                 content :'',                        //content type, may be main | info | editor, if empty, default is 'info'

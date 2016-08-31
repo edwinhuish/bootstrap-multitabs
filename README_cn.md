@@ -62,11 +62,12 @@
         showHash : true,                            //当值为true时，显示URL的hash，避免误按F5或者刷新的页面丢失，不过需要注意URL栏参数的泄露。
         showClose : false,                          //当值为false，仅在鼠标悬浮时显示关闭按钮。true时一直显示
         fixed : true ,                              //固定标签头列表
-        content : 'info',                           //此处可以指定标签页类型名称，一般不需要修改。
-        link : '.multi-tabs',                       //触发multitabs的selector text，注意需要有".","#"等
         layout : 'default',                         //有两种模式，'default', 'classic'(所有隐藏tab都在下拉菜单里) 和 'simple'
+        type : 'nav-tabs',                          //可以为nav-tabs 或 nav-pills
+        link : '.multi-tabs',                       //触发multitabs的selector text，注意需要有".","#"等
         iframe : false,                             //iframe模式的总局设置。当值为false的时候，为智能模式，自动判断（内网用ajax，外网用iframe）。缺省为false。
         class : '',                                 //主框架的class
+        content : 'info',                           //此处可以指定标签页类型名称，一般不需要修改。
         init : [                                    //需要在初始加载的tab
             {                                       
                 content :'',                        //标签页的类型，有 main | info | editor

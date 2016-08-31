@@ -151,17 +151,17 @@ if (typeof jQuery === "undefined") {
         default : '<div class="mt-wrapper {mainClass}" style="height: 100%;" >' +
         '   <div class="mt-nav-bar {navBarClass}" style="background-color: {backgroundColor};">' +
         '       <div class="mt-nav-tools-left">' +
-        '           <ul  class="nav nav-tabs">' +
+        '           <ul  class="nav {nav-tabs}">' +
         '               <li class="mt-move-left"><a><i class="fa fa-backward"></i></a></li>' +
         '           </ul>' +
         '       </div>' +
         '       <nav class="mt-nav-panel">' +
-        '           <ul  class="nav nav-tabs">' +
+        '           <ul  class="nav {nav-tabs}">' +
         '				<li><a href="#welcome_to_use_multitabs"  data-content="main" data-index="0" data-id="welcome_to_use_multitabs"> Home </a></li>' +
         '           </ul>' +
         '       </nav>' +
         '       <div class="mt-nav-tools-right">' +
-        '           <ul  class="nav nav-tabs">' +
+        '           <ul  class="nav {nav-tabs}">' +
         '               <li class="mt-move-right"><a><i class="fa fa-forward"></i></a></li>' +
         '               <li class="mt-dropdown dropdown">' +
         '                   <a href="#"  class="dropdown-toggle" data-toggle="dropdown">{dropdown}<span class="caret"></span></a>' +
@@ -294,10 +294,10 @@ if (typeof jQuery === "undefined") {
          */
         _init: function (options) {
             var self = this, $el = self.$element;
-            options.layout = options.layout || 'default';
             $el.html(defaultLayoutTemplates[options.layout]
                 .replace('{mainClass}', toJoinerStr(options.class))
                 .replace('{navBarClass}' , options.navBar.class)
+                .replace(/\{nav-tabs\}/g , options.type)
                 .replace(/\{backgroundColor\}/g, options.navBar.backgroundColor)
                 .replace('{dropdown}' , options.language.navBar.dropdown)
                 .replace('{showActivedTab}' , options.language.navBar.showActivedTab)
@@ -843,6 +843,7 @@ if (typeof jQuery === "undefined") {
         var self = $(this), data = self.data('multitabs'), options = typeof option === 'object' && option, opts;
         if (!data) {
             opts = $.extend(true, {}, $.fn.multitabs.defaults, options, self.data());
+            opts.type = (opts.type === 'nav-pills') ? 'nav-pills' : 'nav-tabs';
             data = new MultiTabs(this, opts);
             self.data('multitabs', data);
         }
@@ -855,6 +856,7 @@ if (typeof jQuery === "undefined") {
      */
     $.fn.multitabs.defaults = {
         init :[],
+        type : 'nav-tabs',          //can be nav-tabs or nav-pills
         fixed : true,
         showHash : true,
         showClose : false,
