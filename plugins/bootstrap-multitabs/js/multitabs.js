@@ -150,17 +150,17 @@ if (typeof jQuery === "undefined") {
          */
         default : '<div class="mt-wrapper {mainClass}" style="height: 100%;" >' +
         '   <div class="mt-nav-bar {navBarClass}" style="background-color: {backgroundColor};">' +
-        '       <div class="mt-nav-tools-left">' +
+        '       <div class="mt-nav mt-nav-tools-left">' +
         '           <ul  class="nav {nav-tabs}">' +
         '               <li class="mt-move-left"><a><i class="fa fa-backward"></i></a></li>' +
         '           </ul>' +
         '       </div>' +
-        '       <nav class="mt-nav-panel">' +
+        '       <nav class="mt-nav mt-nav-panel">' +
         '           <ul  class="nav {nav-tabs}">' +
         '				<li><a href="#welcome_to_use_multitabs"  data-content="main" data-index="0" data-id="welcome_to_use_multitabs"> Home </a></li>' +
         '           </ul>' +
         '       </nav>' +
-        '       <div class="mt-nav-tools-right">' +
+        '       <div class="mt-nav mt-nav-tools-right">' +
         '           <ul  class="nav {nav-tabs}">' +
         '               <li class="mt-move-right"><a><i class="fa fa-forward"></i></a></li>' +
         '               <li class="mt-dropdown dropdown">' +
@@ -181,12 +181,12 @@ if (typeof jQuery === "undefined") {
         '</div>',
         classic : '<div class="mt-wrapper {mainClass}" style="height: 100%;" >' +
         '   <div class="mt-nav-bar {navBarClass}" style="background-color: {backgroundColor};">' +
-        '       <nav class="mt-nav-panel">' +
+        '       <nav class="mt-nav mt-nav-panel">' +
         '           <ul  class="nav {nav-tabs}">' +
         '               <li><a href="#welcome_to_use_multitabs"  data-content="main" data-index="0" data-id="welcome_to_use_multitabs"> Home </a></li>' +
         '           </ul>' +
         '       </nav>' +
-        '       <div class="mt-nav-tools-right">' +
+        '       <div class="mt-nav mt-nav-tools-right">' +
         '           <ul  class="nav {nav-tabs}">' +
         '               <li class="mt-dropdown dropdown">' +
         '                   <a href="#"  class="dropdown-toggle" data-toggle="dropdown">{dropdown}<span class="caret"></span></a>' +
@@ -201,7 +201,7 @@ if (typeof jQuery === "undefined") {
         '</div>',
         simple : '<div class="mt-wrapper {mainClass}" style="height: 100%;" >' +
         '   <div class="mt-nav-bar {navBarClass}" style="background-color: {backgroundColor};">' +
-        '       <nav class="mt-nav-panel">' +
+        '       <nav class="mt-nav mt-nav-panel">' +
         '           <ul  class="nav {nav-tabs}">' +
         '               <li><a href="#welcome_to_use_multitabs"  data-content="main" data-index="0" data-id="welcome_to_use_multitabs"> Home </a></li>' +
         '           </ul>' +
@@ -317,7 +317,7 @@ if (typeof jQuery === "undefined") {
                 $el.navBar.hide();
             }
             //set the nav-panel width
-            var toolWidth = $el.navBar.find('.mt-nav-tools-left:visible:first').outerWidth(true) + $el.navBar.find('.mt-nav-tools-right:visible:first').outerWidth(true);
+            var toolWidth = $el.navBar.find('.mt-nav-tools-left:visible:first').width() + $el.navBar.find('.mt-nav-tools-right:visible:first').width();
             $el.navPanel.css('width', 'calc(100% - ' + toolWidth + 'px)');
             self.options = options;
         },

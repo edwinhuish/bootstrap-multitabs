@@ -3,30 +3,20 @@
     z-index: 1;
 }
 .mt-nav-bar {
-    display: inline-block;
     width : 100%;
     z-index: 200;
     position: absolute;
 }
+.mt-nav-bar .mt-nav{
+    display: inline-block;
+    vertical-align: top;  /* remove vertical gap from display:inline */
+    margin-right : -4px;  /* remove 1px horizontal gap from display:inline and 3px ext padding-right, border-right from bootstrap nav*/
+}
 .mt-nav-panel{
     overflow: hidden;
-    display: inline-block;
-    margin-right : -10px;
 }
 .mt-nav-panel ul{
     width: 10000px;
-}
-.mt-nav-tools-left{
-    display: inline-block;
-    margin-right : -5px;
-}
-.mt-nav-tools-left ul{
-    padding-right : 5px;
-}
-.mt-nav-tools-right{
-    display: inline-block;
-    float: right;
-    z-index: 200;
 }
 .mt-tab-content{
     height: 100%;
