@@ -3,10 +3,13 @@ For chinese README.md, please read [简体中文](README_cn.md)
 
 ##Screenshot
 ###default  (with left/right/option button)
+Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/index.html)  [nav-pills](http://edwinhuish.oschina.io/multi-tabs/index-default-pills.html)
 ![Multi Tabs Screenshot](screenshot-default.jpg)
 ###classic (fold hidden tabs)
+Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/index-classic.html)  [nav-pills](http://edwinhuish.oschina.io/multi-tabs/index-classic-pills.html)
 ![Multi Tabs Screenshot](screenshot-classic.jpg)
 ###simple
+Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/index-simple.html)  [nav-pills](http://edwinhuish.oschina.io/multi-tabs/index-simple-pills.html)
 ![Multi Tabs Screenshot](screenshot-simple.jpg)
 
 ##Role and Benefits
