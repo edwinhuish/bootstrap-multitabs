@@ -68,7 +68,7 @@ The following is the default configuration, you can modify as you want.
         showClose : false,                          //while is false, show close button in hover, if true, show close button always
         fixed : true ,                              //fixed the nav-bar
         layout : 'default',                         //it can be 'default', 'classic' (all hidden tab in dropdown list), and simple
-        type : 'nav-tabs',                          //can be nav-tabs or nav-pills
+        style : 'nav-tabs',                         //can be nav-tabs or nav-pills
         link : '.multi-tabs',                       //selector text to trigger multitabs. 
         iframe : false,                             //Global iframe mode, default is false, is the auto mode (for the self page, use ajax, and the external, use iframe)
         class : '',                                 //class for whole multitabs

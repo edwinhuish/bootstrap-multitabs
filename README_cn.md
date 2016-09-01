@@ -66,7 +66,7 @@ Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/index-simple.html) and 
         showClose : false,                          //当值为false，仅在鼠标悬浮时显示关闭按钮。true时一直显示
         fixed : true ,                              //固定标签头列表
         layout : 'default',                         //有两种模式，'default', 'classic'(所有隐藏tab都在下拉菜单里) 和 'simple'
-        type : 'nav-tabs',                          //可以为nav-tabs 或 nav-pills
+        style : 'nav-tabs',                         //可以为nav-tabs 或 nav-pills
         link : '.multi-tabs',                       //触发multitabs的selector text，注意需要有".","#"等
         iframe : false,                             //iframe模式的总局设置。当值为false的时候，为智能模式，自动判断（内网用ajax，外网用iframe）。缺省为false。
         class : '',                                 //主框架的class

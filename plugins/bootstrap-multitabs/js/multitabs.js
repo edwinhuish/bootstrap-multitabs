@@ -297,7 +297,7 @@ if (typeof jQuery === "undefined") {
             $el.html(defaultLayoutTemplates[options.layout]
                 .replace('{mainClass}', toJoinerStr(options.class))
                 .replace('{navBarClass}' , options.navBar.class)
-                .replace(/\{nav-tabs\}/g , options.type)
+                .replace(/\{nav-tabs\}/g , options.style)
                 .replace(/\{backgroundColor\}/g, options.navBar.backgroundColor)
                 .replace('{dropdown}' , options.language.navBar.dropdown)
                 .replace('{showActivedTab}' , options.language.navBar.showActivedTab)
@@ -843,7 +843,7 @@ if (typeof jQuery === "undefined") {
         var self = $(this), data = self.data('multitabs'), options = typeof option === 'object' && option, opts;
         if (!data) {
             opts = $.extend(true, {}, $.fn.multitabs.defaults, options, self.data());
-            opts.type = (opts.type === 'nav-pills') ? 'nav-pills' : 'nav-tabs';
+            opts.style = (opts.style === 'nav-pills') ? 'nav-pills' : 'nav-tabs';
             data = new MultiTabs(this, opts);
             self.data('multitabs', data);
         }
@@ -856,7 +856,7 @@ if (typeof jQuery === "undefined") {
      */
     $.fn.multitabs.defaults = {
         init :[],
-        type : 'nav-tabs',          //can be nav-tabs or nav-pills
+        style : 'nav-tabs',          //can be nav-tabs or nav-pills
         fixed : true,
         showHash : true,
         showClose : false,
