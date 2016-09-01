@@ -371,48 +371,40 @@ if (typeof jQuery === "undefined") {
             var self = this, $el = self.$element, options = self.options;
             //create tab
             handler($(document), 'click', options.link, function(){
-                event.preventDefault();
+                // event.preventDefault();
                 var param = self._check(this);
                 if(param) {
                     var $tab = self._create(param);
                 }
                 if($tab) self._active($tab);
-                return false;
+                return false; //阻止默认跳转
             });
             //active tab
-            handler($(document), 'click', '.mt-nav-panel li', function(){
-                event.preventDefault();
+            handler($el.navBar, 'click', '.mt-nav-panel li', function(){
                 self._active(this);
             });
             //close tab
-            handler($(document), 'click', '.mt-close-tab', function(){
-                event.preventDefault();
+            handler($el.navBar, 'click', '.mt-close-tab', function(){
                 self._close($(this).closest('li'));
-                return false;
             });
             //move left
-            handler($el.navToolsLeft.find('.mt-move-left:first'), 'click', function(){
-                event.preventDefault();
+            handler($el.navBar, 'click', '.mt-move-left', function(){
                 self._moveLeft();
             });
             //move right
-            handler($el.navToolsRight.find('.mt-move-right:first'), 'click', function(){
-                event.preventDefault();
+            handler($el.navBar, 'click', '.mt-move-right', function(){
                 self._moveRight();
             });
             //show actived tab
-            handler($el.navToolsRight.find('.mt-show-actived-tab:first'), 'click', function(){
-                event.preventDefault();
+            handler($el.navBar, 'click', '.mt-show-actived-tab', function(){
                 self._showActive();
             });
             //close all tabs
-            handler($el.navToolsRight.find('.mt-close-all-tabs:first'), 'click', function(){
-                event.preventDefault();
+            handler($el.navBar, 'click', '.mt-close-all-tabs', function(){
                 self._closeAll();
             });
             //close other tabs
-            handler($el.navToolsRight.find('.mt-close-other-tabs:first'), 'click', function(){
-                event.preventDefault();
+            handler($el.navBar, 'click', '.mt-close-other-tabs', function(){
                 self._closeOthers();
             });
             //close window warning.
@@ -434,7 +426,6 @@ if (typeof jQuery === "undefined") {
             //if show hash， bind hash change
             if(options.showHash){
                 handler($(window), 'hashchange load', function(){
-                    event.preventDefault();
                     var hash, url, $tab, $tabA, a, param;
                     hash = window.location.hash;
                     if(!hash) return false;
@@ -458,7 +449,7 @@ if (typeof jQuery === "undefined") {
             }
             //if layout === 'classic' show hide list in dropdown menu
             if(options.layout === 'classic'){
-                handler($el.navToolsRight, 'click', '.mt-dropdown:not(.open)', function(){ //just trigger when dropdown not open.
+                handler($el.navBar, 'click', '.mt-dropdown:not(.open)', function(){ //just trigger when dropdown not open.
                     var list = self._getHiddenList();
                     var $dropDown  = $('.mt-hidden-list').empty();
                     if(list) {  //当$list的值不为false才进行下面的操作
