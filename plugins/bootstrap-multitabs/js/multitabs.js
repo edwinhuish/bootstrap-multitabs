@@ -384,7 +384,7 @@ if (typeof jQuery === "undefined") {
                 sumTabsWidth = sumWidth($el.navPanelList.children('li')),
                 leftWidth = 0, marginLeft = 0, $tab;
             if (sumTabsWidth < navPanelWidth) {
-                return false
+                return self
             } else {
                 $tab = $el.navPanelList.children('li:first');
                 while ((marginLeft + $tab.width()) <= navPanelListMarginLeft) {
@@ -415,7 +415,7 @@ if (typeof jQuery === "undefined") {
                 sumTabsWidth = sumWidth($el.navPanelList.children('li')),
                 leftWidth = 0, $tab, marginLeft;
             if (sumTabsWidth < navPanelWidth) {
-                return false;
+                return self;
             } else {
                 $tab = $el.navPanelList.children('li:first');
                 marginLeft = 0;
@@ -445,7 +445,7 @@ if (typeof jQuery === "undefined") {
             var self = this,  $tab = $(tab), $tabPane = self._getTabPane($tab);
             if($tab.length && $tabPane.length){
                 if($tabPane.attr('data-content') === 'editor' && $tabPane.hasClass('unsave')){
-                    if(!self._unsaveConfirm()) return false;
+                    if(!self._unsaveConfirm()) return self;
                 }
             }
             if ($tab.hasClass("active")) {
@@ -569,7 +569,7 @@ if (typeof jQuery === "undefined") {
 
         /**
          * 有效性检查函数
-         * @return self
+         * @return boolean
          * @private
          */
         _validate: function () {
@@ -582,7 +582,7 @@ if (typeof jQuery === "undefined") {
                 'MultiTabs only can be 1 Instance.' +
                 '</div>';
             self.$element.before($exception);
-            return self;
+            return false;
         },
 
         /**
