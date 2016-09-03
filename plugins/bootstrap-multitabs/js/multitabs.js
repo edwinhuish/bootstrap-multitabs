@@ -271,9 +271,7 @@ if (typeof jQuery === "undefined") {
         if (!self._validate()) {
             return;
         }
-        self._init(options);
-        self._listen();
-        self._finish();
+        self._init(options)._listen()._final();
     };
 
     /**
@@ -288,246 +286,26 @@ if (typeof jQuery === "undefined") {
         constructor: MultiTabs,
 
         /**
-         * 初始化函数
-         * @param options
-         * @private
+         * create tab and return self.
+         * @param obj           the obj to trigger multitabs
+         * @param active        if true, active tab after create
+         * @returns self        Chain structure.
          */
-        _init: function (options) {
-            var self = this, $el = self.$element;
-            $el.html(defaultLayoutTemplates[options.layout]
-                .replace('{mainClass}', toJoinerStr(options.class))
-                .replace('{navBarClass}' , options.navBar.class)
-                .replace(/\{nav-tabs\}/g , options.style)
-                .replace(/\{backgroundColor\}/g, options.navBar.backgroundColor)
-                .replace('{dropdown}' , options.language.navBar.dropdown)
-                .replace('{showActivedTab}' , options.language.navBar.showActivedTab)
-                .replace('{closeAllTabs}' , options.language.navBar.closeAllTabs)
-                .replace('{closeOtherTabs}' , options.language.navBar.closeOtherTabs)
-            );
-            $el.wrapper       = $el.find('.mt-wrapper:first');
-            $el.navBar        = $el.find('.mt-nav-bar:first');
-            $el.navToolsLeft  = $el.navBar.find('.mt-nav-tools-left:first');
-            $el.navPanel      = $el.navBar.find('.mt-nav-panel:first');
-            $el.navPanelList  = $el.navBar.find('.mt-nav-panel:first ul');
-            $el.navToolsRight = $el.navBar.find('.mt-nav-tools-right:first');
-            $el.tabContent    = $el.find('.tab-content:first');
-            //hide tab-header if maxTabs less than 1
-            if(options.navBar.maxTabs <= 1){
-                options.navBar.maxTabs = 1;
-                $el.navBar.hide();
-            }
-            //set the nav-panel width
-            var toolWidth = $el.navBar.find('.mt-nav-tools-left:visible:first').width() + $el.navBar.find('.mt-nav-tools-right:visible:first').width();
-            $el.navPanel.css('width', 'calc(100% - ' + toolWidth + 'px)');
-            self.options = options;
-        },
-
-        /**
-         * 初始化完成后运行的函数
-         * @returns {boolean}
-         * @private
-         */
-        _finish : function(){
-            var self = this, $el = self.$element, options = self.options, init = options.init, param;
-            init = (init instanceof Array) ? init : [];
-            for(var i = 0; i < init.length; i++){
-                param = init[i];
-                if(!param.url) continue;
-                param.url = decodeURIComponent(param.url.replace('#', ''));
-                if (!$.trim(param.url).length) continue;
-                param.iframe = param.iframe || isExtUrl(param.url) || options.iframe;
-                if(param.iframe || !param.content) param.content = options.content;
-                param.title = param.title || param.url.replace('http://', '').replace('https://', '') || options.language.navBar.title;
-                param.title = trimText(param.title, options.navBar.maxTitleLength);
-                self._create(param);
-            }
-            //没有任何标签激活的，就激活首页。
-            if(!$el.navPanelList.children('li.active').length && !window.location.hash.substr(1)) self._active($el.navPanelList.find('[data-content="main"]:first').parent('li'));
-        },
-
-        /**
-         * 有效性检查函数
-         * @returns {boolean}
-         * @private
-         */
-        _validate: function () {
-            var self = this, $exception;
-            if (self.$element.length === 1) {
-                return true;
-            }
-            $exception = '<div class="help-block alert alert-warning">' +
-                '<h4>Duplicate Instance</h4>' +
-                'MultiTabs only can be 1 Instance.' +
-                '</div>';
-            self.$element.before($exception);
-            return false;
-        },
-
-        /**
-         * 监听、绑定事件。
-         * @private
-         */
-        _listen: function () {
-            var self = this, $el = self.$element, options = self.options;
-            //create tab
-            handler($(document), 'click', options.link, function(){
-                // event.preventDefault();
-                var param = self._check(this);
-                if(param) {
-                    var $tab = self._create(param);
-                }
-                if($tab) self._active($tab);
-                return false; //阻止默认跳转
-            });
-            //active tab
-            handler($el.navBar, 'click', '.mt-nav-panel li', function(){
-                self._active(this);
-            });
-            //close tab
-            handler($el.navBar, 'click', '.mt-close-tab', function(){
-                self._close($(this).closest('li'));
-            });
-            //move left
-            handler($el.navBar, 'click', '.mt-move-left', function(){
-                self._moveLeft();
-            });
-            //move right
-            handler($el.navBar, 'click', '.mt-move-right', function(){
-                self._moveRight();
-            });
-            //show actived tab
-            handler($el.navBar, 'click', '.mt-show-actived-tab', function(){
-                self._showActive();
-            });
-            //close all tabs
-            handler($el.navBar, 'click', '.mt-close-all-tabs', function(){
-                self._closeAll();
-            });
-            //close other tabs
-            handler($el.navBar, 'click', '.mt-close-other-tabs', function(){
-                self._closeOthers();
-            });
-            //close window warning.
-            handler($(window), 'beforeunload',function(){
-                if($el.tabContent.find('.tab-pane[data-content="editor"]').hasClass('unsave')){
-                    return options.language.editorUnsave.close;
-                }
-            });
-            //fixed the nav-bar
-            if(options.fixed){
-                var navBarHeight = $el.navBar.outerHeight();
-                $el.tabContent.css('paddingTop', navBarHeight);
-                handler($(window), 'scroll', function(){
-                    var scrollTop = $(this).scrollTop();
-                    scrollTop = scrollTop < ($el.wrapper.height() - navBarHeight) ? scrollTop + 'px' : 'auto';
-                    $el.navBar.css('top',scrollTop);
-                });
-            }
-            //if show hash， bind hash change
-            if(options.showHash){
-                handler($(window), 'hashchange load', function(){
-                    var hash, url, $tab, $tabA, a, param;
-                    hash = window.location.hash;
-                    if(!hash) return false;
-                    url = hash.replace('#','');
-                    $tabA = $el.navPanelList.find('[data-id="'+ url +'"]:first');
-                    if($tabA.length){
-                        $tab = $tabA.closest('li');
-                        if(!$tab.hasClass('active')) self._active($tab);
-                        return false;
-                    }else{
-                        a = document.createElement('a');
-                        a.href=url;
-                        param = self._check(a);
-                        if(param) {
-                            $tab = self._create(param);
-                        }
-                        if($tab) self._active($tab);
-                        return false;
-                    }
-                });
-            }
-            //if layout === 'classic' show hide list in dropdown menu
-            if(options.layout === 'classic'){
-                handler($el.navBar, 'click', '.mt-dropdown:not(.open)', function(){ //just trigger when dropdown not open.
-                    var list = self._getHiddenList();
-                    var $dropDown  = $('.mt-hidden-list').empty();
-                    if(list) {  //当$list的值不为false才进行下面的操作
-                        while(list.prevList.length){
-                            $dropDown.append(list.prevList.shift()[0].outerHTML);
-                        }
-                        while(list.nextList.length){
-                            $dropDown.append(list.nextList.shift()[0].outerHTML);
-                        }
-                    }
-                });
-            }
-        },
-
-        /**
-         * 获取触发multitabs的对象的参数。
-         * @param obj          触发multitabs的对象
-         * @returns param      返回条件
-         * @private
-         */
-        _getParam : function(obj){
-            var self = this,  options = self.options, param;
-            param = $(obj).data() || {};
-            param.url = param.url || $(obj).attr('href');
-            param.url = decodeURIComponent(param.url.replace('#', ''));
-            if (!$.trim(param.url).length) return false;
-            param.iframe = param.iframe || isExtUrl(param.url) || options.iframe;
-            if(param.iframe || !param.content) param.content = options.content;
-            param.title = param.title || $(obj).text() || param.url.replace('http://', '').replace('https://', '') || options.language.navBar.title;
-            param.title = trimText(param.title, options.navBar.maxTitleLength);
-            return param;
-        },
-
-        /**
-         * 检查触发multitabs的对象是否有效，并尝试激活tab，如果激活不成功，返回param。
-         * @param obj
-         * @returns {*}
-         * @private
-         */
-        _check : function (obj) {
-            var self = this, $el = self.$element;
-            var param, tab;
-            param = self._getParam(obj);
-            if(!param) return false;
-            tab = $el.navPanelList.find('a[data-id="'+ param.url +'"]').closest('li'); //仅判断data-id是否与URL一致，即使data-content不一样也激活。避免打开两个同样的data-id的内容引起冲突。
-            if ( ! self._active(tab)  ) return param;  //如果无法激活tab，则返回param。
-            return false
-        },
-
-        /**
-         * get tab-pane from tab
-         * @param tab
-         * @returns {*}
-         * @private
-         */
-        _getTabPane : function(tab){
-            var self = this, $el = self.$element, $tabA = $(tab).children('a:first'), url = $tabA.attr('href').replace('#',''), content = $tabA.attr('data-content');
-            return $el.tabContent.find('.tab-pane[data-content="'+ content +'"][data-id="'+ url +'"]:first');
-        },
-
-        /**
-         * 根据param创建tab，并返回tab
-         * @param param     创建tab的参数
-         * @returns tab     返回创建好的tab对象
-         */
-        _create : function (param) {
+        create : function (obj, active) {
             var self = this,
                 options = self.options,
                 $el = self.$element,
                 $editor = $el.tabContent.find('.tab-pane[data-content="editor"]');
-            var tabHtml, closeBtnHtml, display, tabPaneHtml, iframe, index, $tab, $tabPane;
+            var param, tabHtml, closeBtnHtml, display, tabPaneHtml, iframe, index, $tab, $tabPane;
+            param = self._check(obj);
+            if(!param) return self;
             //禁止打开多个edit页面，如果edit页面存在，也禁止覆盖
             if(param.content === 'editor' && $editor.length && $editor.hasClass('unsave')){
                 $tab = $el.navPanelList.find('a[data-content="editor"]').parent('li');
-                self._active($tab);
+                self.active($tab);
                 $tabPane = self._getTabPane($tab);
                 $tabPane.before('<div class="help-block alert alert-warning">' + options.language.editorUnsave.cover + '</div>');
-                return false;
+                return self;
             }
             index = getTabIndex(param.content, options.navBar.maxTabs);
             //get layoutTemplates
@@ -559,7 +337,393 @@ if (typeof jQuery === "undefined") {
             // $el.tabContent.children().removeClass('active');
             $el.tabContent.find('.tab-pane[data-content="'+ param.content +'"][data-index="'+index+'"]').remove();//直接移除旧的content，不应重复判断是否同内容。
             $el.tabContent.append(tabPaneHtml);
-            return $tab;
+            if(active) self.active($tab);
+            return self;
+        },
+
+        /**
+         * active tab
+         * @param tab
+         * @returns self      Chain structure.
+         */
+        active : function (tab) {
+            var self = this,  options = self.options;
+            var $tab = $(tab);
+            if(!tab || !$tab.length) return self;
+            var tabA = $tab.find('a:first'),
+                url = tabA.attr('href').replace('#',''),
+                content = tabA.attr('data-content'),
+                $tabPane = self._getTabPane($tab);
+            if(!$tabPane.length) return self;
+            $tab.addClass('active').siblings().removeClass('active');
+            self._fixTabPosition($tab);
+            $tabPane.addClass('active').siblings().removeClass('active');
+            self._fixTabContentLayout($tabPane);
+            if(options.showHash && url) window.location.hash = '#' + url;
+            //如果tab-pane为空，则加载内容
+            if(!$tabPane.html()){
+                if(!$tabPane.is('iframe')){
+                    $tabPane.load(url);
+                } else {
+                    if(!$tabPane.attr('src')){
+                        $tabPane.attr('src', url);
+                    }
+                }
+
+            }
+            return self;
+        },
+        /**
+         * move left
+         * @return self     
+         */
+        moveLeft : function () {
+            var self = this, $el = self.$element,
+                navPanelListMarginLeft = Math.abs(parseInt($el.navPanelList.css("margin-left"))),
+                navPanelWidth = $el.navPanel.outerWidth(true),
+                sumTabsWidth = sumWidth($el.navPanelList.children('li')),
+                leftWidth = 0, marginLeft = 0, $tab;
+            if (sumTabsWidth < navPanelWidth) {
+                return false
+            } else {
+                $tab = $el.navPanelList.children('li:first');
+                while ((marginLeft + $tab.width()) <= navPanelListMarginLeft) {
+                    marginLeft += $tab.outerWidth(true);
+                    $tab = $tab.next();
+                }
+                marginLeft = 0;
+                if (sumWidth($tab.prevAll()) > navPanelWidth) {
+                    while (( (marginLeft + $tab.width()) < navPanelWidth) && $tab.length > 0) {
+                        marginLeft += $tab.outerWidth(true);
+                        $tab = $tab.prev();
+                    }
+                    leftWidth = sumWidth($tab.prevAll());
+                }
+            }
+            $el.navPanelList.animate({marginLeft : 0 - leftWidth + "px"}, "fast");
+            return self;
+        },
+
+        /**
+         * move right
+         * @return self
+         */
+        moveRight : function () {
+            var self = this, $el = self.$element,
+                navPanelListMarginLeft = Math.abs(parseInt($el.navPanelList.css("margin-left"))),
+                navPanelWidth = $el.navPanel.outerWidth(true),
+                sumTabsWidth = sumWidth($el.navPanelList.children('li')),
+                leftWidth = 0, $tab, marginLeft;
+            if (sumTabsWidth < navPanelWidth) {
+                return false;
+            } else {
+                $tab = $el.navPanelList.children('li:first');
+                marginLeft = 0;
+                while ((marginLeft + $tab.width()) <= navPanelListMarginLeft) {
+                    marginLeft += $tab.outerWidth(true);
+                    $tab = $tab.next();
+                }
+                marginLeft = 0;
+                while (( (marginLeft + $tab.width()) < navPanelWidth) && $tab.length > 0) {
+                    marginLeft += $tab.outerWidth(true);
+                    $tab = $tab.next();
+                }
+                leftWidth = sumWidth($tab.prevAll());
+                if (leftWidth > 0) {
+                    $el.navPanelList.animate({marginLeft : 0 - leftWidth + "px"}, "fast");
+                }
+            }
+            return self;
+        },
+
+        /**
+         * close tab
+         * @param tab
+         * @return self     Chain structure.
+         */
+        close: function (tab) {
+            var self = this,  $tab = $(tab), $tabPane = self._getTabPane($tab);
+            if($tab.length && $tabPane.length){
+                if($tabPane.attr('data-content') === 'editor' && $tabPane.hasClass('unsave')){
+                    if(!self._unsaveConfirm()) return false;
+                }
+            }
+            if ($tab.hasClass("active")) {
+                if ($tab.next("li").size()) {
+                    self.active($tab.next("li:first"));
+                }else if ($tab.prev("li").size()) {
+                    self.active($tab.prev("li:last"));
+                }
+            }
+            $tab.remove();
+            $tabPane.remove();
+            return self;
+        },
+
+        /**
+         * close others tab
+         * @return self     Chain structure.
+         */
+        closeOthers : function () {
+            var self = this, $el = self.$element;
+            $el.navPanelList.find('li:not(.active)').find('a:not([data-content="main"]):not([data-content="editor"])').each(function () {
+                var $tabA = $(this);
+                var url = $tabA.attr('href').replace('#','');
+                var content = $tabA.attr('data-content');
+                $el.tabContent.find('.tab-pane[data-content="'+ content +'"][data-id="'+ url +'"]:first').remove();
+                $tabA.parent('li').remove()
+            });
+            $el.navPanelList.css("margin-left", "0");
+            return self;
+        },
+
+        /**
+         * focus actived tab
+         * @return self     Chain structure.
+         */
+        showActive : function () {
+            var self = this, $el = self.$element;
+            var tab = $el.navPanelList.find('li.active:first');
+            self._fixTabPosition(tab);
+            return self;
+        },
+
+        /**
+         * close all tabs, (except main and editor tab)
+         * @return self     Chain structure.
+         */
+        closeAll : function(){
+            var self = this, $el = self.$element;
+            $el.navPanelList.find('a:not([data-content="main"]):not([data-content="editor"])').each(function(){
+                var $tabA = $(this);
+                var $tab = $tabA.parent('li');
+                var url = $tabA.attr('href').replace('#','');
+                var content = $tabA.attr('data-content');
+                $el.tabContent.find('.tab-pane[data-content="'+ content +'"][data-id="'+ url +'"]:first').remove(); //remove tab-content
+                $tab.remove();  //remove
+            });
+            self.active($el.navPanelList.find('a[data-content="main"]:first').parent('li'));
+            return self;
+        },
+
+        /**
+         * 初始化函数
+         * @param options
+         * @returns self
+         * @private
+         */
+        _init: function (options) {
+            var self = this, $el = self.$element;
+            $el.html(defaultLayoutTemplates[options.layout]
+                .replace('{mainClass}', toJoinerStr(options.class))
+                .replace('{navBarClass}' , options.navBar.class)
+                .replace(/\{nav-tabs\}/g , options.style)
+                .replace(/\{backgroundColor\}/g, options.navBar.backgroundColor)
+                .replace('{dropdown}' , options.language.navBar.dropdown)
+                .replace('{showActivedTab}' , options.language.navBar.showActivedTab)
+                .replace('{closeAllTabs}' , options.language.navBar.closeAllTabs)
+                .replace('{closeOtherTabs}' , options.language.navBar.closeOtherTabs)
+            );
+            $el.wrapper       = $el.find('.mt-wrapper:first');
+            $el.navBar        = $el.find('.mt-nav-bar:first');
+            $el.navToolsLeft  = $el.navBar.find('.mt-nav-tools-left:first');
+            $el.navPanel      = $el.navBar.find('.mt-nav-panel:first');
+            $el.navPanelList  = $el.navBar.find('.mt-nav-panel:first ul');
+            $el.navToolsRight = $el.navBar.find('.mt-nav-tools-right:first');
+            $el.tabContent    = $el.find('.tab-content:first');
+            //hide tab-header if maxTabs less than 1
+            if(options.navBar.maxTabs <= 1){
+                options.navBar.maxTabs = 1;
+                $el.navBar.hide();
+            }
+            //set the nav-panel width
+            var toolWidth = $el.navBar.find('.mt-nav-tools-left:visible:first').width() + $el.navBar.find('.mt-nav-tools-right:visible:first').width();
+            $el.navPanel.css('width', 'calc(100% - ' + toolWidth + 'px)');
+            self.options = options;
+            return self;
+        },
+
+        /**
+         * 初始化完成后运行的函数
+         * @returns self
+         * @private
+         */
+        _final : function(){
+            var self = this, $el = self.$element, options = self.options, init = options.init, param;
+            init = (init instanceof Array) ? init : [];
+            for(var i = 0; i < init.length; i++){
+                param = init[i];
+                if(!param.url) continue;
+                param.url = decodeURIComponent(param.url.replace('#', ''));
+                if (!$.trim(param.url).length) continue;
+                param.iframe = param.iframe || isExtUrl(param.url) || options.iframe;
+                if(param.iframe || !param.content) param.content = options.content;
+                param.title = param.title || param.url.replace('http://', '').replace('https://', '') || options.language.navBar.title;
+                param.title = trimText(param.title, options.navBar.maxTitleLength);
+                self.create(param);
+            }
+            //没有任何标签激活的，就激活首页。
+            if(!$el.navPanelList.children('li.active').length && !window.location.hash.substr(1)) self.active($el.navPanelList.find('[data-content="main"]:first').parent('li'));
+            return self;
+        },
+
+        /**
+         * 有效性检查函数
+         * @return self
+         * @private
+         */
+        _validate: function () {
+            var self = this, $exception;
+            if (self.$element.length === 1) {
+                return true;
+            }
+            $exception = '<div class="help-block alert alert-warning">' +
+                '<h4>Duplicate Instance</h4>' +
+                'MultiTabs only can be 1 Instance.' +
+                '</div>';
+            self.$element.before($exception);
+            return self;
+        },
+
+        /**
+         * bind action
+         * @return self
+         * @private
+         */
+        _listen: function () {
+            var self = this, $el = self.$element, options = self.options;
+            //create tab
+            handler($(document), 'click', options.link, function(){
+                self.create(this, true);
+                return false; //Prevent the default link action
+            });
+            //active tab
+            handler($el.navBar, 'click', '.mt-nav-panel li', function(){
+                self.active(this);
+            });
+            //close tab
+            handler($el.navBar, 'click', '.mt-close-tab', function(){
+                self.close($(this).closest('li'));
+            });
+            //move left
+            handler($el.navBar, 'click', '.mt-move-left', function(){
+                self.moveLeft();
+            });
+            //move right
+            handler($el.navBar, 'click', '.mt-move-right', function(){
+                self.moveRight();
+            });
+            //show actived tab
+            handler($el.navBar, 'click', '.mt-show-actived-tab', function(){
+                self.showActive();
+            });
+            //close all tabs
+            handler($el.navBar, 'click', '.mt-close-all-tabs', function(){
+                self.closeAll();
+            });
+            //close other tabs
+            handler($el.navBar, 'click', '.mt-close-other-tabs', function(){
+                self.closeOthers();
+            });
+            //close window warning.
+            handler($(window), 'beforeunload',function(){
+                if($el.tabContent.find('.tab-pane[data-content="editor"]').hasClass('unsave')){
+                    return options.language.editorUnsave.close;
+                }
+            });
+            //fixed the nav-bar
+            if(options.fixed){
+                var navBarHeight = $el.navBar.outerHeight();
+                $el.tabContent.css('paddingTop', navBarHeight);
+                handler($(window), 'scroll', function(){
+                    var scrollTop = $(this).scrollTop();
+                    scrollTop = scrollTop < ($el.wrapper.height() - navBarHeight) ? scrollTop + 'px' : 'auto';
+                    $el.navBar.css('top',scrollTop);
+                });
+            }
+            //if show hash， bind hash change
+            if(options.showHash){
+                handler($(window), 'hashchange load', function(){
+                    var hash, url, $tab, $tabA, a, param;
+                    hash = window.location.hash;
+                    if(!hash) return false;
+                    url = hash.replace('#','');
+                    $tabA = $el.navPanelList.find('[data-id="'+ url +'"]:first');
+                    if($tabA.length){
+                        $tab = $tabA.closest('li');
+                        if(!$tab.hasClass('active')) self.active($tab);
+                        return false;
+                    }else{
+                        a = document.createElement('a');
+                        a.href=url;
+                        self.create(a, true);
+                        return false;
+                    }
+                });
+            }
+            //if layout === 'classic' show hide list in dropdown menu
+            if(options.layout === 'classic'){
+                handler($el.navBar, 'click', '.mt-dropdown:not(.open)', function(){ //just trigger when dropdown not open.
+                    var list = self._getHiddenList();
+                    var $dropDown  = $('.mt-hidden-list').empty();
+                    if(list) {  //当$list的值不为false才进行下面的操作
+                        while(list.prevList.length){
+                            $dropDown.append(list.prevList.shift()[0].outerHTML);
+                        }
+                        while(list.nextList.length){
+                            $dropDown.append(list.nextList.shift()[0].outerHTML);
+                        }
+                    }
+                });
+            }
+            return self;
+        },
+
+        /**
+         * 获取触发multitabs的对象的参数。
+         * @param obj          触发multitabs的对象
+         * @returns param      返回条件
+         * @private
+         */
+        _getParam : function(obj){
+            var self = this,  options = self.options, param;
+            param = $(obj).data() || obj || {};
+            param.url = param.url || $(obj).attr('href');
+            param.url = decodeURIComponent(param.url.replace('#', ''));
+            if (!$.trim(param.url).length) return false;
+            param.iframe = param.iframe || isExtUrl(param.url) || options.iframe;
+            if(param.iframe || !param.content) param.content = options.content;
+            param.title = param.title || $(obj).text() || param.url.replace('http://', '').replace('https://', '') || options.language.navBar.title;
+            param.title = trimText(param.title, options.navBar.maxTitleLength);
+            return param;
+        },
+
+        /**
+         * 检查触发multitabs的对象是否有效，并尝试激活tab，如果激活不成功，返回param。
+         * @param obj
+         * @returns {*}    对应的tab已存在或者multitabs对象无效则返回false，否则返回param
+         */
+        _check : function (obj) {
+            var self = this, $el = self.$element;
+            var param, tab;
+            param = self._getParam(obj);
+            if(!param) return false;
+            tab = $el.navPanelList.find('a[data-id="'+ param.url +'"]').closest('li'); //仅判断data-id是否与URL一致，即使data-content不一样也激活。避免打开两个同样的data-id的内容引起冲突。
+            if(tab && $(tab).length && self._getTabPane(tab).length) {
+                self.active(tab);
+                return false
+            }else return param;
+        },
+
+        /**
+         * get tab-pane from tab
+         * @param tab
+         * @returns {*}
+         * @private
+         */
+        _getTabPane : function(tab){
+            var self = this, $el = self.$element, $tabA = $(tab).children('a:first'), url = $tabA.attr('href').replace('#',''), content = $tabA.attr('data-content');
+            return $el.tabContent.find('.tab-pane[data-content="'+ content +'"][data-id="'+ url +'"]:first');
         },
 
         /**
@@ -602,8 +766,8 @@ if (typeof jQuery === "undefined") {
         },
 
         /**
-         * 隐藏的tab下拉列表
-         * @returns {*}
+         * hidden tab list
+         * @returns hidden tab list, the prevList and nextList
          * @private
          */
         _getHiddenList : function(){
@@ -614,7 +778,7 @@ if (typeof jQuery === "undefined") {
                 tabPrevList = [], tabNextList = [],  $tab, marginLeft;
             //所有tab的宽度不超过nav-panel的宽度
             if (sumTabsWidth < navPanelWidth) {
-                return false;
+                return {};
             } else {
                 $tab = $el.navPanelList.children('li:first');
                 //overflow hidden left part
@@ -638,169 +802,9 @@ if (typeof jQuery === "undefined") {
                 }
                 return {prevList : tabPrevList, nextList : tabNextList};
             }
-
         },
 
-        /**
-         * 向左边移动
-         * @returns {boolean}
-         * @private
-         */
-        _moveLeft : function () {
-            var self = this, $el = self.$element,
-                navPanelListMarginLeft = Math.abs(parseInt($el.navPanelList.css("margin-left"))),
-                navPanelWidth = $el.navPanel.outerWidth(true),
-                sumTabsWidth = sumWidth($el.navPanelList.children('li')),
-                leftWidth = 0, marginLeft = 0, $tab;
-            if (sumTabsWidth < navPanelWidth) {
-                return false
-            } else {
-                $tab = $el.navPanelList.children('li:first');
-                while ((marginLeft + $tab.width()) <= navPanelListMarginLeft) {
-                    marginLeft += $tab.outerWidth(true);
-                    $tab = $tab.next();
-                }
-                marginLeft = 0;
-                if (sumWidth($tab.prevAll()) > navPanelWidth) {
-                    while (( (marginLeft + $tab.width()) < navPanelWidth) && $tab.length > 0) {
-                        marginLeft += $tab.outerWidth(true);
-                        $tab = $tab.prev();
-                    }
-                    leftWidth = sumWidth($tab.prevAll());
-                }
-            }
-            $el.navPanelList.animate({marginLeft : 0 - leftWidth + "px"}, "fast")
-        },
-        /**
-         * 向右边移动
-         * @returns {boolean}
-         * @private
-         */
-        _moveRight : function () {
-            var self = this, $el = self.$element,
-                navPanelListMarginLeft = Math.abs(parseInt($el.navPanelList.css("margin-left"))),
-                navPanelWidth = $el.navPanel.outerWidth(true),
-                sumTabsWidth = sumWidth($el.navPanelList.children('li')),
-                leftWidth = 0, $tab, marginLeft;
-            if (sumTabsWidth < navPanelWidth) {
-                return false;
-            } else {
-                $tab = $el.navPanelList.children('li:first');
-                marginLeft = 0;
-                while ((marginLeft + $tab.width()) <= navPanelListMarginLeft) {
-                    marginLeft += $tab.outerWidth(true);
-                    $tab = $tab.next();
-                }
-                marginLeft = 0;
-                while (( (marginLeft + $tab.width()) < navPanelWidth) && $tab.length > 0) {
-                    marginLeft += $tab.outerWidth(true);
-                    $tab = $tab.next();
-                }
-                leftWidth = sumWidth($tab.prevAll());
-                if (leftWidth > 0) {
-                    $el.navPanelList.animate({marginLeft : 0 - leftWidth + "px"}, "fast");
-                }
-            }
-        },
 
-        /**
-         * 关闭tab
-         * @param tab
-         * @returns {boolean}
-         */
-        _close: function (tab) {
-            var self = this,  $tab = $(tab), $tabPane = self._getTabPane($tab);
-            if($tab.length && $tabPane.length){
-                if($tabPane.attr('data-content') === 'editor' && $tabPane.hasClass('unsave')){
-                    if(!self._unsaveConfirm()) return false;
-                }
-            }
-            if ($tab.hasClass("active")) {
-                if ($tab.next("li").size()) {
-                    self._active($tab.next("li:first"));
-                }else if ($tab.prev("li").size()) {
-                    self._active($tab.prev("li:last"));
-                }
-            }
-            $tab.remove();
-            $tabPane.remove();
-        },
-
-        /**
-         * 关闭其他的tab
-         * @private
-         */
-        _closeOthers : function () {
-            var self = this, $el = self.$element;
-            $el.navPanelList.find('li:not(.active)').find('a:not([data-content="main"]):not([data-content="editor"])').each(function () {
-                var $tabA = $(this);
-                var url = $tabA.attr('href').replace('#','');
-                var content = $tabA.attr('data-content');
-                $el.tabContent.find('.tab-pane[data-content="'+ content +'"][data-id="'+ url +'"]:first').remove();
-                $tabA.parent('li').remove()
-            });
-            $el.navPanelList.css("margin-left", "0");
-        },
-
-        /**
-         * 定位并显示激活的tab
-         * @private
-         */
-        _showActive : function () {
-            var self = this, $el = self.$element;
-            var tab = $el.navPanelList.find('li.active:first');
-            self._fixTabPosition(tab);
-        },
-
-        /**
-         * 关闭所有（main和editor除外）
-         * @private
-         */
-        _closeAll : function(){
-            var self = this, $el = self.$element;
-            $el.navPanelList.find('a:not([data-content="main"]):not([data-content="editor"])').each(function(){
-                var $tabA = $(this);
-                var $tab = $tabA.parent('li');
-                var url = $tabA.attr('href').replace('#','');
-                var content = $tabA.attr('data-content');
-                $el.tabContent.find('.tab-pane[data-content="'+ content +'"][data-id="'+ url +'"]:first').remove(); //remove tab-content
-                $tab.remove();  //remove
-            });
-            self._active($el.navPanelList.find('a[data-content="main"]:first').parent('li'));
-        },
-
-        /**
-         * 激活tab
-         * @param tab
-         * @returns {boolean}
-         */
-        _active : function (tab) {
-            var self = this,  options = self.options;
-            var $tab = $(tab);
-            if(!$tab.length) return false;
-            var tabA = $tab.find('a:first'),
-                url = tabA.attr('href').replace('#',''),
-                content = tabA.attr('data-content'),
-                $tabPane = self._getTabPane($tab);
-            if(!$tabPane.length) return false;
-            $tab.addClass('active').siblings().removeClass('active');
-            self._fixTabPosition($tab);
-            $tabPane.addClass('active').siblings().removeClass('active');
-            self._fixTabContentLayout($tabPane);
-            if(options.showHash && url) window.location.hash = '#' + url;
-            //如果tab-pane为空，则加载内容
-            if(!$tabPane.html()){
-                if(!$tabPane.is('iframe')){
-                    $tabPane.load(url);
-                } else {
-                    if(!$tabPane.attr('src')){
-                        $tabPane.attr('src', url);
-                    }
-                }
-
-            }
-            return $tab;
-        },
 
         /**
          * 判断tab-pane是否iframe，并根据状态添加/删除对应的class
