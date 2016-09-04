@@ -688,7 +688,7 @@ if (typeof jQuery === "undefined") {
         _getParam : function(obj){
             var self = this,  options = self.options, param;
             param = $(obj).data() || obj || {};
-            param.url = param.url || $(obj).attr('href');
+            param.url = param.url || $(obj).attr('href') || $(obj).attr('url');
             param.url = decodeURIComponent(param.url.replace('#', ''));
             if (!$.trim(param.url).length) return false;
             param.iframe = param.iframe || isExtUrl(param.url) || options.iframe;
