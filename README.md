@@ -66,7 +66,7 @@ The following is the default configuration, you can modify as you want.
     $('.content-wrapper').multitabs({
         showHash : true,                            //While is true, show hash in URL, in case refresh or F5, can stay in same tab page.
         showClose : false,                          //while is false, show close button in hover, if true, show close button always
-        fixed : true ,                              //fixed the nav-bar
+        fixed : false,                              //fixed the nav-bar
         layout : 'default',                         //it can be 'default', 'classic' (all hidden tab in dropdown list), and simple
         style : 'nav-tabs',                         //can be nav-tabs or nav-pills
         link : '.multitabs',                        //selector text to trigger multitabs. 

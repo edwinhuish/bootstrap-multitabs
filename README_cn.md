@@ -64,7 +64,7 @@ Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/index-simple.html) and 
     $('.content-wrapper').multitabs({
         showHash : true,                            //当值为true时，显示URL的hash，避免误按F5或者刷新的页面丢失，不过需要注意URL栏参数的泄露。
         showClose : false,                          //当值为false，仅在鼠标悬浮时显示关闭按钮。true时一直显示
-        fixed : true ,                              //固定标签头列表
+        fixed : false,                              //固定标签头列表
         layout : 'default',                         //有两种模式，'default', 'classic'(所有隐藏tab都在下拉菜单里) 和 'simple'
         style : 'nav-tabs',                         //可以为nav-tabs 或 nav-pills
         link : '.multitabs',                        //触发multitabs的selector text，注意需要有".","#"等
@@ -82,7 +82,7 @@ Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/index-simple.html) and 
         ],       
         navBar : {
             class : '',                             //为navBar添加class
-            maxTabs : 8,                            //最多tab数量。（main和editor不计算在内)
+            maxTabs : 15,                           //最多tab数量。（main和editor不计算在内)
             maxTabTitleLength : 25,                 //tab标题的最大长度
             backgroundColor : '#f5f5f5',            //默认nav-bar 背景颜色
         },
