@@ -6,7 +6,7 @@ if (typeof jQuery === "undefined") {
     "use strict";
     //声明变量、函数
     var NAMESPACE, tabIndex;   //常量&全局变量
-    var MultiTabs,  handler, getTabIndex, toJoinerStr, toHumpStr,  isExtUrl, sumWidth, trimText, insertRule;  //函数
+    var MultiTabs,  handler, getTabIndex, toJoinerStr, toHumpStr,  isExtUrl, sumWidth, trimText, insertRule, isEmptyObject;  //函数
     var defaultLayoutTemplates, defaultLanguage, defaultAjaxTabPane, defaultIframeTabPane, defaultNavBar;  //默认参数
 
     NAMESPACE = '.multitabs';  // on() 绑定的事件的namespace
@@ -122,8 +122,15 @@ if (typeof jQuery === "undefined") {
         }
     };
 
-
-
+    /**
+     * check the obj is empty object
+     */
+    isEmptyObject = function (obj) {
+        for (var key in obj) {
+            return false;
+        }
+        return true;
+    };
 
     /**
      * 将驼峰式string 转化为带'-'连接符的字符串
@@ -632,9 +639,9 @@ if (typeof jQuery === "undefined") {
                 }
             });
             //fixed the nav-bar
+            var navBarHeight = $el.navBar.outerHeight();
+            $el.tabContent.css('paddingTop', navBarHeight);
             if(options.fixed){
-                var navBarHeight = $el.navBar.outerHeight();
-                $el.tabContent.css('paddingTop', navBarHeight);
                 handler($(window), 'scroll', function(){
                     var scrollTop = $(this).scrollTop();
                     scrollTop = scrollTop < ($el.wrapper.height() - navBarHeight) ? scrollTop + 'px' : 'auto';
@@ -686,11 +693,12 @@ if (typeof jQuery === "undefined") {
          * @private
          */
         _getParam : function(obj){
-            var self = this,  options = self.options, param;
-            param = $(obj).data() || obj || {};
+            var self = this,  options = self.options, param, objData = $(obj).data();
+            param = isEmptyObject(objData) ? (obj || {}) : objData;
+            // param = $(obj).data() || obj || {};
             param.url = param.url || $(obj).attr('href') || $(obj).attr('url');
-            param.url = decodeURIComponent(param.url.replace('#', ''));
-            if (!$.trim(param.url).length) return false;
+            param.url = $.trim(decodeURIComponent(param.url.replace('#', '')));
+            if (!param.url.length) return false;
             param.iframe = param.iframe || isExtUrl(param.url) || options.iframe;
             if(param.iframe || !param.content) param.content = options.content;
             param.title = param.title || $(obj).text() || param.url.replace('http://', '').replace('https://', '') || options.language.navBar.title;
@@ -856,7 +864,7 @@ if (typeof jQuery === "undefined") {
         showHash : true,
         showClose : false,
         content : 'info',
-        link : '.multi-tabs',
+        link : '.multitabs',
         class : '',
         iframe : false,                     //iframe mode, default is false, just use iframe for external link
         layout : 'default',

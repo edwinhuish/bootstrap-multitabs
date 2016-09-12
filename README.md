@@ -69,7 +69,7 @@ The following is the default configuration, you can modify as you want.
         fixed : true ,                              //fixed the nav-bar
         layout : 'default',                         //it can be 'default', 'classic' (all hidden tab in dropdown list), and simple
         style : 'nav-tabs',                         //can be nav-tabs or nav-pills
-        link : '.multi-tabs',                       //selector text to trigger multitabs. 
+        link : '.multitabs',                        //selector text to trigger multitabs. 
         iframe : false,                             //Global iframe mode, default is false, is the auto mode (for the self page, use ajax, and the external, use iframe)
         class : '',                                 //class for whole multitabs
         content : 'info',                           //change the data-content name, is not necessary to change.
