@@ -43,9 +43,9 @@ Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/index-simple.html) and 
 </script>
 ```
 
-4. At last, add "multi-tabs" class in the link which you want.
+4. At last, add "multitabs" class in the link which you want.
 ```html
-<a class="multi-tabs" href="pages/index-ajax-2.html">ajax INFO Tab 2</a>
+<a class="multitabs" href="pages/index-ajax-2.html">ajax INFO Tab 2</a>
 ```
 
 ** Now, the simple bootstrap-multitabs works!**

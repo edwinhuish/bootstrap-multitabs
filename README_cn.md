@@ -41,9 +41,9 @@ Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/index-simple.html) and 
 </script>
 ```
 
-4. 最后在需要关联链接中加入"multi-tabs"的class
+4. 最后在需要关联链接中加入"multitabs"的class
 ```html
-<a class="multi-tabs" href="pages/index-ajax-2.html">ajax INFO Tab 2</a>
+<a class="multitabs" href="pages/index-ajax-2.html">ajax INFO Tab 2</a>
 ```
 
 ** 至此，最简单的bootstrap-multitabs配置成功！**
