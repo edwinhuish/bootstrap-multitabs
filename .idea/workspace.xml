@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list id="6c133262-3e7f-441c-ac52-6b0c3950b037" name="Default" comment="Set mas title length" />
-    <list default="true" id="fd3ab362-8c89-4354-bf19-a44204f3f3bf" name="Rejected commit: Default" comment="fixed small screen tab-content padding-top and normative code." />
+    <list default="true" id="fd3ab362-8c89-4354-bf19-a44204f3f3bf" name="Rejected commit: Default" comment="fixed small screen tab-content padding-top and normative code.">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+    </list>
     <ignored path="multi-tabs.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path=".idea/dataSources.local.xml" />
@@ -29,16 +31,16 @@
       <file leaf-file-name="multitabs.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/plugins/bootstrap-multitabs/js/multitabs.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.22508591">
-              <caret line="320" column="22" selection-start-line="320" selection-start-column="22" selection-end-line="320" selection-end-column="22" />
+            <state vertical-scroll-proportion="0.6323024">
+              <caret line="335" column="21" selection-start-line="335" selection-start-column="21" selection-end-line="335" selection-end-column="21" />
               <folding>
-                <marker date="1472570308126" expanded="true" signature="4398:4411" placeholder="..." />
-                <marker date="1472570308126" expanded="true" signature="4475:4511" placeholder="..." />
-                <marker date="1472570308126" expanded="true" signature="6380:6393" placeholder="..." />
-                <marker date="1472570308126" expanded="true" signature="6457:6493" placeholder="..." />
-                <marker date="1472570308126" expanded="true" signature="7671:7684" placeholder="..." />
-                <marker date="1472570308126" expanded="true" signature="7748:7784" placeholder="..." />
-                <marker date="1472570308126" expanded="true" signature="8580:8587" placeholder="..." />
+                <marker date="1473695657974" expanded="true" signature="4592:4605" placeholder="..." />
+                <marker date="1473695657974" expanded="true" signature="4669:4705" placeholder="..." />
+                <marker date="1473695657974" expanded="true" signature="6619:6632" placeholder="..." />
+                <marker date="1473695657974" expanded="true" signature="6696:6732" placeholder="..." />
+                <marker date="1473695657974" expanded="true" signature="7928:7941" placeholder="..." />
+                <marker date="1473695657974" expanded="true" signature="8005:8041" placeholder="..." />
+                <marker date="1473695657974" expanded="true" signature="8846:8853" placeholder="..." />
               </folding>
             </state>
           </provider>
@@ -83,6 +85,28 @@
     <option name="width" value="1382" />
     <option name="height" value="744" />
   </component>
+  <component name="ProjectInspectionProfilesVisibleTreeState">
+    <entry key="Project Default">
+      <profile-state>
+        <expanded-state>
+          <State>
+            <id />
+          </State>
+          <State>
+            <id>GeneralJavaScript</id>
+          </State>
+          <State>
+            <id>JavaScript</id>
+          </State>
+        </expanded-state>
+        <selected-state>
+          <State>
+            <id>JSUnresolvedLibraryURL</id>
+          </State>
+        </selected-state>
+      </profile-state>
+    </entry>
+  </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
     <OptionsSetting value="true" id="Remove" />
@@ -108,7 +132,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -130,10 +153,11 @@
         </subPane>
       </pane>
       <pane id="Scratches" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="settings.editor.selected.configurable" value="vcs.Subversion" />
+    <property name="settings.editor.selected.configurable" value="preferences.sourceCode" />
     <property name="settings.editor.splitter.proportion" value="0.2" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../MiniERP" />
@@ -199,24 +223,24 @@
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <editor active="false" />
     <layout>
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16263238" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16717096" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3878887" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3289689" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3878887" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -245,13 +269,13 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <marker date="1472570308126" expanded="true" signature="4398:4411" placeholder="..." />
-            <marker date="1472570308126" expanded="true" signature="4475:4511" placeholder="..." />
-            <marker date="1472570308126" expanded="true" signature="6380:6393" placeholder="..." />
-            <marker date="1472570308126" expanded="true" signature="6457:6493" placeholder="..." />
-            <marker date="1472570308126" expanded="true" signature="7671:7684" placeholder="..." />
-            <marker date="1472570308126" expanded="true" signature="7748:7784" placeholder="..." />
-            <marker date="1472570308126" expanded="true" signature="8580:8587" placeholder="..." />
+            <marker date="1473695657974" expanded="true" signature="4592:4605" placeholder="..." />
+            <marker date="1473695657974" expanded="true" signature="4669:4705" placeholder="..." />
+            <marker date="1473695657974" expanded="true" signature="6619:6632" placeholder="..." />
+            <marker date="1473695657974" expanded="true" signature="6696:6732" placeholder="..." />
+            <marker date="1473695657974" expanded="true" signature="7928:7941" placeholder="..." />
+            <marker date="1473695657974" expanded="true" signature="8005:8041" placeholder="..." />
+            <marker date="1473695657974" expanded="true" signature="8846:8853" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -261,13 +285,45 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <marker date="1472570308126" expanded="true" signature="4398:4411" placeholder="..." />
-            <marker date="1472570308126" expanded="true" signature="4475:4511" placeholder="..." />
-            <marker date="1472570308126" expanded="true" signature="6380:6393" placeholder="..." />
-            <marker date="1472570308126" expanded="true" signature="6457:6493" placeholder="..." />
-            <marker date="1472570308126" expanded="true" signature="7671:7684" placeholder="..." />
-            <marker date="1472570308126" expanded="true" signature="7748:7784" placeholder="..." />
-            <marker date="1472570308126" expanded="true" signature="8580:8587" placeholder="..." />
+            <marker date="1473695657974" expanded="true" signature="4592:4605" placeholder="..." />
+            <marker date="1473695657974" expanded="true" signature="4669:4705" placeholder="..." />
+            <marker date="1473695657974" expanded="true" signature="6619:6632" placeholder="..." />
+            <marker date="1473695657974" expanded="true" signature="6696:6732" placeholder="..." />
+            <marker date="1473695657974" expanded="true" signature="7928:7941" placeholder="..." />
+            <marker date="1473695657974" expanded="true" signature="8005:8041" placeholder="..." />
+            <marker date="1473695657974" expanded="true" signature="8846:8853" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/plugins/bootstrap-multitabs/js/multitabs.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <marker date="1473695657974" expanded="true" signature="4592:4605" placeholder="..." />
+            <marker date="1473695657974" expanded="true" signature="4669:4705" placeholder="..." />
+            <marker date="1473695657974" expanded="true" signature="6619:6632" placeholder="..." />
+            <marker date="1473695657974" expanded="true" signature="6696:6732" placeholder="..." />
+            <marker date="1473695657974" expanded="true" signature="7928:7941" placeholder="..." />
+            <marker date="1473695657974" expanded="true" signature="8005:8041" placeholder="..." />
+            <marker date="1473695657974" expanded="true" signature="8846:8853" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/plugins/bootstrap-multitabs/js/multitabs.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <marker date="1473695657974" expanded="true" signature="4592:4605" placeholder="..." />
+            <marker date="1473695657974" expanded="true" signature="4669:4705" placeholder="..." />
+            <marker date="1473695657974" expanded="true" signature="6619:6632" placeholder="..." />
+            <marker date="1473695657974" expanded="true" signature="6696:6732" placeholder="..." />
+            <marker date="1473695657974" expanded="true" signature="7928:7941" placeholder="..." />
+            <marker date="1473695657974" expanded="true" signature="8005:8041" placeholder="..." />
+            <marker date="1473695657974" expanded="true" signature="8846:8853" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -280,6 +336,9 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
+      <provider editor-type-id="MarkdownFxPreviewEditor">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="split-provider[text-editor;MarkdownPreviewEditor]">
         <state split_layout="FIRST">
           <first_editor vertical-scroll-proportion="0.0">
@@ -287,9 +346,6 @@
           </first_editor>
           <second_editor />
         </state>
-      </provider>
-      <provider editor-type-id="MarkdownFxPreviewEditor">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
@@ -300,6 +356,9 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
+      <provider editor-type-id="MarkdownFxPreviewEditor">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="split-provider[text-editor;MarkdownPreviewEditor]">
         <state split_layout="FIRST">
           <first_editor vertical-scroll-proportion="0.0">
@@ -307,9 +366,6 @@
           </first_editor>
           <second_editor />
         </state>
-      </provider>
-      <provider editor-type-id="MarkdownFxPreviewEditor">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
@@ -320,6 +376,9 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
+      <provider editor-type-id="MarkdownFxPreviewEditor">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="split-provider[text-editor;MarkdownPreviewEditor]">
         <state split_layout="FIRST">
           <first_editor vertical-scroll-proportion="0.0">
@@ -327,9 +386,6 @@
           </first_editor>
           <second_editor />
         </state>
-      </provider>
-      <provider editor-type-id="MarkdownFxPreviewEditor">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
@@ -340,6 +396,9 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
+      <provider editor-type-id="MarkdownFxPreviewEditor">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="split-provider[text-editor;MarkdownPreviewEditor]">
         <state split_layout="FIRST">
           <first_editor vertical-scroll-proportion="0.0">
@@ -347,9 +406,6 @@
           </first_editor>
           <second_editor />
         </state>
-      </provider>
-      <provider editor-type-id="MarkdownFxPreviewEditor">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
@@ -416,6 +472,9 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/README.md">
+      <provider editor-type-id="MarkdownFxPreviewEditor">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="split-provider[text-editor;MarkdownPreviewEditor]">
         <state split_layout="FIRST">
           <first_editor vertical-scroll-proportion="0.4581749">
@@ -423,9 +482,6 @@
           </first_editor>
           <second_editor />
         </state>
-      </provider>
-      <provider editor-type-id="MarkdownFxPreviewEditor">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
@@ -444,16 +500,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/plugins/bootstrap-multitabs/js/multitabs.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.22508591">
-          <caret line="320" column="22" selection-start-line="320" selection-start-column="22" selection-end-line="320" selection-end-column="22" />
+        <state vertical-scroll-proportion="0.6323024">
+          <caret line="335" column="21" selection-start-line="335" selection-start-column="21" selection-end-line="335" selection-end-column="21" />
           <folding>
-            <marker date="1472570308126" expanded="true" signature="4398:4411" placeholder="..." />
-            <marker date="1472570308126" expanded="true" signature="4475:4511" placeholder="..." />
-            <marker date="1472570308126" expanded="true" signature="6380:6393" placeholder="..." />
-            <marker date="1472570308126" expanded="true" signature="6457:6493" placeholder="..." />
-            <marker date="1472570308126" expanded="true" signature="7671:7684" placeholder="..." />
-            <marker date="1472570308126" expanded="true" signature="7748:7784" placeholder="..." />
-            <marker date="1472570308126" expanded="true" signature="8580:8587" placeholder="..." />
+            <marker date="1473695657974" expanded="true" signature="4592:4605" placeholder="..." />
+            <marker date="1473695657974" expanded="true" signature="4669:4705" placeholder="..." />
+            <marker date="1473695657974" expanded="true" signature="6619:6632" placeholder="..." />
+            <marker date="1473695657974" expanded="true" signature="6696:6732" placeholder="..." />
+            <marker date="1473695657974" expanded="true" signature="7928:7941" placeholder="..." />
+            <marker date="1473695657974" expanded="true" signature="8005:8041" placeholder="..." />
+            <marker date="1473695657974" expanded="true" signature="8846:8853" placeholder="..." />
           </folding>
         </state>
       </provider>
