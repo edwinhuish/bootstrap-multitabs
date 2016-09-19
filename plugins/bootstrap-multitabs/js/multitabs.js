@@ -607,30 +607,37 @@ if (typeof jQuery === "undefined") {
             //active tab
             handler($el.navBar, 'click', '.mt-nav-panel li', function(){
                 self.active(this);
+                return false; //fixed while showHash is false, still change hash
             });
             //close tab
             handler($el.navBar, 'click', '.mt-close-tab', function(){
                 self.close($(this).closest('li'));
+                return false; //Avoid possible BUG
             });
             //move left
             handler($el.navBar, 'click', '.mt-move-left', function(){
                 self.moveLeft();
+                return false; //Avoid possible BUG
             });
             //move right
             handler($el.navBar, 'click', '.mt-move-right', function(){
                 self.moveRight();
+                return false; //Avoid possible BUG
             });
             //show actived tab
             handler($el.navBar, 'click', '.mt-show-actived-tab', function(){
                 self.showActive();
+                return false; //Avoid possible BUG
             });
             //close all tabs
             handler($el.navBar, 'click', '.mt-close-all-tabs', function(){
                 self.closeAll();
+                return false; //Avoid possible BUG
             });
             //close other tabs
             handler($el.navBar, 'click', '.mt-close-other-tabs', function(){
                 self.closeOthers();
+                return false; //Avoid possible BUG
             });
             //close window warning.
             handler($(window), 'beforeunload',function(){
@@ -646,6 +653,7 @@ if (typeof jQuery === "undefined") {
                     var scrollTop = $(this).scrollTop();
                     scrollTop = scrollTop < ($el.wrapper.height() - navBarHeight) ? scrollTop + 'px' : 'auto';
                     $el.navBar.css('top',scrollTop);
+                    return false; //Avoid possible BUG
                 });
             }
             //if show hash， bind hash change
@@ -681,6 +689,7 @@ if (typeof jQuery === "undefined") {
                             $dropDown.append(list.nextList.shift()[0].outerHTML);
                         }
                     }
+                    return false; //Avoid possible BUG
                 });
             }
             return self;
