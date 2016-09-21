@@ -449,7 +449,10 @@ if (typeof jQuery === "undefined") {
          * @return self     Chain structure.
          */
         close: function (tab) {
-            var self = this,  $tab = $(tab), $tabPane = self._getTabPane($tab);
+            var self = this, $tab, $tabPane;
+            $tab = $(tab);
+            $tab = $tab.is('a') ? $tab.closest('li') : $tab;
+            $tabPane = self._getTabPane($tab);
             if($tab.length && $tabPane.length){
                 if($tabPane.attr('data-content') === 'editor' && $tabPane.hasClass('unsave')){
                     if(!self._unsaveConfirm()) return self;
