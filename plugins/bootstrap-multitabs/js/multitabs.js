@@ -795,7 +795,7 @@ if (typeof jQuery === "undefined") {
                 tabPrevList = [], tabNextList = [],  $tab, marginLeft;
             //所有tab的宽度不超过nav-panel的宽度
             if (sumTabsWidth < navPanelWidth) {
-                return {};
+                return false;
             } else {
                 $tab = $el.navPanelList.children('li:first');
                 //overflow hidden left part
