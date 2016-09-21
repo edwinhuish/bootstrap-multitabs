@@ -689,7 +689,7 @@ if (typeof jQuery === "undefined") {
                             $dropDown.append(list.nextList.shift()[0].outerHTML);
                         }
                     }
-                    return false; //Avoid possible BUG
+                    // return false; //Avoid possible BUG
                 });
             }
             return self;
