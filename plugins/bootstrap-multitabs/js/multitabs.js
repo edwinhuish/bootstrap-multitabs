@@ -684,13 +684,15 @@ if (typeof jQuery === "undefined") {
                 handler($el.navBar, 'click', '.mt-dropdown:not(.open)', function(){ //just trigger when dropdown not open.
                     var list = self._getHiddenList();
                     var $dropDown  = $('.mt-hidden-list').empty();
-                    if(list) {  //当$list的值不为false才进行下面的操作
+                    if(list) {  //当$list的值不为空才进行下面的操作
                         while(list.prevList.length){
                             $dropDown.append(list.prevList.shift()[0].outerHTML);
                         }
                         while(list.nextList.length){
                             $dropDown.append(list.nextList.shift()[0].outerHTML);
                         }
+                    }else{
+                        $dropDown.append('<li>empty</li>');
                     }
                     // return false; //Avoid possible BUG
                 });
