@@ -874,7 +874,7 @@ if (typeof jQuery === "undefined") {
     $.fn.multitabs.defaults = {
         init :[],
         style : 'nav-tabs',          //can be nav-tabs or nav-pills
-        fixed : true,
+        fixed : false,
         showHash : true,
         showClose : false,
         content : 'info',
