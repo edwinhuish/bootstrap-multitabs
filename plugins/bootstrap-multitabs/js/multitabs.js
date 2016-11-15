@@ -354,11 +354,16 @@ if (typeof jQuery === "undefined") {
          */
         active : function (tab) {
             var self = this,  options = self.options;
-            var $tab = $(tab);
+            var $tab = $(tab), $tabA;
+            if($tab.is('a')){
+                $tabA = $tab;
+                $tab = $tab.closest('li');
+            }else{
+                $tabA = $tab.find('a:first');
+            }
             if(!tab || !$tab.length) return self;
-            var tabA = $tab.find('a:first'),
-                url = tabA.attr('data-id'),
-                content = tabA.attr('data-content'),
+            var url = $tabA.attr('data-id'),
+                content = $tabA.attr('data-content'),
                 $tabPane = self._getTabPane($tab);
             if(!$tabPane.length) return self;
             $tab.addClass('active').siblings().removeClass('active');
