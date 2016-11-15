@@ -164,7 +164,7 @@ if (typeof jQuery === "undefined") {
         '       </div>' +
         '       <nav class="mt-nav mt-nav-panel">' +
         '           <ul  class="nav {nav-tabs}">' +
-        '               <li><a href="#welcome_to_use_multitabs"  data-content="main" data-index="0" data-id="welcome_to_use_multitabs"> Home </a></li>' +
+        '               <li><a data-content="main" data-index="0" data-id="welcome_to_use_multitabs"> Home </a></li>' +
         '           </ul>' +
         '       </nav>' +
         '       <div class="mt-nav mt-nav-tools-right">' +
@@ -190,7 +190,7 @@ if (typeof jQuery === "undefined") {
         '   <div class="mt-nav-bar {navBarClass}" style="background-color: {backgroundColor};">' +
         '       <nav class="mt-nav mt-nav-panel">' +
         '           <ul  class="nav {nav-tabs}">' +
-        '               <li><a href="#welcome_to_use_multitabs"  data-content="main" data-index="0" data-id="welcome_to_use_multitabs"> Home </a></li>' +
+        '               <li><a data-content="main" data-index="0" data-id="welcome_to_use_multitabs"> Home </a></li>' +
         '           </ul>' +
         '       </nav>' +
         '       <div class="mt-nav mt-nav-tools-right">' +
@@ -210,7 +210,7 @@ if (typeof jQuery === "undefined") {
         '   <div class="mt-nav-bar {navBarClass}" style="background-color: {backgroundColor};">' +
         '       <nav class="mt-nav mt-nav-panel">' +
         '           <ul  class="nav {nav-tabs}">' +
-        '               <li><a href="#welcome_to_use_multitabs"  data-content="main" data-index="0" data-id="welcome_to_use_multitabs"> Home </a></li>' +
+        '               <li><a data-content="main" data-index="0" data-id="welcome_to_use_multitabs"> Home </a></li>' +
         '           </ul>' +
         '       </nav>' +
         '   </div>' +
@@ -218,7 +218,7 @@ if (typeof jQuery === "undefined") {
         '       <div class="tab-pane active"  data-content="main" data-index="0" data-id="welcome_to_use_multitabs"><h1>Demo page</h1><h2>Welcome to use bootstrap multi-tabs :) </h2></div>' +
         '   </div>' +
         '</div>',
-        tab : '<a href="{href}"  data-content="{content}" data-index="{index}" data-id="{did}">{title}</a>',
+        tab : '<a data-content="{content}" data-index="{index}" data-id="{did}">{title}</a>',
         closeBtn : ' <i class="mt-close-tab fa fa-times" style="{style}"></i>',
         ajaxTabPane : '<div class="tab-pane {class}"  data-content="{content}" data-index="{index}" data-id="{did}"></div>',
         iframeTabPane : '<iframe class="tab-pane {class}"  width="100%" height="100%" frameborder="0" src="" data-content="{content}" data-index="{index}" data-id="{did}" seamless></iframe>'
@@ -318,8 +318,7 @@ if (typeof jQuery === "undefined") {
             //get layoutTemplates
             display = options.showClose ? 'display:inline;' : '';
             closeBtnHtml = (param.content === 'main') ? '' : defaultLayoutTemplates.closeBtn.replace('{style}', display); //main content can not colse.
-            tabHtml = defaultLayoutTemplates.tab.replace('{href}', '#'+ param.url)
-                    .replace('{content}', param.content)
+            tabHtml = defaultLayoutTemplates.tab.replace('{content}', param.content)
                     .replace('{index}',index)
                     .replace('{did}', param.url)
                     .replace('{title}', param.title) +
@@ -358,7 +357,7 @@ if (typeof jQuery === "undefined") {
             var $tab = $(tab);
             if(!tab || !$tab.length) return self;
             var tabA = $tab.find('a:first'),
-                url = tabA.attr('href').replace('#',''),
+                url = tabA.attr('data-id'),
                 content = tabA.attr('data-content'),
                 $tabPane = self._getTabPane($tab);
             if(!$tabPane.length) return self;
@@ -485,7 +484,7 @@ if (typeof jQuery === "undefined") {
             var self = this, $el = self.$element;
             $el.navPanelList.find('li:not(.active)').find('a:not([data-content="main"]):not([data-content="editor"])').each(function () {
                 var $tabA = $(this);
-                var url = $tabA.attr('href').replace('#','');
+                var url = $tabA.attr('data-id');
                 var content = $tabA.attr('data-content');
                 $el.tabContent.find('.tab-pane[data-content="'+ content +'"][data-id="'+ url +'"]:first').remove();
                 $tabA.parent('li').remove()
@@ -514,7 +513,7 @@ if (typeof jQuery === "undefined") {
             $el.navPanelList.find('a:not([data-content="main"]):not([data-content="editor"])').each(function(){
                 var $tabA = $(this);
                 var $tab = $tabA.parent('li');
-                var url = $tabA.attr('href').replace('#','');
+                var url = $tabA.attr('data-id');
                 var content = $tabA.attr('data-content');
                 $el.tabContent.find('.tab-pane[data-content="'+ content +'"][data-id="'+ url +'"]:first').remove(); //remove tab-content
                 $tab.remove();  //remove
@@ -751,7 +750,7 @@ if (typeof jQuery === "undefined") {
          * @private
          */
         _getTabPane : function(tab){
-            var self = this, $el = self.$element, $tabA = $(tab).children('a:first'), url = $tabA.attr('href').replace('#',''), content = $tabA.attr('data-content');
+            var self = this, $el = self.$element, $tabA = $(tab).children('a:first'), url = $tabA.attr('data-id'), content = $tabA.attr('data-content');
             return $el.tabContent.find('.tab-pane[data-content="'+ content +'"][data-id="'+ url +'"]:first');
         },
 
