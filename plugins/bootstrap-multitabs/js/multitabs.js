@@ -370,7 +370,14 @@ if (typeof jQuery === "undefined") {
             //如果tab-pane为空，则加载内容
             if(!$tabPane.html()){
                 if(!$tabPane.is('iframe')){
-                    $tabPane.load(url);
+                    $.ajax({
+                        url: url,
+                        dataType: "html",
+                        success: function(data) {
+                            $tabPane.html(data);
+                        }
+                    });
+
                 } else {
                     if(!$tabPane.attr('src')){
                         $tabPane.attr('src', url);
