@@ -164,7 +164,7 @@ if (typeof jQuery === "undefined") {
         '       </div>' +
         '       <nav class="mt-nav mt-nav-panel">' +
         '           <ul  class="nav {nav-tabs}">' +
-        '               <li><a data-content="main" data-index="0" data-id="welcome_to_use_multitabs"> Home </a></li>' +
+        '               <li><a class="mt-nav-tab" data-content="main" data-index="0" data-id="welcome_to_use_multitabs"> Home </a></li>' +
         '           </ul>' +
         '       </nav>' +
         '       <div class="mt-nav mt-nav-tools-right">' +
@@ -190,7 +190,7 @@ if (typeof jQuery === "undefined") {
         '   <div class="mt-nav-bar {navBarClass}" style="background-color: {backgroundColor};">' +
         '       <nav class="mt-nav mt-nav-panel">' +
         '           <ul  class="nav {nav-tabs}">' +
-        '               <li><a data-content="main" data-index="0" data-id="welcome_to_use_multitabs"> Home </a></li>' +
+        '               <li><a class="mt-nav-tab" data-content="main" data-index="0" data-id="welcome_to_use_multitabs"> Home </a></li>' +
         '           </ul>' +
         '       </nav>' +
         '       <div class="mt-nav mt-nav-tools-right">' +
@@ -210,7 +210,7 @@ if (typeof jQuery === "undefined") {
         '   <div class="mt-nav-bar {navBarClass}" style="background-color: {backgroundColor};">' +
         '       <nav class="mt-nav mt-nav-panel">' +
         '           <ul  class="nav {nav-tabs}">' +
-        '               <li><a data-content="main" data-index="0" data-id="welcome_to_use_multitabs"> Home </a></li>' +
+        '               <li><a class="mt-nav-tab" data-content="main" data-index="0" data-id="welcome_to_use_multitabs"> Home </a></li>' +
         '           </ul>' +
         '       </nav>' +
         '   </div>' +
@@ -218,7 +218,7 @@ if (typeof jQuery === "undefined") {
         '       <div class="tab-pane active"  data-content="main" data-index="0" data-id="welcome_to_use_multitabs"><h1>Demo page</h1><h2>Welcome to use bootstrap multi-tabs :) </h2></div>' +
         '   </div>' +
         '</div>',
-        tab : '<a data-content="{content}" data-index="{index}" data-id="{did}">{title}</a>',
+        tab : '<a class="mt-nav-tab" data-content="{content}" data-index="{index}" data-id="{did}">{title}</a>',
         closeBtn : ' <i class="mt-close-tab fa fa-times" style="{style}"></i>',
         ajaxTabPane : '<div class="tab-pane {class}"  data-content="{content}" data-index="{index}" data-id="{did}"></div>',
         iframeTabPane : '<iframe class="tab-pane {class}"  width="100%" height="100%" frameborder="0" src="" data-content="{content}" data-index="{index}" data-id="{did}" seamless></iframe>'
@@ -370,7 +370,6 @@ if (typeof jQuery === "undefined") {
             self._fixTabPosition($tab);
             $tabPane.addClass('active').siblings().removeClass('active');
             self._fixTabContentLayout($tabPane);
-            if(options.showHash && url) window.location.hash = '#' + url;
             //如果tab-pane为空，则加载内容
             if(!$tabPane.html()){
                 if(!$tabPane.is('iframe')){
@@ -389,6 +388,7 @@ if (typeof jQuery === "undefined") {
                 }
 
             }
+            if(options.showHash && url) window.location.hash = '#' + url;
             return self;
         },
         /**
@@ -619,9 +619,9 @@ if (typeof jQuery === "undefined") {
                 return false; //Prevent the default link action
             });
             //active tab
-            handler($el.navBar, 'click', '.mt-nav-panel li', function(){
+            handler($el.navBar, 'click', '.mt-nav-tab', function(){
                 self.active(this);
-                return false; //fixed while showHash is false, still change hash
+                // return false; //fixed while showHash is false, still change hash
             });
             //close tab
             handler($el.navBar, 'click', '.mt-close-tab', function(){
