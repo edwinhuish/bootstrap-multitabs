@@ -5,7 +5,7 @@ if (typeof jQuery === "undefined") {
     //严格模式。
     "use strict";
     //声明变量、函数
-    var NAMESPACE, tabIndex;   //常量&全局变量
+    var NAMESPACE, tabIndex, _ignoreHashChange;   //常量&全局变量
     var MultiTabs,  handler, getTabIndex, toJoinerStr, toHumpStr,  isExtUrl, sumWidth, trimText, insertRule, isEmptyObject;  //函数
     var defaultLayoutTemplates, defaultLanguage, defaultAjaxTabPane, defaultIframeTabPane, defaultNavBar;  //默认参数
 
@@ -353,13 +353,14 @@ if (typeof jQuery === "undefined") {
          * @returns self      Chain structure.
          */
         active : function (tab) {
-            var self = this,  options = self.options;
+            var self = this, $el = self.$element, options = self.options;
             var $tab = $(tab), $tabA;
             if($tab.is('a')){
-                $tabA = $tab;
-                $tab = $tab.closest('li');
+                $tabA = $el.navPanelList.find('[data-id="' + $tab.attr('data-id') + '"]');
+                $tab = $tabA.closest('li');
             }else{
-                $tabA = $tab.find('a:first');
+                $tabA = $el.navPanelList.find('[data-id="' + $tab.find('a:first').attr('data-id') + '"]');
+                $tab = $tabA.closest('li');
             }
             if(!tab || !$tab.length) return self;
             var url = $tabA.attr('data-id'),
@@ -367,8 +368,10 @@ if (typeof jQuery === "undefined") {
                 $tabPane = self._getTabPane($tab);
             if(!$tabPane.length) return self;
             $tab.addClass('active').siblings().removeClass('active');
+            // $tab.addClass('active');
             self._fixTabPosition($tab);
             $tabPane.addClass('active').siblings().removeClass('active');
+            // $tabPane.addClass('active');
             self._fixTabContentLayout($tabPane);
             //如果tab-pane为空，则加载内容
             if(!$tabPane.html()){
@@ -388,7 +391,10 @@ if (typeof jQuery === "undefined") {
                 }
 
             }
-            if(options.showHash && url) window.location.hash = '#' + url;
+            if(options.showHash && url) {
+                _ignoreHashChange = true;
+                window.location.hash = '#' + url;
+            }
             return self;
         },
         /**
@@ -673,21 +679,25 @@ if (typeof jQuery === "undefined") {
             //if show hash， bind hash change
             if(options.showHash){
                 handler($(window), 'hashchange load', function(){
-                    var hash, url, $tab, $tabA, a, param;
-                    hash = window.location.hash;
-                    if(!hash) return false;
-                    url = hash.replace('#','');
-                    $tabA = $el.navPanelList.find('[data-id="'+ url +'"]:first');
-                    if($tabA.length){
-                        $tab = $tabA.closest('li');
-                        if(!$tab.hasClass('active')) self.active($tab);
-                        return false;
-                    }else{
-                        a = document.createElement('a');
-                        a.href=url;
-                        self.create(a, true);
-                        return false;
+                    if(!_ignoreHashChange){
+                        var hash, url, $tab, $tabA, a, param;
+                        hash = window.location.hash;
+                        if(!hash) return false;
+                        url = hash.replace('#','');
+                        $tabA = $el.navPanelList.find('[data-id="'+ url +'"]:first');
+                        if($tabA.length){
+                            $tab = $tabA.closest('li');
+                            if(!$tab.hasClass('active')) self.active($tab);
+                            return false;
+                        }else{
+                            a = document.createElement('a');
+                            a.href=url;
+                            self.create(a, true);
+                            return false;
+                        }
                     }
+                    _ignoreHashChange = false;
+                    return false;
                 });
             }
             //if layout === 'classic' show hide list in dropdown menu
