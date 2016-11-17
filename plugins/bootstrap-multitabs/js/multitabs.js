@@ -368,10 +368,8 @@ if (typeof jQuery === "undefined") {
                 $tabPane = self._getTabPane($tab);
             if(!$tabPane.length) return self;
             $tab.addClass('active').siblings().removeClass('active');
-            // $tab.addClass('active');
             self._fixTabPosition($tab);
             $tabPane.addClass('active').siblings().removeClass('active');
-            // $tabPane.addClass('active');
             self._fixTabContentLayout($tabPane);
             //如果tab-pane为空，则加载内容
             if(!$tabPane.html()){
