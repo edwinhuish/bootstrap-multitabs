@@ -105,6 +105,14 @@ Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/index-simple.html) and 
                 colse : 'Your data is not save, are you sure to lose it?',   //关闭未保存editor标签页的警示
                 cover : 'Can not cover Editor without saving the old one!'   //覆盖未保存editor标签页的警示
             }
+        },
+        ajaxSuccess : function (htmlCallBack) {
+            //自行修改 success 的 html 后返回
+            return htmlCallBack;
+        },
+        ajaxError : function (htmlCallBack) {
+            //自行修改 error 的 html 后返回
+            return htmlCallBack;
         }
     });
 </script>
@@ -121,8 +129,8 @@ Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/index-simple.html) and 
         html{
             height: 100%;
         }
-        body.full-height-layout .content-wrapper{           //使用multitabs的wrapper
-            height: calc(100% - 140px)                      //减去网页header和footer的高度，AdminLTE的为140px
+        body.full-height-layout .content-wrapper{           /*使用multitabs的wrapper*/
+            height: calc(100% - 140px)                      /*减去网页header和footer的高度，AdminLTE的为140px*/
         }
     </style>
 ```

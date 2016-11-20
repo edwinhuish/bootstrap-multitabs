@@ -377,8 +377,11 @@ if (typeof jQuery === "undefined") {
                     $.ajax({
                         url: url,
                         dataType: "html",
-                        success: function(data) {
-                            $tabPane.html(data);
+                        success: function(callback) {
+                            $tabPane.html(options.ajaxSuccess(callback));
+                        },
+                        error : function (callback) {
+                            $tabPane.html(options.ajaxError(callback));
                         }
                     });
 
@@ -904,7 +907,13 @@ if (typeof jQuery === "undefined") {
         navBar : defaultNavBar,
         ajaxTabPane : defaultAjaxTabPane,
         iframeTabPane : defaultIframeTabPane,
-        language : defaultLanguage
+        language : defaultLanguage,
+        ajaxSuccess : function (callback) {
+            return callback;
+        },
+        ajaxError : function (callback) {
+            return callback;
+        }
     };
 
 })(jQuery));

@@ -107,6 +107,14 @@ The following is the default configuration, you can modify as you want.
                 colse : 'Your data is not save, are you sure to lose it?',   //the warning of closing editor without save
                 cover : 'Can not cover Editor without saving the old one!'   //the warning of open another editor without save the old one.
             }
+        },
+        ajaxSuccess : function (htmlCallBack) {
+            //自行修改 success 的 html 后返回
+            return htmlCallBack;
+        },
+        ajaxError : function (htmlCallBack) {
+            //自行修改 error 的 html 后返回
+            return htmlCallBack;
         }
     });
 </script>
@@ -123,8 +131,8 @@ For iframe's auto-height, please add CSS as blew to your page.
         html{
             height: 100%;
         }
-        body.full-height-layout .content-wrapper{           //the wrrapper using multitabs
-            height: calc(100% - 140px)                      //Excluding header and footer's height, for AdminLTE, total is 140px
+        body.full-height-layout .content-wrapper{           /*the wrrapper using multitabs*/
+            height: calc(100% - 140px)                      /*Excluding header and footer's height, for AdminLTE, total is 140px*/
         }
     </style>
 ```
