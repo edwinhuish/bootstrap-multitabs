@@ -84,7 +84,7 @@ The following is the default configuration, you can modify as you want.
         ],       
         navBar : {
             class : '',                             //class of navBar
-            maxTabs : 15,                            //Max tabs number (without counting main and editor)
+            maxTabs : 15,                            //Max tabs number (without counting main and editor), when is 1, hide the whole navBar
             maxTitleLength : 25,                    //Max title length of tab
             backgroundColor : '#f5f5f5',            //default nav-bar background color
         },
@@ -109,11 +109,11 @@ The following is the default configuration, you can modify as you want.
             }
         },
         ajaxSuccess : function (htmlCallBack) {
-            //自行修改 success 的 html 后返回
+            //modify html and return
             return htmlCallBack;
         },
         ajaxError : function (htmlCallBack) {
-            //自行修改 error 的 html 后返回
+            //modify html and return
             return htmlCallBack;
         }
     });

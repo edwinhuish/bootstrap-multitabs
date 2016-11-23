@@ -52,7 +52,7 @@ Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/index-simple.html) and 
 ##进阶配置
 
 ###链接可添加参数
-1. ```[data-content="info"]``` 指定为content为info，共有3种( main | editor | info ), info 为缺省配置，可以不用指定，标签数量可以指定，当为1时，整个标签栏隐藏。main和editor分别只能有1个标签。
+1. ```[data-content="info"]``` 指定为content为info，共有3种( main | editor | info ), info 为缺省配置，可以不用指定。
 2. ```[data-iframe="true"]``` 指定为iframe模式，当值为false的时候，为智能模式，自动判断（内网用ajax，外网用iframe）。缺省为false。
 3. ```[data-title="new tab"]``` 设置后指定标签页的标题，默认读取链接字体。
 4. ```[data-url="index.html"]``` 如果对象不是<a>链接，此值可以指定链接URL
@@ -82,7 +82,7 @@ Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/index-simple.html) and 
         ],       
         navBar : {
             class : '',                             //为navBar添加class
-            maxTabs : 15,                           //最多tab数量。（main和editor不计算在内)
+            maxTabs : 15,                           //最多tab数量。（main和editor不计算在内) 当为1时，整个标签栏隐藏。main和editor分别只能有1个标签。
             maxTabTitleLength : 25,                 //tab标题的最大长度
             backgroundColor : '#f5f5f5',            //默认nav-bar 背景颜色
         },
