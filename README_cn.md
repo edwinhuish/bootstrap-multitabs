@@ -96,7 +96,7 @@ Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/index-simple.html) and 
         language : {                                //语言配置
             navBar : {
                 title : 'Tab',                                  //默认的标签页名称
-                dropdown : '<i class="fa fa-bars"></i>',                              //标签栏的下拉菜单名称
+                dropdown : '<i class="fa fa-bars"></i>',        //标签栏的下拉菜单名称
                 showActivedTab : 'Show Activated Tab',          //下拉菜单的显示激活页面
                 closeAllTabs : 'Close All Tabs',                //下拉菜单的关闭所有页面
                 closeOtherTabs : 'Close Other Tabs',            //下拉菜单的关闭其他页面
