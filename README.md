@@ -84,7 +84,7 @@ The following is the default configuration, you can modify as you want.
         ],       
         navBar : {
             class : '',                             //class of navBar
-            maxTabs : 15,                            //Max tabs number (without counting main and editor)
+            maxTabs : 15,                            //Max tabs number (without counting main and editor), when is 1, hide the whole navBar
             maxTitleLength : 25,                    //Max title length of tab
             backgroundColor : '#f5f5f5',            //default nav-bar background color
         },
@@ -107,6 +107,14 @@ The following is the default configuration, you can modify as you want.
                 colse : 'Your data is not save, are you sure to lose it?',   //the warning of closing editor without save
                 cover : 'Can not cover Editor without saving the old one!'   //the warning of open another editor without save the old one.
             }
+        },
+        ajaxSuccess : function (htmlCallBack) {
+            //modify html and return
+            return htmlCallBack;
+        },
+        ajaxError : function (htmlCallBack) {
+            //modify html and return
+            return htmlCallBack;
         }
     });
 </script>
@@ -123,8 +131,8 @@ For iframe's auto-height, please add CSS as blew to your page.
         html{
             height: 100%;
         }
-        body.full-height-layout .content-wrapper{           //the wrrapper using multitabs
-            height: calc(100% - 140px)                      //Excluding header and footer's height, for AdminLTE, total is 140px
+        body.full-height-layout .content-wrapper{           /*the wrrapper using multitabs*/
+            height: calc(100% - 140px)                      /*Excluding header and footer's height, for AdminLTE, total is 140px*/
         }
     </style>
 ```

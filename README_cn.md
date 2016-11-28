@@ -52,7 +52,7 @@ Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/index-simple.html) and 
 ##进阶配置
 
 ###链接可添加参数
-1. ```[data-content="info"]``` 指定为content为info，共有3种( main | editor | info ), info 为缺省配置，可以不用指定，标签数量可以指定，当为1时，整个标签栏隐藏。main和editor分别只能有1个标签。
+1. ```[data-content="info"]``` 指定为content为info，共有3种( main | editor | info ), info 为缺省配置，可以不用指定。
 2. ```[data-iframe="true"]``` 指定为iframe模式，当值为false的时候，为智能模式，自动判断（内网用ajax，外网用iframe）。缺省为false。
 3. ```[data-title="new tab"]``` 设置后指定标签页的标题，默认读取链接字体。
 4. ```[data-url="index.html"]``` 如果对象不是```<a>```链接，此值可以指定链接URL
@@ -82,7 +82,7 @@ Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/index-simple.html) and 
         ],       
         navBar : {
             class : '',                             //为navBar添加class
-            maxTabs : 15,                           //最多tab数量。（main和editor不计算在内)
+            maxTabs : 15,                           //最多tab数量。（main和editor不计算在内) 当为1时，整个标签栏隐藏。main和editor分别只能有1个标签。
             maxTabTitleLength : 25,                 //tab标题的最大长度
             backgroundColor : '#f5f5f5',            //默认nav-bar 背景颜色
         },
@@ -96,7 +96,7 @@ Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/index-simple.html) and 
         language : {                                //语言配置
             navBar : {
                 title : 'Tab',                                  //默认的标签页名称
-                dropdown : '<i class="fa fa-bars"></i>',                              //标签栏的下拉菜单名称
+                dropdown : '<i class="fa fa-bars"></i>',        //标签栏的下拉菜单名称
                 showActivedTab : 'Show Activated Tab',          //下拉菜单的显示激活页面
                 closeAllTabs : 'Close All Tabs',                //下拉菜单的关闭所有页面
                 closeOtherTabs : 'Close Other Tabs',            //下拉菜单的关闭其他页面
@@ -105,6 +105,14 @@ Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/index-simple.html) and 
                 colse : 'Your data is not save, are you sure to lose it?',   //关闭未保存editor标签页的警示
                 cover : 'Can not cover Editor without saving the old one!'   //覆盖未保存editor标签页的警示
             }
+        },
+        ajaxSuccess : function (htmlCallBack) {
+            //自行修改 success 的 html 后返回
+            return htmlCallBack;
+        },
+        ajaxError : function (htmlCallBack) {
+            //自行修改 error 的 html 后返回
+            return htmlCallBack;
         }
     });
 </script>
@@ -121,8 +129,8 @@ Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/index-simple.html) and 
         html{
             height: 100%;
         }
-        body.full-height-layout .content-wrapper{           //使用multitabs的wrapper
-            height: calc(100% - 140px)                      //减去网页header和footer的高度，AdminLTE的为140px
+        body.full-height-layout .content-wrapper{           /*使用multitabs的wrapper*/
+            height: calc(100% - 140px)                      /*减去网页header和footer的高度，AdminLTE的为140px*/
         }
     </style>
 ```
