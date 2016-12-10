@@ -724,12 +724,11 @@ if (typeof jQuery === "undefined") {
         _getParam : function(obj){
             var self = this,  options = self.options, param, objData = $(obj).data();
             param = isEmptyObject(objData) ? (obj || {}) : objData;
-            // param = $(obj).data() || obj || {};
             param.url = param.url || $(obj).attr('href') || $(obj).attr('url');
             param.url = $.trim(decodeURIComponent(param.url.replace('#', '')));
             if (!param.url.length) return false;
             param.iframe = param.iframe || isExtUrl(param.url) || options.iframe;
-            if(param.iframe || !param.content) param.content = options.content;
+            param.content = param.content || options.content;
             param.title = param.title || $(obj).text() || param.url.replace('http://', '').replace('https://', '') || options.language.navBar.title;
             param.title = trimText(param.title, options.navBar.maxTitleLength);
             return param;
