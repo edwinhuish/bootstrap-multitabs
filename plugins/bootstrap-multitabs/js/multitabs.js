@@ -580,15 +580,8 @@ if (typeof jQuery === "undefined") {
             var self = this, $el = self.$element, options = self.options, init = options.init, param;
             init = (init instanceof Array) ? init : [];
             for(var i = 0; i < init.length; i++){
-                param = init[i];
-                if(!param.url) continue;
-                param.url = decodeURIComponent(param.url.replace('#', ''));
-                if (!$.trim(param.url).length) continue;
-                param.iframe = param.iframe || isExtUrl(param.url) || options.iframe;
-                if(param.iframe || !param.content) param.content = options.content;
-                param.title = param.title || param.url.replace('http://', '').replace('https://', '') || options.language.navBar.title;
-                param.title = trimText(param.title, options.navBar.maxTitleLength);
-                self.create(param);
+                param = self._getParam( init[i]);
+                if( param ) self.create(param);
             }
             //没有任何标签激活的，就激活首页。
             if(!$el.navPanelList.children('li.active').length && !window.location.hash.substr(1)) self.active($el.navPanelList.find('[data-content="main"]:first').parent('li'));
