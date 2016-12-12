@@ -2,22 +2,21 @@
 if (typeof jQuery === "undefined") {
     throw new Error("MultiTabs requires jQuery");
 }((function($){
-    //严格模式。
+    //STRICT MODE
     "use strict";
-    //声明变量、函数
-    var NAMESPACE, tabIndex, _ignoreHashChange;   //常量&全局变量
-    var MultiTabs,  handler, getTabIndex, toJoinerStr, toHumpStr,  isExtUrl, sumWidth, trimText, insertRule, isEmptyObject;  //函数
-    var defaultLayoutTemplates, defaultLanguage, defaultAjaxTabPane, defaultIframeTabPane, defaultNavBar;  //默认参数
+    var NAMESPACE, tabIndex, _ignoreHashChange; //variable
+    var MultiTabs,  handler, getTabIndex, toJoinerStr, toHumpStr,  isExtUrl, sumWidth, trimText, insertRule, isEmptyObject;  //function
+    var defaultLayoutTemplates, defaultLanguage, defaultAjaxTabPane, defaultIframeTabPane, defaultNavBar;  //default variable
 
-    NAMESPACE = '.multitabs';  // on() 绑定的事件的namespace
+    NAMESPACE = '.multitabs';  // namespace for on() function
 
     /**
-     * 组合on()事件的namespace，并绑定
-     * @param $selector         jQuery选择器
-     * @param event             事件
-     * @param childSelector     子选择器，与on()用法一样，仅需要string
-     * @param fn                函数
-     * @param skipNS            是否跳过组合事件的namespace
+     * splice namespace for on() function, and bind it
+     * @param $selector         jQuery selector
+     * @param event             event
+     * @param childSelector     child selector (string), same as on() function
+     * @param fn                function
+     * @param skipNS            bool. If true skip splice namespace
      */
     handler = function ($selector, event, childSelector, fn, skipNS) {
         var ev = skipNS ? event : event.split(' ').join(NAMESPACE + ' ') + NAMESPACE;
@@ -29,15 +28,14 @@ if (typeof jQuery === "undefined") {
     };
 
     /**
-     *
-     * 获取tab标签的index
-     * @param content   content的类型。 main和editor仅能为一个
-     * @param capacity  允许多少tab，main和editor不计在内
-     * @returns int     返回tab index
+     * get index for tab
+     * @param content   content type, for 'main' and 'editor' just can be 1
+     * @param capacity  capacity of tab, except 'main' and 'editor'
+     * @returns int     return index
      */
     getTabIndex = function(content, capacity){
         if(content === 'main' || content === 'editor') return 0;
-        capacity = capacity || 8; //允许多少tab页面，超过则覆盖
+        capacity = capacity || 8; //capacity of maximum tab quantity, the tab will be cover if more than it
         tabIndex = tabIndex || 0;
         tabIndex++;
         tabIndex = tabIndex % capacity;
@@ -45,10 +43,10 @@ if (typeof jQuery === "undefined") {
     };
 
     /**
-     * 修剪text，去除所有多余的空格，并根据maxLength裁剪text，裁剪后加上省略号
-     * @param text          需要修剪的text
-     * @param maxLength     最大长度
-     * @returns {string}    返回修剪好的text
+     * trim text, remove the extra space, and trim text with maxLength, add '...' after trim.
+     * @param text          the text need to trim
+     * @param maxLength     max length for text
+     * @returns {string}    return trimed text
      */
     trimText = function (text, maxLength){
         maxLength = maxLength || defaultNavBar.maxTitleLength;
@@ -67,9 +65,9 @@ if (typeof jQuery === "undefined") {
     };
 
     /**
-     * 计算总宽度
-     * @param WidthObjList  需要计算宽度的列表
-     * @returns {number}    返回总宽度（不含单位）
+     * Calculate the total width
+     * @param WidthObjList      the object list for calculate
+     * @returns {number}        return total object width (int)
      */
     sumWidth = function (WidthObjList) {
         var width = 0;
@@ -80,9 +78,9 @@ if (typeof jQuery === "undefined") {
     };
 
     /**
-     * 判断是否外部URL
-     * @param url           需要判断的URL
-     * @returns {boolean}   外部URL返回true，本地URL返回false
+     * Judgment is external URL
+     * @param url           URL for judgment
+     * @returns {boolean}   external URL return true, local return false
      */
     isExtUrl = function (url){
         var absUrl = (function(url){
@@ -96,21 +94,21 @@ if (typeof jQuery === "undefined") {
     };
 
     /**
-     * 插入CSS样式
+     * insert CSS style
      *
-     * 如下面这个样式表
+     * Example
      * .fixed .mt-nav-tools-right{
      *    position: fixed;
      *    right: 0;
      *    background-color : #fff;
      * }
      *
-     * 需要这样插入样式表：
+     * can be inserted as below:
      * insertRule('.fixed .mt-nav-tools-right', 'position: fixed; right: 0; background-color : #fff;');
      *
-     * @param selectorText      选择器文本
-     * @param cssText           css样式文本
-     * @param position          插入的位置，默认为0；
+     * @param selectorText      selector in string
+     * @param cssText           css style in string
+     * @param position          position for insert, default is 0
      */
     insertRule = function (selectorText, cssText, position) {
         var sheet = document.styleSheets[0];
@@ -133,14 +131,14 @@ if (typeof jQuery === "undefined") {
     };
 
     /**
-     * 将驼峰式string 转化为带'-'连接符的字符串
+     * change Hump type string to string with '-'
      */
     toJoinerStr = function(humpStr){
         return humpStr.replace(/\./g, '').replace(/([A-Z])/g, "-$1").toLowerCase();
     };
 
     /**
-     * 将带'-'连接符的string 转化为驼峰式
+     * change string with '-' to Hump type
      */
     toHumpStr = function(joinerStr){
         return joinerStr.replace(/\./g, '').replace(/\-(\w)/g, function(x){return x.slice(1).toUpperCase();});
@@ -225,51 +223,51 @@ if (typeof jQuery === "undefined") {
     };
 
     /**
-     * 默认的语言为英语
+     * default language is English
      */
     defaultLanguage = {
         navBar : {
-            title          : 'Tab',                             //默认的标签页名称
-            dropdown       : '<i class="fa fa-bars"></i>',      //标签栏的下拉菜单名称
-            showActivedTab : 'Show Activated Tab',              //下拉菜单的显示激活页面
-            closeAllTabs   : 'Close All Tabs',                  //下拉菜单的关闭所有页面
-            closeOtherTabs : 'Close Other Tabs'                 //下拉菜单的关闭其他页面
+            title          : 'Tab',                             //default tab title
+            dropdown       : '<i class="fa fa-bars"></i>',      //dropdown menu display name
+            showActivedTab : 'Show Activated Tab',              //show activated tab
+            closeAllTabs   : 'Close All Tabs',                  //close all tabs
+            closeOtherTabs : 'Close Other Tabs'                 //close other tabs
         },
         editorUnsave: {
-            colse : 'Your data is not save, are you sure to lose it?',   //关闭未保存editor标签页的警示
-            cover : 'Can not cover Editor without saving the old one!'   //覆盖未保存editor标签页的警示
+            colse : 'Your data is not save, are you sure to lose it?',   //close unsave editor tab's warraning
+            cover : 'Can not cover Editor without saving the old one!'   //cover unsave editor tab's warraning
         }
     };
 
     /**
-     * 默认的标签头选项
+     * default navigation bar
      */
     defaultNavBar = {
-        class : '',                     //class，默认为空，可以自行添加
-        maxTabs : 15,                   //默认可容纳标签数为15
-        maxTitleLength : 25,            //默认最长tab tittle为25
-        backgroundColor : '#f5f5f5'     //默认nav-bar 背景颜色
+        class : '',                     //class, default is empty, can add as you want
+        maxTabs : 15,                   //maximum tab quantity
+        maxTitleLength : 25,            //maximum tab's title length
+        backgroundColor : '#f5f5f5'     //default nav-bar background color
     };
 
     /**
-     * 默认的ajax tab-pane 选项
+     * default ajax tab-pane option
      */
     defaultAjaxTabPane = {
-        class : ''                  //class，默认为空，可自行添加
+        class : ''                  //class, default is empty, can add as you want
     };
 
     /**
-     *默认的iframe tab-pane 选项
+     * default iframe tab-pane option
      */
     defaultIframeTabPane = {
-        class : '',                 //class，默认为空，可自行添加
-        otherHeight : 0             //其他高度，iframe需要剔除的高度，如footer
+        class : '',                 //class, default is empty, can add as you want
+        otherHeight : 0             //other height. (the height need to remove for iframe, example: footer)
     };
 
     /**
-     * multitabs的主函数
-     * @param element       主容器
-     * @param options       选项
+     * multitabs main function
+     * @param element       Primary container
+     * @param options       options
      * @constructor
      */
     MultiTabs = function (element, options) {
@@ -282,13 +280,11 @@ if (typeof jQuery === "undefined") {
     };
 
     /**
-     * MultiTabs的函数。
-     * 至于用prototype的原因如下
-     * 不加.prototype的话, 每一个对象都会拥有该方法的一份拷贝,造成内存浪费,加上.prototype可以保证所有实例对象共享一份方法
+     * MultiTabs's function
      */
     MultiTabs.prototype = {
         /**
-         * 构造函数
+         * constructor
          */
         constructor: MultiTabs,
 
@@ -304,9 +300,9 @@ if (typeof jQuery === "undefined") {
                 $el = self.$element,
                 $editor = $el.tabContent.find('.tab-pane[data-content="editor"]');
             var param, tabHtml, closeBtnHtml, display, tabPaneHtml, iframe, index, $tab, $tabPane;
-            param = self._check(obj);
+            param = self._isNew(obj);
             if(!param) return self;
-            //禁止打开多个edit页面，如果edit页面存在，也禁止覆盖
+            //Prohibited open more than 1 editor tab
             if(param.content === 'editor' && $editor.length && $editor.hasClass('unsave')){
                 $tab = $el.navPanelList.find('a[data-content="editor"]').parent('li');
                 self.active($tab);
@@ -340,8 +336,7 @@ if (typeof jQuery === "undefined") {
                 .replace('{content}', param.content)
                 .replace('{index}',index)
                 .replace('{did}', param.url);
-            // $el.tabContent.children().removeClass('active');
-            $el.tabContent.find('.tab-pane[data-content="'+ param.content +'"][data-index="'+index+'"]').remove();//直接移除旧的content，不应重复判断是否同内容。
+            $el.tabContent.find('.tab-pane[data-content="'+ param.content +'"][data-index="'+index+'"]').remove(); //remove old content directly
             $el.tabContent.append(tabPaneHtml);
             if(active) self.active($tab);
             return self;
@@ -371,7 +366,7 @@ if (typeof jQuery === "undefined") {
             self._fixTabPosition($tab);
             $tabPane.addClass('active').siblings().removeClass('active');
             self._fixTabContentLayout($tabPane);
-            //如果tab-pane为空，则加载内容
+            //if tab-pane empty, load content
             if(!$tabPane.html()){
                 if(!$tabPane.is('iframe')){
                     $.ajax({
@@ -535,7 +530,7 @@ if (typeof jQuery === "undefined") {
         },
 
         /**
-         * 初始化函数
+         * init function
          * @param options
          * @returns self
          * @private
@@ -572,7 +567,7 @@ if (typeof jQuery === "undefined") {
         },
 
         /**
-         * 初始化完成后运行的函数
+         * final funcion for after init Multitabs
          * @returns self
          * @private
          */
@@ -583,13 +578,13 @@ if (typeof jQuery === "undefined") {
                 param = self._getParam( init[i]);
                 if( param ) self.create(param);
             }
-            //没有任何标签激活的，就激活首页。
+            //if no any tab actived, active the main tab
             if(!$el.navPanelList.children('li.active').length && !window.location.hash.substr(1)) self.active($el.navPanelList.find('[data-content="main"]:first').parent('li'));
             return self;
         },
 
         /**
-         * 有效性检查函数
+         * validate check
          * @return boolean
          * @private
          */
@@ -697,7 +692,7 @@ if (typeof jQuery === "undefined") {
                 handler($el.navBar, 'click', '.mt-dropdown:not(.open)', function(){ //just trigger when dropdown not open.
                     var list = self._getHiddenList();
                     var $dropDown  = $('.mt-hidden-list').empty();
-                    if(list) {  //当$list的值不为空才进行下面的操作
+                    if(list) {  //when list is not empty
                         while(list.prevList.length){
                             $dropDown.append(list.prevList.shift()[0].outerHTML);
                         }
@@ -714,9 +709,9 @@ if (typeof jQuery === "undefined") {
         },
 
         /**
-         * 获取触发multitabs的对象的参数。
-         * @param obj          触发multitabs的对象
-         * @returns param      返回条件
+         * get the multitabs object's param
+         * @param obj          multitabs's object
+         * @returns param      param
          * @private
          */
         _getParam : function(obj){
@@ -733,17 +728,17 @@ if (typeof jQuery === "undefined") {
         },
 
         /**
-         * 检查触发multitabs的对象是否有效，并尝试激活tab，如果激活不成功，返回param。
+         * check if is the new one. 
          * @param obj
-         * @returns {*}    对应的tab已存在或者multitabs对象无效则返回false，否则返回param
+         * @returns {*}         When exist, active the tab and return false, else return param
          */
-        _check : function (obj) {
+        _isNew : function (obj) {
             var self = this, $el = self.$element;
             var param, tab;
             param = self._getParam(obj);
             if(!param) return false;
-            tab = $el.navPanelList.find('a[data-id="'+ param.url +'"]').closest('li'); //仅判断data-id是否与URL一致，即使data-content不一样也激活。避免打开两个同样的data-id的内容引起冲突。
-            if(tab && $(tab).length && self._getTabPane(tab).length) {
+            tab = $el.navPanelList.find('a[data-id="'+ param.url +'"]');   
+            if(tab && tab.length && self._getTabPane(tab).length) {
                 self.active(tab);
                 return false
             }else return param;
@@ -756,12 +751,12 @@ if (typeof jQuery === "undefined") {
          * @private
          */
         _getTabPane : function(tab){
-            var self = this, $el = self.$element, $tabA = $(tab).children('a:first'), url = $tabA.attr('data-id'), content = $tabA.attr('data-content');
+            var self = this, $el = self.$element, url = tab.attr('data-id'), content = tab.attr('data-content');
             return $el.tabContent.find('.tab-pane[data-content="'+ content +'"][data-id="'+ url +'"]:first');
         },
 
         /**
-         * 修正tab的位置。
+         * fix nav tab position
          * @param tab
          * @private
          */
@@ -776,26 +771,26 @@ if (typeof jQuery === "undefined") {
                 navPanelWidth = $el.navPanel.outerWidth(true),
                 sumTabsWidth = sumWidth($el.navPanelList.children('li')),
                 leftWidth = 0;
-            //所有tab的宽度不超过nav-panel的宽度
+            //all nav tab's width no more than nav-panel's width
             if (sumTabsWidth < navPanelWidth) {
                 leftWidth = 0
             } else {
-                //当tab以及他的右边所有tab的宽度少于等于nav-Panel的时候，也就是nav-panel能够容纳所有当前tab以及其右边的tab
+                //when tab and his right tabs sum width less or same as nav-panel, it means nav-panel can contain the tab and his right tabs
                 if ( (prevWidth + tabWidth + sumNextWidth) <= navPanelWidth ) {
-                    leftWidth = sumPrevWidth; //左边的总宽度
-                    //通过逐步减少左边宽度，并与tab的宽度相加，nav-panel能够容纳的最大长度
+                    leftWidth = sumPrevWidth; //sum width of left part
+                    //add width from the left, calcular the maximum tabs can contained by nav-panel
                     while ( (sumTabsWidth - leftWidth + prevWidth ) < navPanelWidth) {
-                        $tab = $tab.prev();  //tab向左边移动
-                        leftWidth -= $tab.outerWidth(); //逐步减少左边的长度
+                        $tab = $tab.prev();  //change the left tab
+                        leftWidth -= $tab.outerWidth(); //reduce the left part width
                     }
-                } else { //nav-panel不能容纳当前tab和其右边所有tab
-                    //当tab左边和其左边的总宽度大于nav-panel的话，nav-panel应该将当前tab，2个tab之前的所有宽度设为margin-left。
+                } else { //nav-panel can not contain the tab and his right tabs
+                    //when the tab and his left part tabs's sum width more than nav-panel, all the width of 2 previous tabs's width set as the nav-panel margin-left.
                     if ( (sumPrevWidth + tabWidth ) > navPanelWidth ) {
                         leftWidth = sumPrevWidth - prevWidth -pprevWidth
                     }
                 }
             }
-            leftWidth = leftWidth > 0 ? leftWidth : 0; //避免由于由于前面的计算引起的leftWidth < 0
+            leftWidth = leftWidth > 0 ? leftWidth : 0; //avoid leftWidth < 0 BUG
             $el.navPanelList.animate({marginLeft : 0 - leftWidth + "px"}, "fast");
         },
 
@@ -810,27 +805,26 @@ if (typeof jQuery === "undefined") {
                 navPanelWidth = $el.navPanel.outerWidth(true),
                 sumTabsWidth = sumWidth($el.navPanelList.children('li')),
                 tabPrevList = [], tabNextList = [],  $tab, marginLeft;
-            //所有tab的宽度不超过nav-panel的宽度
+            //all tab's width no more than nav-panel's width
             if (sumTabsWidth < navPanelWidth) {
                 return false;
             } else {
                 $tab = $el.navPanelList.children('li:first');
                 //overflow hidden left part
                 marginLeft = 0;
-                //从第一个tab开始，逐个遍历左边的隐藏tab
+                //from the first tab, add all left part hidden tabs
                 while ((marginLeft + $tab.width()) <= navPanelListMarginLeft) {
                     marginLeft += $tab.outerWidth(true);
                     tabPrevList.push($tab);
                     $tab = $tab.next();
                 }
                 //overflow hidden right part
-                if(sumTabsWidth > marginLeft){ //判断右侧是否有隐藏tab
+                if(sumTabsWidth > marginLeft){ //check if the right part have hidden tabs
                     $tab = $el.navPanelList.children('li:last');
-                    marginLeft = sumTabsWidth; //将margin-left预设为最右边，然后依次递减
-                    //从最后一个tab开始，逐个遍历右边的隐藏tab
+                    marginLeft = sumTabsWidth; //set margin-left as the Rightmost, and reduce one and one.
                     while(marginLeft > (navPanelListMarginLeft + navPanelWidth) ){
                         marginLeft -= $tab.outerWidth(true);
-                        tabNextList.unshift($tab); //从数组的头部添加元素。
+                        tabNextList.unshift($tab); //add param from top
                         $tab = $tab.prev();
                     }
                 }
@@ -841,7 +835,7 @@ if (typeof jQuery === "undefined") {
 
 
         /**
-         * 判断tab-pane是否iframe，并根据状态添加/删除对应的class
+         * check if tab-pane is iframe, and add/remove class
          * @param tabPane
          * @private
          */
@@ -855,7 +849,7 @@ if (typeof jQuery === "undefined") {
         },
 
         /**
-         * editor未保存的确认
+         * editor unsave confirm
          * @private
          */
         _unsaveConfirm : function(){
@@ -865,7 +859,7 @@ if (typeof jQuery === "undefined") {
     };
 
     /**
-     * 入口函数
+     * Entry function
      * @param option
      */
     $.fn.multitabs = function(option){
