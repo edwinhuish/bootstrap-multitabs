@@ -595,9 +595,7 @@ if (typeof jQuery === "undefined") {
          */
         _validate: function () {
             var self = this, $exception;
-            if (self.$element.length === 1) {
-                return true;
-            }
+            if( isEmptyObject($(document).data('multitabs'))) return true;
             $exception = '<div class="help-block alert alert-warning">' +
                 '<h4>Duplicate Instance</h4>' +
                 'MultiTabs only can be 1 Instance.' +
@@ -871,14 +869,14 @@ if (typeof jQuery === "undefined") {
      * @param option
      */
     $.fn.multitabs = function(option){
-        var self = $(this), data = self.data('multitabs'), options = typeof option === 'object' && option, opts;
+        var self = $(this), data = $(document).data('multitabs'), options = typeof option === 'object' && option, opts;
         if (!data) {
             opts = $.extend(true, {}, $.fn.multitabs.defaults, options, self.data());
             opts.style = (opts.style === 'nav-pills') ? 'nav-pills' : 'nav-tabs';
             data = new MultiTabs(this, opts);
-            self.data('multitabs', data);
+            $(document).data('multitabs', data);
         }
-        return self.data('multitabs');
+        return $(document).data('multitabs');
     };
 
     /**

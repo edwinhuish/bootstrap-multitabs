@@ -5,7 +5,18 @@
     <title>Demo Page.</title>
 </head>
 <body>
+<script>
+    function createTab(){
+        parent.$(parent.document).data('multitabs').create({
+            iframe : true,
+            title : 'open by iframe',                     //标题（可选），没有则显示网址
+            url : 'pages/index-2.html'                   //链接，如为外链，强制为info页
+        }, true);
+
+    }
+</script>
 <h1>Demo iframe page 1</h1>
 <h1>Welcome to use bootstrap multi-tabs.</h1>
+<button type="button" onclick="createTab()">Create Tab</button>
 </body>
 </html>

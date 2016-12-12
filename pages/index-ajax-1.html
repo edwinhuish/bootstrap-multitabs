@@ -1,4 +1,13 @@
 <div>
+    <script>
+        function createTab(){
+            $(document).data('multitabs').create({
+                title : 'baidu.com',                         //标题（可选），没有则显示网址
+                url : 'http://www.baidu.com'                            //链接，如为外链，强制为info页
+            }, true);
+        }
+    </script>
     <h1>Demo page 1</h1>
     <h2>Welcome to use bootstrap multi-tabs.</h2>
+    <button type="button" onclick="createTab()">Create Tab</button>
 </div>
