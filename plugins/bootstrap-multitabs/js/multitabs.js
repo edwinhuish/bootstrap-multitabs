@@ -737,7 +737,7 @@ if (typeof jQuery === "undefined") {
             var param, tab;
             param = self._getParam(obj);
             if(!param) return false;
-            tab = $el.navPanelList.find('a[data-id="'+ param.url +'"]');   
+            tab = $el.navPanelList.find('a[data-id="'+ param.url +'"]').colsest('li');   
             if(tab && tab.length && self._getTabPane(tab).length) {
                 self.active(tab);
                 return false
