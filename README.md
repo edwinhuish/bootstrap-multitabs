@@ -138,6 +138,7 @@ The following is the default configuration, you can modify as you want.
 ```
 
 2. create tab with iframe's object:
+
 ```html
 <scritp>
     parent.$(parent.document).data('multitabs').create({

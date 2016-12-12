@@ -143,6 +143,7 @@ Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/index-simple.html) and 
 ```
 
 2. 在iframe内触发父document的Multitabs方法新建tab: (ifame 页无须加载jquery)
+
 ```html
 <script>
     parent.$(parent.document).data('multitabs').create({
