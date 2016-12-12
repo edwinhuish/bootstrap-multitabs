@@ -751,7 +751,7 @@ if (typeof jQuery === "undefined") {
          * @private
          */
         _getTabPane : function(tab){
-            var self = this, $el = self.$element, url = tab.attr('data-id'), content = tab.attr('data-content');
+            var self = this, $el = self.$element, $tabA = $(tab).children('a:first'), url = $tabA.attr('data-id'), content = $tabA.attr('data-content');
             return $el.tabContent.find('.tab-pane[data-content="'+ content +'"][data-id="'+ url +'"]:first');
         },
 
