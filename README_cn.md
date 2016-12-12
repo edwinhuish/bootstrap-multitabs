@@ -130,25 +130,27 @@ Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/index-simple.html) and 
 
 其中 ```.content-wrapper``` 是当前使用multitabs的wrapper。 ```.wrapper``` 为 ```.content-wrapper``` 的父层，需要将所有父层都添加 ```height: 100%```
 ```html
-    <style type="text/css">
-        body,
-        body.full-height-layout .wrapper,
-        html{
-            height: 100%;
-        }
-        body.full-height-layout .content-wrapper{           /*使用multitabs的wrapper*/
-            height: calc(100% - 140px)                      /*减去网页header和footer的高度，AdminLTE的为140px*/
-        }
-    </style>
+<style type="text/css">
+    body,
+    body.full-height-layout .wrapper,
+    html{
+        height: 100%;
+    }
+    body.full-height-layout .content-wrapper{           /*使用multitabs的wrapper*/
+        height: calc(100% - 140px)                      /*减去网页header和footer的高度，AdminLTE的为140px*/
+    }
+</style>
 ```
 
 2. 在iframe内触发父document的Multitabs方法新建tab: (ifame 页无须加载jquery)
 ```html
+<script>
     parent.$(parent.document).data('multitabs').create({
         iframe : true,                                //指定为iframe模式，当值为false的时候，为智能模式，自动判断（内网用ajax，外网用iframe）。缺省为false。
         title : 'open by iframe',                     //标题（可选），没有则显示网址
         url : 'pages/index-2.html'                    //链接（必须），如为外链，强制为info页
     }, true);                                         //true 则激活新增的tab页
+</script>
 ```
 
 ## editor标签页

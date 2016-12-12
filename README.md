@@ -125,25 +125,27 @@ The following is the default configuration, you can modify as you want.
 
 ```.content-wrapper``` is the selector using multitabs. ```.wrapper``` is parent of ```.content-wrapper``` , all parent of wrapper multitabs must add ```height: 100%```
 ```html
-    <style type="text/css">
-        body,
-        body.full-height-layout .wrapper,
-        html{
-            height: 100%;
-        }
-        body.full-height-layout .content-wrapper{           /*the wrrapper using multitabs*/
-            height: calc(100% - 140px)                      /*Excluding header and footer's height, for AdminLTE, total is 140px*/
-        }
-    </style>
+<style type="text/css">
+    body,
+    body.full-height-layout .wrapper,
+    html{
+        height: 100%;
+    }
+    body.full-height-layout .content-wrapper{           /*the wrrapper using multitabs*/
+        height: calc(100% - 140px)                      /*Excluding header and footer's height, for AdminLTE, total is 140px*/
+    }
+</style>
 ```
 
 2. create tab with iframe's object:
 ```html
+<scritp>
     parent.$(parent.document).data('multitabs').create({
         iframe : true,                                //iframe mode, default is false. While false, is the auto mode (for the self page, use ajax, and the external, use iframe)
         title : 'open by iframe',                     //title of tab, if empty, show the URL
         url : 'pages/index-2.html'                    //URL, if it's external link, content type change to 'info'
     }, true);                                         //true for active tab
+</script>
 ```
 
 ## editor tab
