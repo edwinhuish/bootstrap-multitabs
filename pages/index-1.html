@@ -8,10 +8,10 @@
 <script>
     function createTab(){
         parent.$(parent.document).data('multitabs').create({
-            iframe : true,
-            title : 'open by iframe',                     //标题（可选），没有则显示网址
-            url : 'pages/index-2.html'                   //链接，如为外链，强制为info页
-        }, true);
+            iframe : true,                                //iframe mode, default is false. While false, is the auto mode (for the self page, use ajax, and the external, use iframe)
+            title : 'open by iframe',                     //title of tab, if empty, show the URL
+            url : 'pages/index-2.html'                    //URL, if it's external link, content type change to 'info'
+        }, true);                                         //true for active tab
 
     }
 </script>

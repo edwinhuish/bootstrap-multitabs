@@ -142,8 +142,8 @@ The following is the default configuration, you can modify as you want.
     parent.$(parent.document).data('multitabs').create({
         iframe : true,                                //iframe mode, default is false. While false, is the auto mode (for the self page, use ajax, and the external, use iframe)
         title : 'open by iframe',                     //title of tab, if empty, show the URL
-        url : 'pages/index-2.html'                   //URL, if it's external link, content type change to 'info'
-    }, true);                                       //true for active tab
+        url : 'pages/index-2.html'                    //URL, if it's external link, content type change to 'info'
+    }, true);                                         //true for active tab
 ```
 
 ## editor tab
