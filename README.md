@@ -16,7 +16,7 @@ Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/index-simple.html) and 
 1. Zero configuration.
 2. Auto ajax / iframe
 3. Can use the templates of bootstrap
-4. While ``` showHash : true; //default ``` show hash in url. 
+4. Can refresh window, and all the tabs will keep same as before.
 5. While ``` maxTabs : 1 ``` or small screen, hide the tab header.
 
 ##Requirements
@@ -64,7 +64,7 @@ The following is the default configuration, you can modify as you want.
 ```html
 <script>
     $('.content-wrapper').multitabs({
-        showHash : true,                            //While is true, show hash in URL, in case refresh or F5, can stay in same tab page.
+        showHash : false,                           //While is true, show hash in URL.
         showClose : false,                          //while is false, show close button in hover, if true, show close button always
         fixed : false,                              //fixed the nav-bar
         layout : 'default',                         //it can be 'default', 'classic' (all hidden tab in dropdown list), and simple

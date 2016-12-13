@@ -14,7 +14,7 @@ Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/index-simple.html) and 
 ##作用与优势
 1. 通过简单的配置，生成可智能适配ajax和iframe的多标签页。
 2. 可以直接套用bootstrap的各种模板样式。
-3. 可避免误刷新造成的当前标签页丢失。也可以直接将链接发送给朋友。（如果设置了需要登录，请先登录后再进行此类操作）
+3. 在不关闭窗口的情况下，直接刷新页面能保留所有标签页。（如果使用了表单，请完成表单后再进行此操作）
 4. 当标签数量设置为 1 的时候，隐藏便签列表
 
 ##安装需求
@@ -62,7 +62,7 @@ Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/index-simple.html) and 
 ```html
 <script>
     $('.content-wrapper').multitabs({
-        showHash : true,                            //当值为true时，显示URL的hash，避免误按F5或者刷新的页面丢失，不过需要注意URL栏参数的泄露。
+        showHash : false,                           //当值为true时，显示URL的hash。
         showClose : false,                          //当值为false，仅在鼠标悬浮时显示关闭按钮。true时一直显示
         fixed : false,                              //固定标签头列表
         layout : 'default',                         //有两种模式，'default', 'classic'(所有隐藏tab都在下拉菜单里) 和 'simple'
