@@ -1,13 +1,21 @@
 <div>
     <script>
-        function createTab(){
+        function createTabByDocument(){
             $(document).data('multitabs').create({
-                title : 'open by content',                         //title of tab, if empty, show the URL
+                title : 'create tab by document',                         //title of tab, if empty, show the URL
                 url : 'pages/index-ajax-4.html'                    //URL, if it's external link, content type change to 'info'
+            }, true);
+        }
+        function createTabByObj(obj) {
+            obj.create({
+                title : 'create tab by obj',                         //title of tab, if empty, show the URL
+                url : 'pages/index-ajax-5.html'                    //URL, if it's external link, content type change to 'info'
             }, true);
         }
     </script>
     <h1>Demo page 1</h1>
     <h2>Welcome to use bootstrap multi-tabs.</h2>
-    <button type="button" onclick="createTab()">Create Tab</button>
+    <button type="button" class="btn-info" onclick="createTabByDocument()">Create Tab</button>
+    <button type="button" class="btn-success" onclick="createTabByObj(multitabs)">Create Tab</button>
+
 </div>

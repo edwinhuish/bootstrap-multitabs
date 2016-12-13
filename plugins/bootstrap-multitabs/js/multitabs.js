@@ -367,7 +367,7 @@ if (typeof jQuery === "undefined") {
             var $navTab = $(navTab), $navTabLi;
             if($navTab.is('li')){
                 $navTabLi = $navTab;
-                $navTab = $navTab.find('a:first');
+                $navTab = $navTabLi.find('a:first');
             }else{
                 $navTabLi = $navTab.parent('li');
             }
@@ -500,7 +500,7 @@ if (typeof jQuery === "undefined") {
                 }
             }
             self._tabStorage( $navTab.attr('id') ); //remove tab from session storage
-            $navTab.remove();
+            $navTabLi.remove();
             $tabPane.remove();
             return self;
         },
@@ -647,7 +647,7 @@ if (typeof jQuery === "undefined") {
             });
             //close tab
             handler($el.navBar, 'click', '.mt-close-tab', function(){
-                self.close($(this).parent('li'));
+                self.close($(this).closest('li'));
                 return false; //Avoid possible BUG
             });
             //move left
@@ -802,8 +802,11 @@ if (typeof jQuery === "undefined") {
          */
         _exist : function(param){
             if(!param) return false;
-            var self = this, $el = self.$element;
-            return  $el.navPanelList.find('a[data-url="'+ param.url +'"]').length ;
+            var self = this, $el = self.$element, $navTab;
+            $navTab = $el.navPanelList.find('a[data-url="'+ param.url +'"]');
+            if( $navTab.length ) {
+                return $navTab;
+            } else return  false ;
         },
 
         /**
