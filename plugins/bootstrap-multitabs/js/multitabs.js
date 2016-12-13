@@ -351,9 +351,10 @@ if (typeof jQuery === "undefined") {
             tabPaneHtml = tabPaneHtml.replace('{tabPaneId}', id + '_pane');
             // $el.tabContent.find('.tab-pane[data-content="'+ param.content +'"][data-index="'+index+'"]').remove(); //remove old content directly
             $el.tabContent.append(tabPaneHtml);
-            if(active) self.active($navTab);
+            param.active = param.active || active;
             //add tab to storage
-            self._tabStorage(id, param);
+            self._storage(id, param);
+            if(param.active) self.active($navTab);
             return self;
         },
 
@@ -363,8 +364,9 @@ if (typeof jQuery === "undefined") {
          * @returns self      Chain structure.
          */
         active : function (navTab) {
-            var self = this, options = self.options;
-            var $navTab = $(navTab), $navTabLi;
+            var self = this, $el = self.$element,  options = self.options;
+            var $navTab = $(navTab), $navTabLi, storage,
+                $oldActivedTab = $el.navPanelList.find('li.active:first').find('a:first');
             if($navTab.is('li')){
                 $navTabLi = $navTab;
                 $navTab = $navTabLi.find('a:first');
@@ -376,6 +378,13 @@ if (typeof jQuery === "undefined") {
                 content = $navTab.attr('data-content'),
                 $tabPane = self._getTabPane($navTab);
             if(!$tabPane.length) return self;            //if tabPane no exist, return self
+
+            //change storage active status
+            storage = self._storage();
+            if( storage[$oldActivedTab.attr('id')] ) storage[$oldActivedTab.attr('id')].active = false;
+            if( storage[$navTab.attr('id')] ) storage[$navTab.attr('id')].active = true;
+            self._resetStorage(storage);
+            //active navTab and tabPane
             $navTabLi.addClass('active').siblings().removeClass('active');
             self._fixTabPosition($navTab);
             $tabPane.addClass('active').siblings().removeClass('active');
@@ -499,7 +508,7 @@ if (typeof jQuery === "undefined") {
                     self.active($prevLi);
                 }
             }
-            self._tabStorage( $navTab.attr('id') ); //remove tab from session storage
+            self._delStorage( $navTab.attr('id') ); //remove tab from session storage
             $navTabLi.remove();
             $tabPane.remove();
             return self;
@@ -513,7 +522,7 @@ if (typeof jQuery === "undefined") {
             var self = this, $el = self.$element;
             $el.navPanelList.find('li:not(.active)').find('a:not([data-content="main"]):not([data-content="editor"])').each(function () {
                 var $navTab = $(this);
-                self._tabStorage( $navTab.attr('id') ); //remove tab from session storage
+                self._delStorage( $navTab.attr('id') ); //remove tab from session storage
                 self._getTabPane($navTab).remove(); //remove tab-content
                 $navTab.parent('li').remove();  //remove navtab
             });
@@ -540,7 +549,7 @@ if (typeof jQuery === "undefined") {
             var self = this, $el = self.$element;
             $el.navPanelList.find('a:not([data-content="main"]):not([data-content="editor"])').each(function(){
                 var $navTab = $(this);
-                self._tabStorage( $navTab.attr('id') ); //remove tab from session storage
+                self._delStorage( $navTab.attr('id') ); //remove tab from session storage
                 self._getTabPane($navTab).remove(); //remove tab-content
                 $navTab.parent('li').remove();  //remove navtab
             });
@@ -593,7 +602,7 @@ if (typeof jQuery === "undefined") {
         _final : function(){
             var self = this, $el = self.$element, options = self.options, storage, init = options.init, param;
             if( supportStorage){
-                storage = self._tabStorage();
+                storage = self._storage();
                 $.each(storage, function (k,v) {
                     self.create(v, false);
                 })
@@ -763,17 +772,40 @@ if (typeof jQuery === "undefined") {
          * @returns storage
          * @private
          */
-        _tabStorage : function (key, param) {
+        _storage : function (key, param) {
             if( supportStorage() ){
                 var storage = JSON.parse(sessionStorage.multitabs || '{}');
                 if( !key ) return storage;
-                if( !param ) {
-                    delete storage[key];
-                }else{
-                    storage[key] = param;
-                }
+                if( !param ) return storage[key];
+                storage[key] = param;
                 sessionStorage.multitabs = JSON.stringify(storage);
                 return storage;
+            }
+        },
+
+        /**
+         * delete storage by key
+         * @param key
+         * @private
+         */
+        _delStorage : function (key) {
+            if( supportStorage() ){
+                var storage = JSON.parse(sessionStorage.multitabs || '{}');
+                if( !key ) return storage;
+                delete storage[key];
+                sessionStorage.multitabs = JSON.stringify(storage);
+                return storage;
+            }
+        },
+
+        /**
+         * reset storage
+         * @param storage
+         * @private
+         */
+        _resetStorage : function (storage) {
+            if( supportStorage() && typeof storage === "object"){
+                sessionStorage.multitabs = JSON.stringify(storage);
             }
         },
 
