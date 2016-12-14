@@ -305,14 +305,13 @@ if (typeof jQuery === "undefined") {
                 options = self.options,
                 $el = self.$element,
                 $editor = $el.tabContent.find('.tab-pane[data-content="editor"]');
-            var param, navTabHtml, closeBtnHtml, display, tabPaneHtml, iframe, index, id, $navTab, $tabPane;
+            var param, navTabHtml, closeBtnHtml, display, tabPaneHtml, index, id, $navTab, $tabPane;
             if(! ( param = self._getParam(obj) )) return self;   //return multitabs obj when is invaid obj
             if( $navTab = self._exist(param)){
                 self.active($navTab);
                 return self;
             }
-            // param = self._isNew(obj);
-            // if(!param) return self;
+            param.active = param.active === undefined ? active : param.active;
 
             //Prohibited open more than 1 editor tab
             if(param.content === 'editor' && $editor.length && $editor.hasClass('unsave')){
@@ -342,16 +341,13 @@ if (typeof jQuery === "undefined") {
             }else $el.navPanelList.append( '<li>' + navTabHtml + '</li>');
             $navTab = $('#'+id);
             //tab-pane create
-            iframe = param.iframe === undefined ? options.iframe : param.iframe;
-            if(iframe){
+            if(param.iframe){
                 tabPaneHtml = defaultLayoutTemplates.iframeTabPane.replace('{class}', options.iframeTabPane.class);
             }else{
                 tabPaneHtml = defaultLayoutTemplates.ajaxTabPane.replace('{class}', options.ajaxTabPane.class);
             }
             tabPaneHtml = tabPaneHtml.replace('{tabPaneId}', id + '_pane');
-            // $el.tabContent.find('.tab-pane[data-content="'+ param.content +'"][data-index="'+index+'"]').remove(); //remove old content directly
             $el.tabContent.append(tabPaneHtml);
-            param.active = param.active || active;
             //add tab to storage
             self._storage(id, param);
             if(param.active) self.active($navTab);

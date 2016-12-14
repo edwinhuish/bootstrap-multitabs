@@ -2,20 +2,21 @@
     <script>
         function createTabByDocument(){
             $(document).data('multitabs').create({
-                title : 'create tab by document',                         //title of tab, if empty, show the URL
-                url : 'pages/index-ajax-4.html'                    //URL, if it's external link, content type change to 'info'
+                title : 'create tab by document function',                         //title of tab, if empty, show the URL
+                url : 'pages/index-ajax-3.html'                    //URL, if it's external link, content type change to 'info'
             }, true);
         }
         function createTabByObj(obj) {
             obj.create({
-                title : 'create tab by obj',                         //title of tab, if empty, show the URL
-                url : 'pages/index-ajax-5.html'                    //URL, if it's external link, content type change to 'info'
+                title : 'create tab by multitabs obj',                         //title of tab, if empty, show the URL
+                url : 'pages/index-ajax-4.html'                    //URL, if it's external link, content type change to 'info'
             }, true);
         }
     </script>
     <h1>Demo page 1</h1>
     <h2>Welcome to use bootstrap multi-tabs.</h2>
-    <button type="button" class="btn-info" onclick="createTabByDocument()">Create Tab</button>
-    <button type="button" class="btn-success" onclick="createTabByObj(multitabs)">Create Tab</button>
+    <button type="button" class="multitabs btn-success" data-url="pages/index-3.html" data-iframe="true">create tab by class</button>
+    <button type="button" class="btn-warning" onclick="createTabByObj(multitabs)">create tab by multitabs obj</button>
+    <button type="button" class="btn-danger" onclick="createTabByDocument()">create tab by document function</button>
 
 </div>
