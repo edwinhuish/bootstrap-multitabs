@@ -13,10 +13,10 @@ Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/index-simple.html) and 
 ![Multi Tabs Screenshot](screenshot-simple.jpg)
 
 ##Role and Benefits
-1. Zero configuration.
-2. Auto ajax / iframe
-3. Can use the templates of bootstrap
-4. Can refresh window, and all the tabs will keep same as before.
+1. Zero configuration and auto ajax / iframe
+2. Can use the templates of bootstrap
+3. Can refresh window, and all the tabs will keep same as before.
+4. Navigation tab draggable.
 5. While ``` maxTabs : 1 ``` or small screen, hide the tab header.
 
 ##Requirements

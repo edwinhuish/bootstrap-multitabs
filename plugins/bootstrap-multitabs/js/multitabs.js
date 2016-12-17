@@ -576,6 +576,7 @@ if (typeof jQuery === "undefined") {
             $el.navToolsLeft  = $el.navBar.find('.mt-nav-tools-left:first');
             $el.navPanel      = $el.navBar.find('.mt-nav-panel:first');
             $el.navPanelList  = $el.navBar.find('.mt-nav-panel:first ul');
+            $el.navTabMain    = $('#multitabs_main_0');
             $el.navToolsRight = $el.navBar.find('.mt-nav-tools-right:first');
             $el.tabContent    = $el.find('.tab-content:first');
             //hide tab-header if maxTabs less than 1
@@ -650,6 +651,56 @@ if (typeof jQuery === "undefined") {
                 self.active(this);
                 // return false; //fixed while showHash is false, still change hash
             });
+
+            //drag tab
+            handler($el.navPanelList, 'mousedown', '.mt-nav-tab:not([data-content="main"])', function (event) {
+                var $navTabLi = $(this).closest('li');
+                var isMove = true;
+                var navTabHtml = $navTabLi.prop("outerHTML");
+                var navTabBlankHtml = '<li id="multitabs_tmp_tab_blank" style="width:' + $navTabLi.outerWidth() + 'px; height:'+ $navTabLi.outerHeight() +'px;"><a style="width: 100%;  height: 100%; "></a></li>';
+                var abs_x = event.pageX - $navTabLi.offset().left + $el.navBar.offset().left;
+                $navTabLi.prev().after(navTabBlankHtml);
+                $navTabLi.css({'left': event.pageX - abs_x + 'px', 'position': 'absolute', 'z-index': 9999}).addClass('dragging');
+                $navTabLi.find('a:first').css({'background' : '#f39c12'});
+
+                var $prevNavTabLi;
+                $(document).on('mousemove', function (event) {
+                    if (isMove) {
+                        $navTabLi.css({'left': event.pageX - abs_x + 'px'});
+
+                        var navTabLiLeft = $navTabLi.offset().left;
+                        //var navTabHtml = $navTabLi.prop("outerHTML");
+                        var result = $el.navPanelList.children('li:not("#multitabs_tmp_tab_blank"):not(".dragging")').each(function () {
+                            if( ($(this).offset().left + $(this).outerWidth()) >= navTabLiLeft ){
+                                if($prevNavTabLi != $(this)){
+                                    $prevNavTabLi = $(this);
+                                    $('#multitabs_tmp_tab_blank').remove();
+                                    $prevNavTabLi.after(navTabBlankHtml);
+                                }
+                                return false;
+                            }
+                        });
+                        if(!result)
+                            $('#multitabs_tmp_tab_blank').remove();
+                    }
+                }).on("selectstart",function(){ //disable text selection
+                    if (isMove) {
+                        return false;
+                    }
+                }).on('mouseup', function () {
+                    if(isMove){
+                        $('#multitabs_tmp_tab_blank').remove();
+                        if($prevNavTabLi){
+                            $prevNavTabLi.after(navTabHtml);
+                        }else{
+                            $el.navPanelList.append(navTabHtml);
+                        }
+                        $navTabLi.remove();
+                    }
+                    isMove = false;
+                });
+            });
+
             //close tab
             handler($el.navBar, 'click', '.mt-close-tab', function(){
                 self.close($(this).closest('li'));
@@ -686,6 +737,7 @@ if (typeof jQuery === "undefined") {
                     return options.language.editorUnsave.close;
                 }
             });
+
             //fixed the nav-bar
             var navBarHeight = $el.navBar.outerHeight();
             $el.tabContent.css('paddingTop', navBarHeight);
