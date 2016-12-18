@@ -593,6 +593,7 @@ if (typeof jQuery === "undefined") {
             var self = this, $el = self.$element, options = self.options, storage, init = options.init, param;
             if( supportStorage){
                 storage = self._storage();
+                self._resetStorage({});
                 $.each(storage, function (k,v) {
                     self.create(v, false);
                 })
