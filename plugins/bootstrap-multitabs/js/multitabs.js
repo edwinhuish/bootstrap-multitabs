@@ -525,8 +525,8 @@ if (typeof jQuery === "undefined") {
          */
         showActive : function () {
             var self = this, $el = self.$element;
-            var tab = $el.navPanelList.find('li.active:first');
-            self._fixTabPosition(tab);
+            var navTab = $el.navPanelList.find('li.active:first a');
+            self._fixTabPosition(navTab);
             return self;
         },
 
