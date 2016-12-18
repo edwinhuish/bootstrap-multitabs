@@ -374,8 +374,8 @@ if (typeof jQuery === "undefined") {
 
             //change storage active status
             storage = self._storage();
-            if( storage[$prevActivedTab.attr('id')] ) storage[$prevActivedTab.attr('id')].active = false;
-            if( storage[$navTab.attr('id')] ) storage[$navTab.attr('id')].active = true;
+            if( storage[$prevActivedTab.attr('data-id')] ) storage[$prevActivedTab.attr('data-id')].active = false;
+            if( storage[$navTab.attr('data-id')] ) storage[$navTab.attr('data-id')].active = true;
             self._resetStorage(storage);
             //active navTab and tabPane
             $prevActivedTab.closest('li').removeClass('active');
@@ -497,7 +497,7 @@ if (typeof jQuery === "undefined") {
                     self.active($prevLi);
                 }
             }
-            self._delStorage( $navTab.attr('id') ); //remove tab from session storage
+            self._delStorage( $navTab.attr('data-id') ); //remove tab from session storage
             $navTabLi.remove();
             $tabPane.remove();
             return self;
@@ -511,7 +511,7 @@ if (typeof jQuery === "undefined") {
             var self = this, $el = self.$element;
             $el.navPanelList.find('li:not(.active)').find('a:not([data-content="main"]):not([data-content="editor"])').each(function () {
                 var $navTab = $(this);
-                self._delStorage( $navTab.attr('id') ); //remove tab from session storage
+                self._delStorage( $navTab.attr('data-id') ); //remove tab from session storage
                 self._getTabPane($navTab).remove(); //remove tab-content
                 $navTab.parent('li').remove();  //remove navtab
             });
@@ -538,7 +538,7 @@ if (typeof jQuery === "undefined") {
             var self = this, $el = self.$element;
             $el.navPanelList.find('a:not([data-content="main"]):not([data-content="editor"])').each(function(){
                 var $navTab = $(this);
-                self._delStorage( $navTab.attr('id') ); //remove tab from session storage
+                self._delStorage( $navTab.attr('data-id') ); //remove tab from session storage
                 self._getTabPane($navTab).remove(); //remove tab-content
                 $navTab.parent('li').remove();  //remove navtab
             });
