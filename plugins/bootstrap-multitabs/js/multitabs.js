@@ -655,24 +655,26 @@ if (typeof jQuery === "undefined") {
             //drag tab
             handler($el.navPanelList, 'mousedown', '.mt-nav-tab:not([data-content="main"])', function (event) {
                 var $navTabLi = $(this).closest('li');
-                var isMove = true;
+                var $prevNavTabLi = $navTabLi.prev();
+                var isMove = true, moved = false;
                 var navTabHtml = $navTabLi.prop("outerHTML");
-                var navTabBlankHtml = '<li id="multitabs_tmp_tab_blank" style="width:' + $navTabLi.outerWidth() + 'px; height:'+ $navTabLi.outerHeight() +'px;"><a style="width: 100%;  height: 100%; "></a></li>';
+                var navTabBlankHtml = '<li id="multitabs_tmp_tab_blank" class="mt-tmp" style="width:' + $navTabLi.outerWidth() + 'px; height:'+ $navTabLi.outerHeight() +'px;"><a style="width: 100%;  height: 100%; "></a></li>';
                 var abs_x = event.pageX - $navTabLi.offset().left + $el.navBar.offset().left;
                 $navTabLi.prev().after(navTabBlankHtml);
-                $navTabLi.css({'left': event.pageX - abs_x + 'px', 'position': 'absolute', 'z-index': 9999}).addClass('dragging');
+                $navTabLi.css({'left': event.pageX - abs_x + 'px', 'position': 'absolute', 'z-index': 9999}).addClass('mt-tmp');
                 $navTabLi.find('a:first').css({'background' : '#f39c12'});
 
-                var $prevNavTabLi;
                 $(document).on('mousemove', function (event) {
                     if (isMove) {
                         $navTabLi.css({'left': event.pageX - abs_x + 'px'});
 
                         var navTabLiLeft = $navTabLi.offset().left;
                         //var navTabHtml = $navTabLi.prop("outerHTML");
-                        var result = $el.navPanelList.children('li:not("#multitabs_tmp_tab_blank"):not(".dragging")').each(function () {
-                            if( ($(this).offset().left + $(this).outerWidth()) >= navTabLiLeft ){
-                                if($prevNavTabLi != $(this)){
+                        var result = $el.navPanelList.children('li:not(".mt-tmp")').each(function () {
+                            var leftWidth = $(this).offset().left + $(this).outerWidth();
+                            if( leftWidth >= navTabLiLeft  ){
+                                if($(this).next().attr('id') != 'multitabs_tmp_tab_blank'){
+                                    moved = true;
                                     $prevNavTabLi = $(this);
                                     $('#multitabs_tmp_tab_blank').remove();
                                     $prevNavTabLi.after(navTabBlankHtml);
@@ -689,13 +691,19 @@ if (typeof jQuery === "undefined") {
                     }
                 }).on('mouseup', function () {
                     if(isMove){
-                        $('#multitabs_tmp_tab_blank').remove();
-                        if($prevNavTabLi){
-                            $prevNavTabLi.after(navTabHtml);
+                        if(!moved){
+                            $('#multitabs_tmp_tab_blank').remove();
+                            $navTabLi.css({'left': '0px', 'position': 'relative', 'z-index': 'inherit'}).removeClass('mt-tmp');
+                            $navTabLi.find('a:first').css({'background' : ''});
                         }else{
-                            $el.navPanelList.append(navTabHtml);
+                            $('#multitabs_tmp_tab_blank').remove();
+                            $navTabLi.remove();
+                            if($prevNavTabLi){
+                                $prevNavTabLi.after(navTabHtml);
+                            }else{
+                                $el.navPanelList.append(navTabHtml);
+                            }
                         }
-                        $navTabLi.remove();
                     }
                     isMove = false;
                 });
