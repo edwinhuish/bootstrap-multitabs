@@ -612,19 +612,19 @@ if (typeof jQuery === "undefined") {
 
             //drag tab
             if(options.draggable){
-                handler($el.navPanelList, 'mousedown', '.mt-nav-tab:not([data-content="main"])', function (event) {
-                    var $navTabLi = $(this).closest('li');
+                handler($el.navPanelList, 'mousedown', '.mt-nav-tab', function (event) {
+                    var $navTab = $(this), $navTabLi = $navTab.closest('li');
                     var $prevNavTabLi = $navTabLi.prev();
-                    var isMove = true, moved = false;
+                    var isMove = true, moved = false, isMain = ($navTab.data('content') == "main");
                     var navTabBlankHtml = '<li id="multitabs_tmp_tab_blank" class="mt-tmp" style="width:' + $navTabLi.outerWidth() + 'px; height:'+ $navTabLi.outerHeight() +'px;"><a style="width: 100%;  height: 100%; "></a></li>';
                     var abs_x = event.pageX - $navTabLi.offset().left + $el.navBar.offset().left;
-                    $navTabLi.prev().after(navTabBlankHtml);
+                    $navTabLi.before(navTabBlankHtml);
                     $navTabLi.css({'left': event.pageX - abs_x + 'px', 'position': 'absolute', 'z-index': 9999})
                         .addClass('mt-tmp')
                         .find('a:first').css({'background' : '#f39c12'});
 
                     $(document).on('mousemove', function (event) {
-                        if (isMove) {
+                        if (isMove && !isMain) {
                             $navTabLi.css({'left': event.pageX - abs_x + 'px'});
                             $el.navPanelList.children('li:not(".mt-tmp")').each(function () {
                                 var leftWidth = $(this).offset().left + $(this).outerWidth() + 20; //20 px more for gap
