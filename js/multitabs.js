@@ -263,7 +263,7 @@ if (typeof jQuery === "undefined") {
                 options = self.options,
                 $el = self.$element,
                 $editor = $el.tabContent.find('.tab-pane[data-content="editor"]');
-            var param, navTabHtml, closeBtnHtml, display, tabPaneHtml, index,  $navTab, $tabPane;
+            var param, navTabHtml, closeBtnHtml, display, tabPaneHtml, index, id,  $navTab, $tabPane;
             if(! ( param = self._getParam(obj) )) return self;   //return multitabs obj when is invaid obj
             if( $navTab = self._exist(param)){
                 self.active($navTab);
@@ -271,7 +271,7 @@ if (typeof jQuery === "undefined") {
             }
             index = getTabIndex(param.content, options.navBar.maxTabs);
             param.active = param.active === undefined ? active : param.active;
-            param.id = param.id || 'multitabs_' + param.content + '_' + index;
+            id = 'multitabs_' + param.content + '_' + index;
 
             //Prohibited open more than 1 editor tab
             if(param.content === 'editor' && $editor.length && $editor.hasClass('unsave')){
@@ -285,7 +285,7 @@ if (typeof jQuery === "undefined") {
             display = options.showClose ? 'display:inline;' : '';
             closeBtnHtml = (param.content === 'main') ? '' : defaultLayoutTemplates.closeBtn.replace('{style}', display); //main content can not colse.
             navTabHtml = defaultLayoutTemplates.navTab
-                    .replace('{navTabId}', param.id)
+                    .replace('{navTabId}', id)
                     .replace('{content}', param.content)
                     .replace('{index}',index)
                     .replace('{url}', param.url)
@@ -297,20 +297,20 @@ if (typeof jQuery === "undefined") {
                 $navTabLi.html(navTabHtml);
                 self._getTabPane($navTabLi.find('a:first')).remove();  //remove old content pane directly
             }else $el.navPanelList.append( '<li>' + navTabHtml + '</li>');
-            $navTab = $el.navPanelList.find('a[data-id="'+ param.id +'"]');
+            $navTab = $el.navPanelList.find('a[data-id="'+ id +'"]');
             //tab-pane create
             if(param.iframe){
                 tabPaneHtml = defaultLayoutTemplates.iframeTabPane
                     .replace('{class}', options.iframeTabPane.class)
-                    .replace('{tabPaneId}', param.id);
+                    .replace('{tabPaneId}', id);
             }else{
                 tabPaneHtml = defaultLayoutTemplates.ajaxTabPane
                     .replace('{class}', options.ajaxTabPane.class)
-                    .replace('{tabPaneId}', param.id);
+                    .replace('{tabPaneId}', id);
             }
             $el.tabContent.append(tabPaneHtml);
             //add tab to storage
-            self._storage(param.id, param);
+            self._storage(id, param);
             if(param.active) self.active($navTab);
             return self;
         },
@@ -759,21 +759,20 @@ if (typeof jQuery === "undefined") {
          */
         _getParam : function(obj){
             if(isEmptyObject(obj)) return false;
-            var self = this,  options = self.options, param, $obj = $(obj), objData = $obj.data();
-            param = isEmptyObject(objData) ?  {} : objData;
+            var self = this,  options = self.options, param = {}, $obj = $(obj);
             //url
-            param.url = param.url || obj.url || $obj.attr('href') || $obj.attr('url');
+            param.url = $obj.data('url') || obj.url || $obj.attr('href') || $obj.attr('url');
             param.url = $.trim(decodeURIComponent(param.url.replace('#', '')));
             if (!param.url.length) return false;
             //iframe
-            param.iframe = param.iframe || obj.iframe || isExtUrl(param.url) || options.iframe;
+            param.iframe = $obj.data('iframe') || obj.iframe || isExtUrl(param.url) || options.iframe;
             //content
-            param.content = param.content || obj.content || options.content;
+            param.content = $obj.data('content') || obj.content || options.content;
             //title
-            param.title = param.title || obj.title || $obj.text() || param.url.replace('http://', '').replace('https://', '') || options.language.navBar.title;
+            param.title = $obj.data('itle') || obj.title || $obj.text() || param.url.replace('http://', '').replace('https://', '') || options.language.navBar.title;
             param.title = trimText(param.title, options.navBar.maxTitleLength);
             //active
-            param.active = param.active || obj.active;
+            param.active = $obj.data('active') || obj.active;
             return param;
         },
 
