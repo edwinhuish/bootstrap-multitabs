@@ -63,7 +63,7 @@ Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/demo/index-simple.html)
 下面这些为默认配置，可以自行修改
 ```html
 <script>
-    $('.content-wrapper').multitabs({
+    $('#content_wrapper').multitabs({
         showHash : false,                           //当值为true时，显示URL的hash。
         showClose : false,                          //当值为false，仅在鼠标悬浮时显示关闭按钮。true时一直显示
         draggable : true,                           //nav tab 可拖动选项

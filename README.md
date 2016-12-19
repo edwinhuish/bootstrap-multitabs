@@ -40,7 +40,7 @@ Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/index-simple.html) and 
 3. Bind the content wrapper
 ```html
 <script>
-    $('.content-wrapper').multitabs();
+    $('#content_wrapper').multitabs();
 </script>
 ```
 
@@ -64,7 +64,7 @@ Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/index-simple.html) and 
 The following is the default configuration, you can modify as you want.
 ```html
 <script>
-    $('.content-wrapper').multitabs({
+    $('#content_wrapper').multitabs({
         showHash : false,                           //While is true, show hash in URL.
         showClose : false,                          //while is false, show close button in hover, if true, show close button always
         draggable : true,                           //nav tab draggable option
