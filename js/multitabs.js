@@ -187,7 +187,7 @@ if (typeof jQuery === "undefined") {
         '       </div>' +
         '   </div>' +
         '   <div class="tab-content mt-tab-content " >' +
-        '       <div id="multitabs_main_0" class="tab-pane active"  data-content="main" data-index="0" data-url="welcome_to_use_multitabs"><h1>Demo page</h1><h2>Welcome to use bootstrap multi-tabs :) </h2></div>' +
+        '       <div id="multitabs_main_0" class="tab-pane"  data-content="main" data-index="0" data-url="welcome_to_use_multitabs"><h1>Demo page</h1><h2>Welcome to use bootstrap multi-tabs :) </h2></div>' +
         '   </div>' +
         '</div>',
         classic : '<div class="mt-wrapper {mainClass}" style="height: 100%;" >' +
@@ -207,7 +207,7 @@ if (typeof jQuery === "undefined") {
         '       </div>' +
         '   </div>' +
         '   <div class="tab-content mt-tab-content " >' +
-        '       <div id="multitabs_main_0" class="tab-pane active"  data-content="main" data-index="0" data-url="welcome_to_use_multitabs"><h1>Demo page</h1><h2>Welcome to use bootstrap multi-tabs :) </h2></div>' +
+        '       <div id="multitabs_main_0" class="tab-pane"  data-content="main" data-index="0" data-url="welcome_to_use_multitabs"><h1>Demo page</h1><h2>Welcome to use bootstrap multi-tabs :) </h2></div>' +
         '   </div>' +
         '</div>',
         simple : '<div class="mt-wrapper {mainClass}" style="height: 100%;" >' +
@@ -219,7 +219,7 @@ if (typeof jQuery === "undefined") {
         '       </nav>' +
         '   </div>' +
         '   <div class="tab-content mt-tab-content " >' +
-        '       <div id="multitabs_main_0" class="tab-pane active"  data-content="main" data-index="0" data-url="welcome_to_use_multitabs"><h1>Demo page</h1><h2>Welcome to use bootstrap multi-tabs :) </h2></div>' +
+        '       <div id="multitabs_main_0" class="tab-pane"  data-content="main" data-index="0" data-url="welcome_to_use_multitabs"><h1>Demo page</h1><h2>Welcome to use bootstrap multi-tabs :) </h2></div>' +
         '   </div>' +
         '</div>',
         navTab : '<a data-id="{navTabId}" class="mt-nav-tab" data-content="{content}" data-index="{index}" data-url="{url}">{title}</a>',
@@ -263,13 +263,15 @@ if (typeof jQuery === "undefined") {
                 options = self.options,
                 $el = self.$element,
                 $editor = $el.tabContent.find('.tab-pane[data-content="editor"]');
-            var param, navTabHtml, closeBtnHtml, display, tabPaneHtml, index, id, $navTab, $tabPane;
+            var param, navTabHtml, closeBtnHtml, display, tabPaneHtml, index,  $navTab, $tabPane;
             if(! ( param = self._getParam(obj) )) return self;   //return multitabs obj when is invaid obj
             if( $navTab = self._exist(param)){
                 self.active($navTab);
                 return self;
             }
+            index = getTabIndex(param.content, options.navBar.maxTabs);
             param.active = param.active === undefined ? active : param.active;
+            param.id = param.id || 'multitabs_' + param.content + '_' + index;
 
             //Prohibited open more than 1 editor tab
             if(param.content === 'editor' && $editor.length && $editor.hasClass('unsave')){
@@ -279,13 +281,11 @@ if (typeof jQuery === "undefined") {
                 $tabPane.before('<div class="help-block alert alert-warning">' + options.language.editorUnsave.cover + '</div>');
                 return self;
             }
-            index = getTabIndex(param.content, options.navBar.maxTabs);
-            id = 'multitabs_' + param.content + '_' + index;
             //get layoutTemplates
             display = options.showClose ? 'display:inline;' : '';
             closeBtnHtml = (param.content === 'main') ? '' : defaultLayoutTemplates.closeBtn.replace('{style}', display); //main content can not colse.
             navTabHtml = defaultLayoutTemplates.navTab
-                    .replace('{navTabId}', id)
+                    .replace('{navTabId}', param.id)
                     .replace('{content}', param.content)
                     .replace('{index}',index)
                     .replace('{url}', param.url)
@@ -297,20 +297,20 @@ if (typeof jQuery === "undefined") {
                 $navTabLi.html(navTabHtml);
                 self._getTabPane($navTabLi.find('a:first')).remove();  //remove old content pane directly
             }else $el.navPanelList.append( '<li>' + navTabHtml + '</li>');
-            $navTab = $el.navPanelList.find('a[data-id="'+ id +'"]');
+            $navTab = $el.navPanelList.find('a[data-id="'+ param.id +'"]');
             //tab-pane create
             if(param.iframe){
                 tabPaneHtml = defaultLayoutTemplates.iframeTabPane
                     .replace('{class}', options.iframeTabPane.class)
-                    .replace('{tabPaneId}', id);
+                    .replace('{tabPaneId}', param.id);
             }else{
                 tabPaneHtml = defaultLayoutTemplates.ajaxTabPane
                     .replace('{class}', options.ajaxTabPane.class)
-                    .replace('{tabPaneId}', id);
+                    .replace('{tabPaneId}', param.id);
             }
             $el.tabContent.append(tabPaneHtml);
             //add tab to storage
-            self._storage(id, param);
+            self._storage(param.id, param);
             if(param.active) self.active($navTab);
             return self;
         },
@@ -322,31 +322,43 @@ if (typeof jQuery === "undefined") {
          */
         active : function (navTab) {
             var self = this, $el = self.$element,  options = self.options;
-            var $navTab = self._getNavTab(navTab), $navTabLi = $navTab.parent('li'),
-                storage, $prevActivedTab = $el.navPanelList.find('li.active:first').find('a:first');
-            if(!navTab || !$navTabLi.length) return self;  //if navTab no exist, return self
-            var url = $navTab.attr('data-url'),
-                content = $navTab.attr('data-content'),
-                $tabPane = self._getTabPane($navTab);
-            if(!$tabPane.length) return self;            //if tabPane no exist, return self
-
+            var $navTab = self._getNavTab(navTab), $tabPane = self._getTabPane($navTab),
+                $prevActivedTab = $el.navPanelList.find('li.active:first a');
+            var prevNavTabParam = $prevActivedTab.length ? self._getParam($prevActivedTab) : {};
+            var navTabParam = $navTab.length ? self._getParam($navTab) : {};
             //change storage active status
-            storage = self._storage();
-            if( storage[$prevActivedTab.attr('data-id')] ) storage[$prevActivedTab.attr('data-id')].active = false;
-            if( storage[$navTab.attr('data-id')] ) storage[$navTab.attr('data-id')].active = true;
+            var storage = self._storage();
+            if( storage[prevNavTabParam.id] ) storage[prevNavTabParam.id].active = false;
+            if( storage[navTabParam.id] ) storage[navTabParam.id].active = true;
             self._resetStorage(storage);
             //active navTab and tabPane
-            $prevActivedTab.closest('li').removeClass('active');
-            $navTabLi.addClass('active');
+            $prevActivedTab.parent('li').removeClass('active');
+            $navTab.parent('li').addClass('active');
             self._fixTabPosition($navTab);
             self._getTabPane($prevActivedTab).removeClass('active');
             $tabPane.addClass('active');
             self._fixTabContentLayout($tabPane);
+            //fill tab pane
+            self._fillTabPane($tabPane, navTabParam);
+            //when showHash is true and have url
+            if(options.showHash && navTabParam.url) {
+                _ignoreHashChange = true;
+                window.location.hash = '#' + navTabParam.url;
+            }
+            return self;
+        },
+        /**
+         * fill tab pane
+         * @private
+         */
+        _fillTabPane : function (tabPane, param) {
+            var self = this, options = self.options;
+            var $tabPane = $(tabPane);
             //if navTab-pane empty, load content
             if(!$tabPane.html()){
                 if(!$tabPane.is('iframe')){
                     $.ajax({
-                        url: url,
+                        url: param.url,
                         dataType: "html",
                         success: function(callback) {
                             $tabPane.html(options.ajaxSuccess(callback));
@@ -358,17 +370,11 @@ if (typeof jQuery === "undefined") {
 
                 } else {
                     if(!$tabPane.attr('src')){
-                        $tabPane.attr('src', url);
+                        $tabPane.attr('src', param.url);
                     }
                 }
 
             }
-            //when showHash is true and have url
-            if(options.showHash && url) {
-                _ignoreHashChange = true;
-                window.location.hash = '#' + url;
-            }
-            return self;
         },
         /**
          * move left
