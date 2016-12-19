@@ -20,8 +20,9 @@ Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/index-simple.html) and 
 5. While ``` maxTabs : 1 ``` or small screen, hide the tab header.
 
 ##Requirements
-1. [Bootstrap 3.x](http://getbootstrap.com/)
-2. Newest [JQuery](http://jquery.com/)
+1. [Bootstrap css](http://getbootstrap.com/) ( js not required )
+2. [JQuery](http://jquery.com/)
+3. [Font Awesone](http://fontawesome.io/icons/)
 
 ##Use
 1. Add multitabs's CSS in the head
@@ -66,6 +67,7 @@ The following is the default configuration, you can modify as you want.
     $('.content-wrapper').multitabs({
         showHash : false,                           //While is true, show hash in URL.
         showClose : false,                          //while is false, show close button in hover, if true, show close button always
+        draggable : true,                           //nav tab draggable option
         fixed : false,                              //fixed the nav-bar
         layout : 'default',                         //it can be 'default', 'classic' (all hidden tab in dropdown list), and simple
         style : 'nav-tabs',                         //can be nav-tabs or nav-pills
@@ -84,7 +86,7 @@ The following is the default configuration, you can modify as you want.
         ],       
         navBar : {
             class : '',                             //class of navBar
-            maxTabs : 15,                            //Max tabs number (without counting main and editor), when is 1, hide the whole navBar
+            maxTabs : 15,                           //Max tabs number (without counting main and editor), when is 1, hide the whole navBar
             maxTitleLength : 25,                    //Max title length of tab
             backgroundColor : '#f5f5f5',            //default nav-bar background color
         },
@@ -93,7 +95,6 @@ The following is the default configuration, you can modify as you want.
         },
         iframeTabPane : {
             class : '',                             //Class for iframe tab-pane 
-            otherHeight : 0                         //other height for iframe, example: footer or header
         },
         language : {                                //language setting
             navBar : {
@@ -121,9 +122,7 @@ The following is the default configuration, you can modify as you want.
 ```
 
 ##Attention for iframe
-1. For iframe's auto-height, please add CSS as blew to your page.
-
-```.content-wrapper``` is the selector using multitabs. ```.wrapper``` is parent of ```.content-wrapper``` , all parent of wrapper multitabs must add ```height: 100%```
+1. For iframe's auto-height, please add CSS as blew to your page. ```.content-wrapper``` is the selector using multitabs. ```.wrapper``` is parent of ```.content-wrapper``` , all parent of wrapper multitabs must add ```height: 100%```
 ```html
 <style type="text/css">
     body,
@@ -153,6 +152,7 @@ The following is the default configuration, you can modify as you want.
 editor tab just can be 1.
 
 While editor tab ```.tab-tape ``` have ``` .unsave ``` class:
+
 1. Disallow overriding.
 2. close confirm
 3. close/refresh window confirm.

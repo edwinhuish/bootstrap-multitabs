@@ -6,7 +6,7 @@ if (typeof jQuery === "undefined") {
     "use strict";
     var NAMESPACE, tabIndex, _ignoreHashChange; //variable
     var MultiTabs,  handler, getTabIndex, toJoinerStr, toHumpStr,  isExtUrl, sumWidth, trimText, insertRule, isEmptyObject, supportStorage;  //function
-    var defaultLayoutTemplates, defaultLanguage, defaultAjaxTabPane, defaultIframeTabPane, defaultNavBar;  //default variable
+    var defaultLayoutTemplates;  //default variable
 
     NAMESPACE = '.multitabs';  // namespace for on() function
 
@@ -51,7 +51,7 @@ if (typeof jQuery === "undefined") {
      * @returns {string}    return trimed text
      */
     trimText = function (text, maxLength){
-        maxLength = maxLength || defaultNavBar.maxTitleLength;
+        maxLength = maxLength || $.fn.multitabs.defaults.navTab.maxTitleLength;
         var words = String(text).split(' ');
         var t = '';
         for(var i=0; i<words.length; i++ ){
@@ -229,48 +229,6 @@ if (typeof jQuery === "undefined") {
     };
 
     /**
-     * default language is English
-     */
-    defaultLanguage = {
-        navBar : {
-            title          : 'Tab',                             //default tab title
-            dropdown       : '<i class="fa fa-bars"></i>',      //dropdown menu display name
-            showActivedTab : 'Show Activated Tab',              //show activated tab
-            closeAllTabs   : 'Close All Tabs',                  //close all tabs
-            closeOtherTabs : 'Close Other Tabs'                 //close other tabs
-        },
-        editorUnsave: {
-            colse : 'Your data is not save, are you sure to lose it?',   //close unsave editor tab's warraning
-            cover : 'Can not cover Editor without saving the old one!'   //cover unsave editor tab's warraning
-        }
-    };
-
-    /**
-     * default navigation bar
-     */
-    defaultNavBar = {
-        class : '',                     //class, default is empty, can add as you want
-        maxTabs : 15,                   //maximum tab quantity
-        maxTitleLength : 25,            //maximum tab's title length
-        backgroundColor : '#f5f5f5'     //default nav-bar background color
-    };
-
-    /**
-     * default ajax tab-pane option
-     */
-    defaultAjaxTabPane = {
-        class : ''                  //class, default is empty, can add as you want
-    };
-
-    /**
-     * default iframe tab-pane option
-     */
-    defaultIframeTabPane = {
-        class : '',                 //class, default is empty, can add as you want
-        otherHeight : 0             //other height. (the height need to remove for iframe, example: footer)
-    };
-
-    /**
      * multitabs constructor
      * @param element       Primary container
      * @param options       options
@@ -406,7 +364,7 @@ if (typeof jQuery === "undefined") {
 
             }
             //when showHash is true and have url
-            if(options.showHash && url) {  
+            if(options.showHash && url) {
                 _ignoreHashChange = true;
                 window.location.hash = '#' + url;
             }
@@ -414,7 +372,7 @@ if (typeof jQuery === "undefined") {
         },
         /**
          * move left
-         * @return self     
+         * @return self
          */
         moveLeft : function () {
             var self = this, $el = self.$element,
@@ -647,50 +605,52 @@ if (typeof jQuery === "undefined") {
             });
 
             //drag tab
-            handler($el.navPanelList, 'mousedown', '.mt-nav-tab:not([data-content="main"])', function (event) {
-                var $navTabLi = $(this).closest('li');
-                var $prevNavTabLi = $navTabLi.prev();
-                var isMove = true, moved = false;
-                var navTabBlankHtml = '<li id="multitabs_tmp_tab_blank" class="mt-tmp" style="width:' + $navTabLi.outerWidth() + 'px; height:'+ $navTabLi.outerHeight() +'px;"><a style="width: 100%;  height: 100%; "></a></li>';
-                var abs_x = event.pageX - $navTabLi.offset().left + $el.navBar.offset().left;
-                $navTabLi.prev().after(navTabBlankHtml);
-                $navTabLi.css({'left': event.pageX - abs_x + 'px', 'position': 'absolute', 'z-index': 9999})
-                    .addClass('mt-tmp')
-                    .find('a:first').css({'background' : '#f39c12'});
+            if(options.draggable){
+                handler($el.navPanelList, 'mousedown', '.mt-nav-tab:not([data-content="main"])', function (event) {
+                    var $navTabLi = $(this).closest('li');
+                    var $prevNavTabLi = $navTabLi.prev();
+                    var isMove = true, moved = false;
+                    var navTabBlankHtml = '<li id="multitabs_tmp_tab_blank" class="mt-tmp" style="width:' + $navTabLi.outerWidth() + 'px; height:'+ $navTabLi.outerHeight() +'px;"><a style="width: 100%;  height: 100%; "></a></li>';
+                    var abs_x = event.pageX - $navTabLi.offset().left + $el.navBar.offset().left;
+                    $navTabLi.prev().after(navTabBlankHtml);
+                    $navTabLi.css({'left': event.pageX - abs_x + 'px', 'position': 'absolute', 'z-index': 9999})
+                        .addClass('mt-tmp')
+                        .find('a:first').css({'background' : '#f39c12'});
 
-                $(document).on('mousemove', function (event) {
-                    if (isMove) {
-                        $navTabLi.css({'left': event.pageX - abs_x + 'px'});
-                        $el.navPanelList.children('li:not(".mt-tmp")').each(function () {
-                            var leftWidth = $(this).offset().left + $(this).outerWidth() + 20; //20 px more for gap
-                            if( leftWidth > $navTabLi.offset().left  ){
-                                if($(this).next().attr('id') != 'multitabs_tmp_tab_blank'){
-                                    moved = true;
-                                    $prevNavTabLi = $(this);
-                                    $('#multitabs_tmp_tab_blank').remove();
-                                    $prevNavTabLi.after(navTabBlankHtml);
+                    $(document).on('mousemove', function (event) {
+                        if (isMove) {
+                            $navTabLi.css({'left': event.pageX - abs_x + 'px'});
+                            $el.navPanelList.children('li:not(".mt-tmp")').each(function () {
+                                var leftWidth = $(this).offset().left + $(this).outerWidth() + 20; //20 px more for gap
+                                if( leftWidth > $navTabLi.offset().left  ){
+                                    if($(this).next().attr('id') != 'multitabs_tmp_tab_blank'){
+                                        moved = true;
+                                        $prevNavTabLi = $(this);
+                                        $('#multitabs_tmp_tab_blank').remove();
+                                        $prevNavTabLi.after(navTabBlankHtml);
+                                    }
+                                    return false;
                                 }
-                                return false;
-                            }
-                        });
-                    }
-                }).on("selectstart",function(){ //disable text selection
-                    if (isMove) {
-                        return false;
-                    }
-                }).on('mouseup', function () {
-                    if(isMove){
-                        $navTabLi.css({'left': '0px', 'position': 'relative', 'z-index': 'inherit'})
-                            .removeClass('mt-tmp')
-                            .find('a:first').css({'background' : ''});
-                        $('#multitabs_tmp_tab_blank').remove();
-                        if(moved){
-                            $prevNavTabLi.after($navTabLi);
+                            });
                         }
-                    }
-                    isMove = false;
+                    }).on("selectstart",function(){ //disable text selection
+                        if (isMove) {
+                            return false;
+                        }
+                    }).on('mouseup', function () {
+                        if(isMove){
+                            $navTabLi.css({'left': '0px', 'position': 'relative', 'z-index': 'inherit'})
+                                .removeClass('mt-tmp')
+                                .find('a:first').css({'background' : ''});
+                            $('#multitabs_tmp_tab_blank').remove();
+                            if(moved){
+                                $prevNavTabLi.after($navTabLi);
+                            }
+                        }
+                        isMove = false;
+                    });
                 });
-            });
+            }
 
             //close tab
             handler($el.navBar, 'click', '.mt-close-tab', function(){
@@ -1014,25 +974,57 @@ if (typeof jQuery === "undefined") {
      * @type {{showHash: boolean, mode: string, maxTabs: number, maxTitleLength: number, tabTitle: string, content: string}}
      */
     $.fn.multitabs.defaults = {
-        init :[],
-        style : 'nav-tabs',          //can be nav-tabs or nav-pills
-        fixed : false,
-        showHash : false,
-        showClose : false,
-        content : 'info',
-        link : '.multitabs',
-        class : '',
-        iframe : false,                     //iframe mode, default is false, just use iframe for external link
-        layout : 'default',
-        navBar : defaultNavBar,
-        ajaxTabPane : defaultAjaxTabPane,
-        iframeTabPane : defaultIframeTabPane,
-        language : defaultLanguage,
-        ajaxSuccess : function (callback) {
-            return callback;
+        showHash : false,                           //While is true, show hash in URL.
+        showClose : false,                          //while is false, show close button in hover, if true, show close button always
+        draggable : true,                           //nav tab draggable option
+        fixed : false,                              //fixed the nav-bar
+        layout : 'default',                         //it can be 'default', 'classic' (all hidden tab in dropdown list), and simple
+        style : 'nav-tabs',                         //can be nav-tabs or nav-pills
+        link : '.multitabs',                        //selector text to trigger multitabs.
+        iframe : false,                             //Global iframe mode, default is false, is the auto mode (for the self page, use ajax, and the external, use iframe)
+        class : '',                                 //class for whole multitabs
+        content : 'info',                           //change the data-content name, is not necessary to change.
+        init : [                                    //tabs in initial
+            //     {
+            //         content :'',                        //content type, may be main | info | editor, if empty, default is 'info'
+            //         title : '',                         //title of tab, if empty, show the URL
+            //         url : ''                            //URL, if it's external link, content type change to 'info'
+            //     },
+            //     {    ......    },                       //add more page.
+            // {    ......    },
+        ],
+        navBar : {
+            class : '',                             //class of navBar
+            maxTabs : 15,                           //Max tabs number (without counting main and editor), when is 1, hide the whole navBar
+            maxTitleLength : 25,                    //Max title length of tab
+            backgroundColor : '#f5f5f5',            //default nav-bar background color
         },
-        ajaxError : function (callback) {
-            return callback;
+        ajaxTabPane : {
+            class : '',                             //Class for ajax tab-pane
+        },
+        iframeTabPane : {
+            class : '',                             //Class for iframe tab-pane
+        },
+        language : {                                //language setting
+            navBar : {
+                title : 'Tab',                                  //default tab's tittle
+                dropdown : '<i class="fa fa-bars"></i>',        //right tools dropdown name
+                showActivedTab : 'Show Activated Tab',          //show active tab
+                closeAllTabs : 'Close All Tabs',                //close all tabs
+                closeOtherTabs : 'Close Other Tabs',            //close other tabs
+            },
+            editorUnsave: {
+                colse : 'Your data is not save, are you sure to lose it?',   //the warning of closing editor without save
+                cover : 'Can not cover Editor without saving the old one!'   //the warning of open another editor without save the old one.
+            }
+        },
+        ajaxSuccess : function (htmlCallBack) {
+            //modify html and return
+            return htmlCallBack;
+        },
+        ajaxError : function (htmlCallBack) {
+            //modify html and return
+            return htmlCallBack;
         }
     };
 

@@ -2,13 +2,13 @@
 
 ##效果图
 ###default/默认 (带有向左、向右移动以及选项菜单)
-Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/index.html) and [nav-pills](http://edwinhuish.oschina.io/multi-tabs/index-default-pills.html)
+Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/demo/index.html) and [nav-pills](http://edwinhuish.oschina.io/multi-tabs/demo/index-default-pills.html)
 ![Multi Tabs Screenshot](screenshot-default.jpg)
 ###classic/折叠 (折叠隐藏tab)
-Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/index-classic.html) and [nav-pills](http://edwinhuish.oschina.io/multi-tabs/index-classic-pills.html)
+Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/demo/index-classic.html) and [nav-pills](http://edwinhuish.oschina.io/multi-tabs/demo/index-classic-pills.html)
 ![Multi Tabs Screenshot](screenshot-classic.jpg)
 ###simple
-Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/index-simple.html) and [nav-pills](http://edwinhuish.oschina.io/multi-tabs/index-simple-pills.html)
+Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/demo/index-simple.html) and [nav-pills](http://edwinhuish.oschina.io/multi-tabs/demo/index-simple-pills.html)
 ![Multi Tabs Screenshot](screenshot-simple.jpg)
 
 ##作用与优势
@@ -19,8 +19,9 @@ Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/index-simple.html) and 
 5. 当标签数量设置为 1 的时候，隐藏便签列表
 
 ##安装需求
-1. [Bootstrap 3.x](http://getbootstrap.com/)
-2. 最新 [JQuery](http://jquery.com/)
+1. [Bootstrap css](http://getbootstrap.com/) ( js 非必须 )
+2. [JQuery](http://jquery.com/)
+3. [Font Awesone](http://fontawesome.io/icons/)
 
 ##使用
 1. 在html的head内引用multitabs的CSS
@@ -38,7 +39,7 @@ Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/index-simple.html) and 
 3. 并绑定multitabs的区域
 ```html
 <script>
-    $('.content-wrapper').multitabs();
+    $('#content_wrapper').multitabs();
 </script>
 ```
 
@@ -65,6 +66,7 @@ Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/index-simple.html) and 
     $('.content-wrapper').multitabs({
         showHash : false,                           //当值为true时，显示URL的hash。
         showClose : false,                          //当值为false，仅在鼠标悬浮时显示关闭按钮。true时一直显示
+        draggable : true,                           //nav tab 可拖动选项
         fixed : false,                              //固定标签头列表
         layout : 'default',                         //有两种模式，'default', 'classic'(所有隐藏tab都在下拉菜单里) 和 'simple'
         style : 'nav-tabs',                         //可以为nav-tabs 或 nav-pills
@@ -92,7 +94,6 @@ Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/index-simple.html) and 
         },
         iframeTabPane : {
             class : '',                             //为iframe tab-pane 添加class
-            otherHeight : 0                         //其他高度，iframe需要剔除的高度，如footer
         },
         language : {                                //语言配置
             navBar : {
@@ -127,9 +128,7 @@ Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/index-simple.html) and 
 
 
 ## iframe注意事项
-1. 为了自适应iframe高度，请依照下面这个样式添加CSS。
-
-其中 ```.content-wrapper``` 是当前使用multitabs的wrapper。 ```.wrapper``` 为 ```.content-wrapper``` 的父层，需要将所有父层都添加 ```height: 100%```
+1. 为了自适应iframe高度，请依照下面这个样式添加CSS。 其中 ```.content-wrapper``` 是当前使用multitabs的wrapper。 ```.wrapper``` 为 ```.content-wrapper``` 的父层，需要将所有父层都添加 ```height: 100%```
 ```html
 <style type="text/css">
     body,
@@ -159,6 +158,7 @@ Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/index-simple.html) and 
 editor标签页默认只有一个.
 
 editor标签页```.tab-tape ```内有 ``` .unsave ``` class的时：
+
 1. 禁止覆盖。
 2. 关闭确认提示
 3. 关闭整个窗口提醒。
