@@ -19,7 +19,7 @@ Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/demo/index-simple.html)
 5. 当标签数量设置为 1 的时候，隐藏便签列表
 
 ##安装需求
-1. [Bootstrap css](http://getbootstrap.com/) ( js 非必须 )
+1. [Bootstrap css](http://getbootstrap.com/)
 2. [JQuery](http://jquery.com/)
 3. [Font Awesone](http://fontawesome.io/icons/)
 
