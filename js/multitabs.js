@@ -4,7 +4,7 @@ if (typeof jQuery === "undefined") {
 }((function($){
     "use strict";
     var NAMESPACE, tabIndex, _ignoreHashChange; //variable
-    var MultiTabs,  handler, getTabIndex, toJoinerStr, toHumpStr,  isExtUrl, sumWidth, trimText, insertRule, isEmptyObject, supportStorage;  //function
+    var MultiTabs,  handler, getTabIndex, isExtUrl, sumWidth, trimText, insertRule, isEmptyObject, supportStorage;  //function
     var defaultLayoutTemplates;  //default variable
 
     NAMESPACE = '.multitabs';  // namespace for on() function
@@ -130,22 +130,6 @@ if (typeof jQuery === "undefined") {
         }
         return true;
     };
-
-    /**
-     * change Hump type string to string with '-'
-     */
-    toJoinerStr = function(humpStr){
-        return humpStr.replace(/\./g, '').replace(/([A-Z])/g, "-$1").toLowerCase();
-    };
-
-    /**
-     * change string with '-' to Hump type
-     */
-    toHumpStr = function(joinerStr){
-        return joinerStr.replace(/\./g, '').replace(/\-(\w)/g, function(x){return x.slice(1).toUpperCase();});
-    };
-
-
 
     /**
      * Layout Templates
@@ -525,7 +509,7 @@ if (typeof jQuery === "undefined") {
         _init: function (options) {
             var self = this, $el = self.$element;
             $el.html(defaultLayoutTemplates[options.layout]
-                .replace('{mainClass}', toJoinerStr(options.class))
+                .replace('{mainClass}', options.class)
                 .replace('{navBarClass}' , options.navBar.class)
                 .replace(/\{nav-tabs\}/g , options.style)
                 .replace(/\{backgroundColor\}/g, options.navBar.backgroundColor)
