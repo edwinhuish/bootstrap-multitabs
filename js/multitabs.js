@@ -2,7 +2,6 @@
 if (typeof jQuery === "undefined") {
     throw new Error("MultiTabs requires jQuery");
 }((function($){
-    //STRICT MODE
     "use strict";
     var NAMESPACE, tabIndex, _ignoreHashChange; //variable
     var MultiTabs,  handler, getTabIndex, toJoinerStr, toHumpStr,  isExtUrl, sumWidth, trimText, insertRule, isEmptyObject, supportStorage;  //function
@@ -20,10 +19,6 @@ if (typeof jQuery === "undefined") {
      */
     handler = function ($selector, event, childSelector, fn, skipNS) {
         var ev = skipNS ? event : event.split(' ').join(NAMESPACE + ' ') + NAMESPACE;
-        if ( typeof childSelector !== "string" ) {
-            fn = fn || childSelector;
-            childSelector = '';
-        }
         $selector.off(ev, childSelector, fn).on(ev, childSelector, fn);
     };
 
@@ -264,7 +259,9 @@ if (typeof jQuery === "undefined") {
                 $el = self.$element,
                 $editor = $el.tabContent.find('.tab-pane[data-content="editor"]');
             var param, navTabHtml, closeBtnHtml, display, tabPaneHtml, index, id,  $navTab, $tabPane;
-            if(! ( param = self._getParam(obj) )) return self;   //return multitabs obj when is invaid obj
+            if(! ( param = self._getParam(obj) )) {
+                return self;   //return multitabs obj when is invaid obj
+            }
             if( $navTab = self._exist(param)){
                 self.active($navTab);
                 return self;
@@ -311,7 +308,9 @@ if (typeof jQuery === "undefined") {
             $el.tabContent.append(tabPaneHtml);
             //add tab to storage
             self._storage(id, param);
-            if(param.active) self.active($navTab);
+            if(param.active) {
+                self.active($navTab);
+            }
             return self;
         },
 
@@ -328,8 +327,12 @@ if (typeof jQuery === "undefined") {
             var navTabParam = $navTab.length ? self._getParam($navTab) : {};
             //change storage active status
             var storage = self._storage();
-            if( storage[prevNavTabParam.id] ) storage[prevNavTabParam.id].active = false;
-            if( storage[navTabParam.id] ) storage[navTabParam.id].active = true;
+            if( storage[prevNavTabParam.id] ) {
+                storage[prevNavTabParam.id].active = false;
+            }
+            if( storage[navTabParam.id] ) {
+                storage[navTabParam.id].active = true;
+            }
             self._resetStorage(storage);
             //active navTab and tabPane
             $prevActivedTab.parent('li').removeClass('active');
@@ -448,10 +451,13 @@ if (typeof jQuery === "undefined") {
             var self = this, $tabPane;
             var $navTab = self._getNavTab(navTab), $navTabLi = $navTab.parent('li');
             $tabPane = self._getTabPane($navTab);
-            if($navTabLi.length && $tabPane.length){
-                if($navTab.attr('data-content') === 'editor' && $tabPane.hasClass('unsave')){
-                    if(!self._unsaveConfirm()) return self;
-                }
+            //close unsave tab confirm
+            if($navTabLi.length 
+                && $tabPane.length
+                && $navTab.attr('data-content') === 'editor' 
+                && $tabPane.hasClass('unsave')
+                && !self._unsaveConfirm()){
+                return self;
             }
             if ($navTabLi.hasClass("active")) {
                 var $nextLi = $navTabLi.next("li:first"), $prevLi = $navTabLi.prev("li:last");
@@ -566,7 +572,9 @@ if (typeof jQuery === "undefined") {
                 init = (init instanceof Array) ? init : [];
                 for(var i = 0; i < init.length; i++){
                     param = self._getParam( init[i]);
-                    if( param ) self.create(param);
+                    if( param ) {
+                        self.create(param);
+                    }
                 }
             }
             //if no any tab actived, active the main tab
@@ -583,7 +591,9 @@ if (typeof jQuery === "undefined") {
          */
         _validate: function () {
             var self = this, $exception;
-            if( isEmptyObject($(document).data('multitabs'))) return true;
+            if( isEmptyObject($(document).data('multitabs'))) {
+                return true;
+            }
             $exception = '<div class="help-block alert alert-warning">' +
                 '<h4>Duplicate Instance</h4>' +
                 'MultiTabs only can be 1 Instance.' +
@@ -615,7 +625,7 @@ if (typeof jQuery === "undefined") {
                 handler($el.navPanelList, 'mousedown', '.mt-nav-tab', function (event) {
                     var $navTab = $(this), $navTabLi = $navTab.closest('li');
                     var $prevNavTabLi = $navTabLi.prev();
-                    var isMove = true, moved = false, isMain = ($navTab.data('content') == "main");
+                    var isMove = true, moved = false, isMain = ($navTab.data('content') === "main");
                     var navTabBlankHtml = '<li id="multitabs_tmp_tab_blank" class="mt-tmp" style="width:' + $navTabLi.outerWidth() + 'px; height:'+ $navTabLi.outerHeight() +'px;"><a style="width: 100%;  height: 100%; "></a></li>';
                     var abs_x = event.pageX - $navTabLi.offset().left + $el.navBar.offset().left;
                     $navTabLi.before(navTabBlankHtml);
@@ -629,7 +639,7 @@ if (typeof jQuery === "undefined") {
                             $el.navPanelList.children('li:not(".mt-tmp")').each(function () {
                                 var leftWidth = $(this).offset().left + $(this).outerWidth() + 20; //20 px more for gap
                                 if( leftWidth > $navTabLi.offset().left  ){
-                                    if($(this).next().attr('id') != 'multitabs_tmp_tab_blank'){
+                                    if($(this).next().attr('id') !== 'multitabs_tmp_tab_blank'){
                                         moved = true;
                                         $prevNavTabLi = $(this);
                                         $('#multitabs_tmp_tab_blank').remove();
@@ -712,12 +722,16 @@ if (typeof jQuery === "undefined") {
                     if(!_ignoreHashChange){
                         var hash, url, $navTabLi, $navTab, a;
                         hash = window.location.hash;
-                        if(!hash) return false;
+                        if(!hash) {
+                            return false;
+                        }
                         url = hash.replace('#','');
                         $navTab = $el.navPanelList.find('[data-url="'+ url +'"]:first');
                         if($navTab.length){
                             $navTabLi = $navTab.parent('li');
-                            if(!$navTabLi.hasClass('active')) self.active($navTabLi);
+                            if(!$navTabLi.hasClass('active')){
+                                self.active($navTabLi);
+                            }
                             return false;
                         }else{
                             a = document.createElement('a');
@@ -758,18 +772,22 @@ if (typeof jQuery === "undefined") {
          * @private
          */
         _getParam : function(obj){
-            if(isEmptyObject(obj)) return false;
+            if(isEmptyObject(obj)){
+                return false;
+            }
             var self = this,  options = self.options, param = {}, $obj = $(obj);
             //url
             param.url = $obj.data('url') || obj.url || $obj.attr('href') || $obj.attr('url');
             param.url = $.trim(decodeURIComponent(param.url.replace('#', '')));
-            if (!param.url.length) return false;
+            if (!param.url.length){
+                return false;
+            }
             //iframe
             param.iframe = $obj.data('iframe') || obj.iframe || isExtUrl(param.url) || options.iframe;
             //content
             param.content = $obj.data('content') || obj.content || options.content;
             //title
-            param.title = $obj.data('itle') || obj.title || $obj.text() || param.url.replace('http://', '').replace('https://', '') || options.language.navBar.title;
+            param.title = $obj.data('title') || obj.title || $obj.text() || param.url.replace('http://', '').replace('https://', '') || options.language.navBar.title;
             param.title = trimText(param.title, options.navBar.maxTitleLength);
             //active
             param.active = $obj.data('active') || obj.active;
@@ -786,8 +804,12 @@ if (typeof jQuery === "undefined") {
         _storage : function (key, param) {
             if( supportStorage() ){
                 var storage = JSON.parse(sessionStorage.multitabs || '{}');
-                if( !key ) return storage;
-                if( !param ) return storage[key];
+                if( !key ){
+                    return storage;
+                }
+                if( !param ){
+                    return storage[key];
+                }
                 storage[key] = param;
                 sessionStorage.multitabs = JSON.stringify(storage);
                 return storage;
@@ -802,7 +824,9 @@ if (typeof jQuery === "undefined") {
         _delStorage : function (key) {
             if( supportStorage() ){
                 var storage = JSON.parse(sessionStorage.multitabs || '{}');
-                if( !key ) return storage;
+                if( !key ){
+                    return storage;
+                }
                 delete storage[key];
                 sessionStorage.multitabs = JSON.stringify(storage);
                 return storage;
@@ -826,12 +850,16 @@ if (typeof jQuery === "undefined") {
          * @private
          */
         _exist : function(param){
-            if(!param) return false;
+            if(!param){
+                return storage;
+            }
             var self = this, $el = self.$element, $navTab;
             $navTab = $el.navPanelList.find('a[data-url="'+ param.url +'"]');
             if( $navTab.length ) {
                 return $navTab;
-            } else return  false ;
+            }else{
+                return  false;
+            }
         },
 
         /**
