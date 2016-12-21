@@ -47,7 +47,7 @@ if (typeof jQuery === "undefined") {
      */
     trimText = function (text, maxLength){
         maxLength = maxLength || $.fn.multitabs.defaults.navTab.maxTitleLength;
-        var words = String(text).split(' ');
+        var words = (text + "").split(' ');
         var t = '';
         for(var i=0; i<words.length; i++ ){
             var w =  $.trim(words[i]);
@@ -238,64 +238,122 @@ if (typeof jQuery === "undefined") {
          * @returns self        Chain structure.
          */
         create : function (obj, active) {
-            var self = this,
-                options = self.options,
-                $el = self.$element,
-                $editor = $el.tabContent.find('.tab-pane[data-content="editor"]');
-            var param, navTabHtml, closeBtnHtml, display, tabPaneHtml, index, id,  $navTab, $tabPane;
+            var self = this, options = self.options;
+            var param,  index, id,  $navTab;
             if(! ( param = self._getParam(obj) )) {
                 return self;   //return multitabs obj when is invaid obj
             }
             if( $navTab = self._exist(param)){
                 self.active($navTab);
+                if(param.content === 'editor'){   //Prohibited open more than 1 editor tab
+                    self._getTabPane($navTab).prepend('<div class="help-block alert alert-warning">' + options.language.editorUnsave.cover + '</div>');
+                }
                 return self;
             }
-            index = getTabIndex(param.content, options.navBar.maxTabs);
             param.active = param.active === undefined ? active : param.active;
-            id = 'multitabs_' + param.content + '_' + index;
+            index = getTabIndex(param.content, options.navBar.maxTabs);
+            id = self._generateId(param, index);
 
-            //Prohibited open more than 1 editor tab
-            if(param.content === 'editor' && $editor.length && $editor.hasClass('unsave')){
-                $navTab = $el.navPanelList.find('a[data-content="editor"]');
-                self.active($navTab);
-                $tabPane = self._getTabPane($navTab);
-                $tabPane.before('<div class="help-block alert alert-warning">' + options.language.editorUnsave.cover + '</div>');
-                return self;
-            }
-            //get layoutTemplates
-            display = options.showClose ? 'display:inline;' : '';
-            closeBtnHtml = (param.content === 'main') ? '' : defaultLayoutTemplates.closeBtn.replace('{style}', display); //main content can not colse.
-            navTabHtml = defaultLayoutTemplates.navTab
-                    .replace('{navTabId}', id)
-                    .replace('{content}', param.content)
-                    .replace('{index}',index)
-                    .replace('{url}', param.url)
-                    .replace('{title}', param.title)
-                +   closeBtnHtml;
-            //tab create
-            var $navTabLi = $el.navPanelList.find('a[data-content="'+ param.content +'"][data-index="'+ index +'"]').parent('li');
-            if($navTabLi.length){
-                $navTabLi.html(navTabHtml);
-                self._getTabPane($navTabLi.find('a:first')).remove();  //remove old content pane directly
-            }else $el.navPanelList.append( '<li>' + navTabHtml + '</li>');
-            $navTab = $el.navPanelList.find('a[data-id="'+ id +'"]');
+            $navTab = self._createNavTab(param, index);
             //tab-pane create
-            if(param.iframe){
-                tabPaneHtml = defaultLayoutTemplates.iframeTabPane
-                    .replace('{class}', options.iframeTabPane.class)
-                    .replace('{tabPaneId}', id);
-            }else{
-                tabPaneHtml = defaultLayoutTemplates.ajaxTabPane
-                    .replace('{class}', options.ajaxTabPane.class)
-                    .replace('{tabPaneId}', id);
-            }
-            $el.tabContent.append(tabPaneHtml);
+            self._createTabPane(param, index);
             //add tab to storage
             self._storage(id, param);
             if(param.active) {
                 self.active($navTab);
             }
             return self;
+        },
+
+        /**
+         * Create tab pane
+         * @param param
+         * @param index
+         * @returns {*|{}}
+         * @private
+         */
+        _createTabPane : function (param, index) {
+            var self = this, $el = self.$element, id = self._generateId(param, index);
+            $el.tabContent.append(self._getTabPaneHtml(param, index));
+            return $el.tabContent.find('#' + id);
+        },
+
+        /**
+         * get tab pane html
+         * @param param
+         * @param index
+         * @returns {string}
+         * @private
+         */
+        _getTabPaneHtml : function (param, index) {
+            var self = this,  options = self.options,
+                id = self._generateId(param, index);
+            if(param.iframe){
+                return defaultLayoutTemplates.iframeTabPane
+                    .replace('{class}', options.iframeTabPane.class)
+                    .replace('{tabPaneId}', id);
+            }else{
+                return defaultLayoutTemplates.ajaxTabPane
+                    .replace('{class}', options.ajaxTabPane.class)
+                    .replace('{tabPaneId}', id);
+            }
+        },
+
+        /**
+         * create nav tab
+         * @param param
+         * @param index
+         * @returns {*|{}}
+         * @private
+         */
+        _createNavTab : function (param, index) {
+            var self = this, $el = self.$element;
+            var navTabHtml = self._getNavTabHtml(param, index);
+
+            var $navTabLi = $el.navPanelList.find('a[data-content="'+ param.content +'"][data-index="'+ index +'"]').parent('li');
+            if($navTabLi.length){
+                $navTabLi.html(navTabHtml);
+                self._getTabPane($navTabLi.find('a:first')).remove();  //remove old content pane directly
+            }else {
+                $el.navPanelList.append( '<li>' + navTabHtml + '</li>');
+            }
+            return $el.navPanelList.find('a[data-content="'+ param.content +'"][data-index="'+ index +'"]');
+
+        },
+
+        /**
+         * get nav tab html
+         * @param param
+         * @param index
+         * @returns {string}
+         * @private
+         */
+        _getNavTabHtml : function (param, index) {
+            var self = this,
+                options = self.options;
+            var closeBtnHtml, display,  id;
+
+            id = self._generateId(param, index);
+            display = options.showClose ? 'display:inline;' : '';
+            closeBtnHtml = (param.content === 'main') ? '' : defaultLayoutTemplates.closeBtn.replace('{style}', display); //main content can not colse.
+            return defaultLayoutTemplates.navTab
+                    .replace('{index}', index)
+                    .replace('{navTabId}', id)
+                    .replace('{url}', param.url)
+                    .replace('{title}', param.title)
+                    .replace('{content}', param.content)
+                +   closeBtnHtml;
+        },
+
+        /**
+         * generate tab pane's id
+         * @param param
+         * @param index
+         * @returns {string}
+         * @private
+         */
+        _generateId : function(param, index){
+            return 'multitabs_' + param.content + '_' + index;
         },
 
         /**
