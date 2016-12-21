@@ -239,7 +239,7 @@ if (typeof jQuery === "undefined") {
          */
         create : function (obj, active) {
             var self = this, options = self.options;
-            var param,  index, id,  $navTab;
+            var param, $navTab;
             if(! ( param = self._getParam(obj) )) {
                 return self;   //return multitabs obj when is invaid obj
             }
@@ -251,14 +251,14 @@ if (typeof jQuery === "undefined") {
                 return self;
             }
             param.active = param.active === undefined ? active : param.active;
-            index = getTabIndex(param.content, options.navBar.maxTabs);
-            id = self._generateId(param, index);
-
-            $navTab = self._createNavTab(param, index);
+            param.index = getTabIndex(param.content, options.navBar.maxTabs);
+            param.id = self._generateId(param);
+            //nav tab create
+            $navTab = self._createNavTab(param);
             //tab-pane create
-            self._createTabPane(param, index);
+            self._createTabPane(param);
             //add tab to storage
-            self._storage(id, param);
+            self._storage( param.id, param);
             if(param.active) {
                 self.active($navTab);
             }
@@ -272,10 +272,10 @@ if (typeof jQuery === "undefined") {
          * @returns {*|{}}
          * @private
          */
-        _createTabPane : function (param, index) {
-            var self = this, $el = self.$element, id = self._generateId(param, index);
-            $el.tabContent.append(self._getTabPaneHtml(param, index));
-            return $el.tabContent.find('#' + id);
+        _createTabPane : function (param) {
+            var self = this, $el = self.$element;
+            $el.tabContent.append(self._getTabPaneHtml(param));
+            return $el.tabContent.find('#' + param.id);
         },
 
         /**
@@ -285,17 +285,16 @@ if (typeof jQuery === "undefined") {
          * @returns {string}
          * @private
          */
-        _getTabPaneHtml : function (param, index) {
-            var self = this,  options = self.options,
-                id = self._generateId(param, index);
+        _getTabPaneHtml : function (param) {
+            var self = this,  options = self.options;
             if(param.iframe){
                 return defaultLayoutTemplates.iframeTabPane
                     .replace('{class}', options.iframeTabPane.class)
-                    .replace('{tabPaneId}', id);
+                    .replace('{tabPaneId}', param.id);
             }else{
                 return defaultLayoutTemplates.ajaxTabPane
                     .replace('{class}', options.ajaxTabPane.class)
-                    .replace('{tabPaneId}', id);
+                    .replace('{tabPaneId}', param.id);
             }
         },
 
@@ -306,18 +305,18 @@ if (typeof jQuery === "undefined") {
          * @returns {*|{}}
          * @private
          */
-        _createNavTab : function (param, index) {
+        _createNavTab : function (param) {
             var self = this, $el = self.$element;
-            var navTabHtml = self._getNavTabHtml(param, index);
+            var navTabHtml = self._getNavTabHtml(param);
 
-            var $navTabLi = $el.navPanelList.find('a[data-content="'+ param.content +'"][data-index="'+ index +'"]').parent('li');
+            var $navTabLi = $el.navPanelList.find('a[data-content="'+ param.content +'"][data-index="'+ param.index +'"]').parent('li');
             if($navTabLi.length){
                 $navTabLi.html(navTabHtml);
                 self._getTabPane($navTabLi.find('a:first')).remove();  //remove old content pane directly
             }else {
                 $el.navPanelList.append( '<li>' + navTabHtml + '</li>');
             }
-            return $el.navPanelList.find('a[data-content="'+ param.content +'"][data-index="'+ index +'"]');
+            return $el.navPanelList.find('a[data-content="'+ param.content +'"][data-index="'+ param.index +'"]:first');
 
         },
 
@@ -328,17 +327,16 @@ if (typeof jQuery === "undefined") {
          * @returns {string}
          * @private
          */
-        _getNavTabHtml : function (param, index) {
+        _getNavTabHtml : function (param) {
             var self = this,
                 options = self.options;
-            var closeBtnHtml, display,  id;
+            var closeBtnHtml, display;
 
-            id = self._generateId(param, index);
             display = options.showClose ? 'display:inline;' : '';
             closeBtnHtml = (param.content === 'main') ? '' : defaultLayoutTemplates.closeBtn.replace('{style}', display); //main content can not colse.
             return defaultLayoutTemplates.navTab
-                    .replace('{index}', index)
-                    .replace('{navTabId}', id)
+                    .replace('{index}', param.index)
+                    .replace('{navTabId}', param.id)
                     .replace('{url}', param.url)
                     .replace('{title}', param.title)
                     .replace('{content}', param.content)
@@ -352,8 +350,8 @@ if (typeof jQuery === "undefined") {
          * @returns {string}
          * @private
          */
-        _generateId : function(param, index){
-            return 'multitabs_' + param.content + '_' + index;
+        _generateId : function(param){
+            return 'multitabs_' + param.content + '_' + param.index;
         },
 
         /**
@@ -667,18 +665,18 @@ if (typeof jQuery === "undefined") {
                 handler($el.navPanelList, 'mousedown', '.mt-nav-tab', function (event) {
                     var $navTab = $(this), $navTabLi = $navTab.closest('li');
                     var $prevNavTabLi = $navTabLi.prev();
-                    var isMove = true, moved = false, isMain = ($navTab.data('content') === "main");
-                    var navTabBlankHtml = '<li id="multitabs_tmp_tab_blank" class="mt-tmp" style="width:' + $navTabLi.outerWidth() + 'px; height:'+ $navTabLi.outerHeight() +'px;"><a style="width: 100%;  height: 100%; "></a></li>';
+                    var dragMode = true, moved = false, isMain = ($navTab.data('content') === "main");
+                    var navTabBlankHtml = '<li id="multitabs_tmp_tab_blank" class="mt-drag-tmp" style="width:' + $navTabLi.outerWidth() + 'px; height:'+ $navTabLi.outerHeight() +'px;"><a style="width: 100%;  height: 100%; "></a></li>';
                     var abs_x = event.pageX - $navTabLi.offset().left + $el.navBar.offset().left;
                     $navTabLi.before(navTabBlankHtml);
                     $navTabLi.css({'left': event.pageX - abs_x + 'px', 'position': 'absolute', 'z-index': 9999})
-                        .addClass('mt-tmp')
+                        .addClass('mt-drag-tmp')
                         .find('a:first').css({'background' : '#f39c12'});
 
                     $(document).on('mousemove', function (event) {
-                        if (isMove && !isMain) {
+                        if (dragMode && !isMain) {
                             $navTabLi.css({'left': event.pageX - abs_x + 'px'});
-                            $el.navPanelList.children('li:not(".mt-tmp")').each(function () {
+                            $el.navPanelList.children('li:not(".mt-drag-tmp")').each(function () {
                                 var leftWidth = $(this).offset().left + $(this).outerWidth() + 20; //20 px more for gap
                                 if( leftWidth > $navTabLi.offset().left  ){
                                     if($(this).next().attr('id') !== 'multitabs_tmp_tab_blank'){
@@ -692,20 +690,20 @@ if (typeof jQuery === "undefined") {
                             });
                         }
                     }).on("selectstart",function(){ //disable text selection
-                        if (isMove) {
+                        if (dragMode) {
                             return false;
                         }
                     }).on('mouseup', function () {
-                        if(isMove){
+                        if(dragMode){
                             $navTabLi.css({'left': '0px', 'position': 'relative', 'z-index': 'inherit'})
-                                .removeClass('mt-tmp')
+                                .removeClass('mt-drag-tmp')
                                 .find('a:first').css({'background' : ''});
                             $('#multitabs_tmp_tab_blank').remove();
                             if(moved){
                                 $prevNavTabLi.after($navTabLi);
                             }
                         }
-                        isMove = false;
+                        dragMode = false;
                     });
                 });
             }
@@ -824,6 +822,10 @@ if (typeof jQuery === "undefined") {
             if (!param.url.length){
                 return false;
             }
+            //id
+            param.id = $obj.data('id') || obj.id;
+            //index
+            param.index = $obj.data('index') || obj.index;
             //iframe
             param.iframe = $obj.data('iframe') || obj.iframe || isExtUrl(param.url) || options.iframe;
             //content
@@ -1059,15 +1061,7 @@ if (typeof jQuery === "undefined") {
         iframe : false,                             //Global iframe mode, default is false, is the auto mode (for the self page, use ajax, and the external, use iframe)
         class : '',                                 //class for whole multitabs
         content : 'info',                           //change the data-content name, is not necessary to change.
-        init : [                                    //tabs in initial
-            //     {
-            //         content :'',                        //content type, may be main | info | editor, if empty, default is 'info'
-            //         title : '',                         //title of tab, if empty, show the URL
-            //         url : ''                            //URL, if it's external link, content type change to 'info'
-            //     },
-            //     {    ......    },                       //add more page.
-            // {    ......    },
-        ],
+        init : [],                                    //tabs in initial
         navBar : {
             class : '',                             //class of navBar
             maxTabs : 15,                           //Max tabs number (without counting main and editor), when is 1, hide the whole navBar
