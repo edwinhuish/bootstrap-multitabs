@@ -4,7 +4,7 @@ if (typeof jQuery === "undefined") {
 }((function($){
     "use strict";
     var NAMESPACE, tabIndex, _ignoreHashChange; //variable
-    var MultiTabs,  handler, getTabIndex, isExtUrl, sumWidth, trimText, insertRule, isEmptyObject, supportStorage;  //function
+    var MultiTabs,  handler, getTabIndex, isExtUrl, sumWidth, trimText, insertRule, supportStorage;  //function
     var defaultLayoutTemplates;  //default variable
 
     NAMESPACE = '.multitabs';  // namespace for on() function
@@ -92,43 +92,6 @@ if (typeof jQuery === "undefined") {
         var webRoot = window.location.protocol + '//' + window.location.host + '/';
         var urlRoot = absUrl.substr(0, webRoot.length);
         return ( ! (urlRoot===webRoot) );
-    };
-
-    /**
-     * insert CSS style
-     *
-     * Example
-     * .fixed .mt-nav-tools-right{
-     *    position: fixed;
-     *    right: 0;
-     *    background-color : #fff;
-     * }
-     *
-     * can be inserted as below:
-     * insertRule('.fixed .mt-nav-tools-right', 'position: fixed; right: 0; background-color : #fff;');
-     *
-     * @param selectorText      selector in string
-     * @param cssText           css style in string
-     * @param position          position for insert, default is 0
-     */
-    insertRule = function (selectorText, cssText, position) {
-        var sheet = document.styleSheets[0];
-        position = position || 0;
-        if (sheet.insertRule) {
-            sheet.insertRule(selectorText + "{" + cssText + "}", position);
-        } else if (sheet.addRule) {
-            sheet.addRule(selectorText, cssText, position);
-        }
-    };
-
-    /**
-     * check the obj is empty object
-     */
-    isEmptyObject = function (obj) {
-        for (var key in obj) {
-            return false;
-        }
-        return true;
     };
 
     /**
@@ -308,7 +271,6 @@ if (typeof jQuery === "undefined") {
         _createNavTab : function (param) {
             var self = this, $el = self.$element;
             var navTabHtml = self._getNavTabHtml(param);
-
             var $navTabLi = $el.navPanelList.find('a[data-content="'+ param.content +'"][data-index="'+ param.index +'"]').parent('li');
             if($navTabLi.length){
                 $navTabLi.html(navTabHtml);
@@ -608,7 +570,7 @@ if (typeof jQuery === "undefined") {
                     self.create(v, false);
                 })
             }
-            if( isEmptyObject(storage)){
+            if( $.isEmptyObject(storage)){
                 init = (init instanceof Array) ? init : [];
                 for(var i = 0; i < init.length; i++){
                     param = self._getParam( init[i]);
@@ -631,7 +593,7 @@ if (typeof jQuery === "undefined") {
          */
         _validate: function () {
             var self = this, $exception;
-            if( isEmptyObject($(document).data('multitabs'))) {
+            if( $.isEmptyObject($(document).data('multitabs'))) {
                 return true;
             }
             $exception = '<div class="help-block alert alert-warning">' +
@@ -812,7 +774,7 @@ if (typeof jQuery === "undefined") {
          * @private
          */
         _getParam : function(obj){
-            if(isEmptyObject(obj)){
+            if($.isEmptyObject(obj)){
                 return false;
             }
             var self = this,  options = self.options, param = {}, $obj = $(obj);
@@ -895,10 +857,10 @@ if (typeof jQuery === "undefined") {
          */
         _exist : function(param){
             if(!param){
-                return storage;
+                return false;
             }
-            var self = this, $el = self.$element, $navTab;
-            $navTab = $el.navPanelList.find('a[data-url="'+ param.url +'"]');
+            var self = this, $el = self.$element;
+            var $navTab = $el.navPanelList.find('a[data-url="'+ param.url +'"]:first');
             if( $navTab.length ) {
                 return $navTab;
             }else{
