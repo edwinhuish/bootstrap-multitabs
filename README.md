@@ -65,7 +65,6 @@ The following is the default configuration, you can modify as you want.
 ```html
 <script>
     $('#content_wrapper').multitabs({
-        showHash : false,                           //While is true, show hash in URL.
         showClose : false,                          //while is false, show close button in hover, if true, show close button always
         draggable : true,                           //nav tab draggable option
         fixed : false,                              //fixed the nav-bar
@@ -81,8 +80,8 @@ The following is the default configuration, you can modify as you want.
                 title : '',                         //title of tab, if empty, show the URL
                 url : ''                            //URL, if it's external link, content type change to 'info'
             }, 
-            {    ......    },                       //add more page.
-            {    ......    },
+            {    /** more tabs**/    },             //add more page.
+            {    /** more tabs**/    },             //add more page.
         ],       
         navBar : {
             class : '',                             //class of navBar
@@ -103,10 +102,6 @@ The following is the default configuration, you can modify as you want.
                 showActivedTab : 'Show Activated Tab',          //show active tab
                 closeAllTabs : 'Close All Tabs',                //close all tabs
                 closeOtherTabs : 'Close Other Tabs',            //close other tabs
-            },
-            editorUnsave: {
-                colse : 'Your data is not save, are you sure to lose it?',   //the warning of closing editor without save
-                cover : 'Can not cover Editor without saving the old one!'   //the warning of open another editor without save the old one.
             }
         },
         ajaxSuccess : function (htmlCallBack) {

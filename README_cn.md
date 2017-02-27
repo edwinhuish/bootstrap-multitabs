@@ -64,7 +64,6 @@ Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/demo/index-simple.html)
 ```html
 <script>
     $('#content_wrapper').multitabs({
-        showHash : false,                           //当值为true时，显示URL的hash。
         showClose : false,                          //当值为false，仅在鼠标悬浮时显示关闭按钮。true时一直显示
         draggable : true,                           //nav tab 可拖动选项
         fixed : false,                              //固定标签头列表
@@ -80,8 +79,8 @@ Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/demo/index-simple.html)
                 title : '',                         //标题（可选），没有则显示网址
                 url : ''                            //链接，如为外链，强制为info页
             }, 
-            {    ......    },                       //依次添加需要的页面
-            {    ......    },
+            {  /** 更多tab。。**/  },                //依次添加需要的页面
+            {  /** 更多tab。。**/  },                //依次添加需要的页面
         ],       
         navBar : {
             class : '',                             //为navBar添加class

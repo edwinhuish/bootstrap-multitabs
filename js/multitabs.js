@@ -3,8 +3,8 @@ if (typeof jQuery === "undefined") {
     throw new Error("MultiTabs requires jQuery");
 }((function($){
     "use strict";
-    var NAMESPACE, tabIndex, _ignoreHashChange; //variable
-    var MultiTabs,  handler, getTabIndex, isExtUrl, sumWidth, trimText, insertRule, supportStorage;  //function
+    var NAMESPACE, tabIndex; //variable
+    var MultiTabs,  handler, getTabIndex, isExtUrl, sumWidth, trimText,  supportStorage;  //function
     var defaultLayoutTemplates;  //default variable
 
     NAMESPACE = '.multitabs';  // namespace for on() function
@@ -22,16 +22,14 @@ if (typeof jQuery === "undefined") {
         $selector.off(ev, childSelector, fn).on(ev, childSelector, fn);
     };
 
-
-
     /**
      * get index for tab
-     * @param content   content type, for 'main' and 'editor' just can be 1
-     * @param capacity  capacity of tab, except 'main' and 'editor'
+     * @param content   content type, for 'main' tab just can be 1
+     * @param capacity  capacity of tab, except 'main' tab
      * @returns int     return index
      */
     getTabIndex = function(content, capacity){
-        if(content === 'main' || content === 'editor') return 0;
+        if(content === 'main') return 0;
         capacity = capacity || 8; //capacity of maximum tab quantity, the tab will be cover if more than it
         tabIndex = tabIndex || 0;
         tabIndex++;
@@ -102,67 +100,67 @@ if (typeof jQuery === "undefined") {
          * Main Layout
          */
         default : '<div class="mt-wrapper {mainClass}" style="height: 100%;" >' +
-        '   <div class="mt-nav-bar {navBarClass}" style="background-color: {backgroundColor};">' +
-        '       <div class="mt-nav mt-nav-tools-left">' +
-        '           <ul  class="nav {nav-tabs}">' +
-        '               <li class="mt-move-left"><a><i class="fa fa-backward"></i></a></li>' +
-        '           </ul>' +
-        '       </div>' +
-        '       <nav class="mt-nav mt-nav-panel">' +
-        '           <ul  class="nav {nav-tabs}">' +
-        '               <li><a data-id="multitabs_main_0" class="mt-nav-tab" data-content="main" data-index="0" data-url="welcome_to_use_multitabs"> Home </a></li>' +
-        '           </ul>' +
-        '       </nav>' +
-        '       <div class="mt-nav mt-nav-tools-right">' +
-        '           <ul  class="nav {nav-tabs}">' +
-        '               <li class="mt-move-right"><a><i class="fa fa-forward"></i></a></li>' +
-        '               <li class="mt-dropdown dropdown">' +
-        '                   <a href="#"  class="dropdown-toggle" data-toggle="dropdown">{dropdown}<span class="caret"></span></a>' +
-        '                   <ul role="menu" class="dropdown-menu dropdown-menu-right">' +
-        '                       <li class="mt-show-actived-tab"><a>{showActivedTab}</a></li>' +
-        '                       <li class="divider"></li>' +
-        '                       <li class="mt-close-all-tabs"><a>{closeAllTabs}</a></li>' +
-        '                       <li class="mt-close-other-tabs"><a>{closeOtherTabs}</a></li>' +
-        '                   </ul>' +
-        '               </li>' +
-        '           </ul>' +
-        '       </div>' +
-        '   </div>' +
-        '   <div class="tab-content mt-tab-content " >' +
-        '       <div id="multitabs_main_0" class="tab-pane"  data-content="main" data-index="0" data-url="welcome_to_use_multitabs"><h1>Demo page</h1><h2>Welcome to use bootstrap multi-tabs :) </h2></div>' +
-        '   </div>' +
+           '<div class="mt-nav-bar {navBarClass}" style="background-color: {backgroundColor};">' +
+               '<div class="mt-nav mt-nav-tools-left">' +
+                   '<ul  class="nav {nav-tabs}">' +
+                       '<li class="mt-move-left"><a><i class="fa fa-backward"></i></a></li>' +
+                   '</ul>' +
+               '</div>' +
+               '<nav class="mt-nav mt-nav-panel">' +
+                   '<ul  class="nav {nav-tabs}">' +
+                       '<li><a data-id="multitabs_main_0" class="mt-nav-tab" data-content="main" data-index="0" data-url="welcome_to_use_multitabs"> Home </a></li>' +
+                   '</ul>' +
+               '</nav>' +
+               '<div class="mt-nav mt-nav-tools-right">' +
+                   '<ul  class="nav {nav-tabs}">' +
+                       '<li class="mt-move-right"><a><i class="fa fa-forward"></i></a></li>' +
+                       '<li class="mt-dropdown dropdown">' +
+                           '<a href="#"  class="dropdown-toggle" data-toggle="dropdown">{dropdown}<span class="caret"></span></a>' +
+                           '<ul role="menu" class="dropdown-menu dropdown-menu-right">' +
+                               '<li class="mt-show-actived-tab"><a>{showActivedTab}</a></li>' +
+                               '<li class="divider"></li>' +
+                               '<li class="mt-close-all-tabs"><a>{closeAllTabs}</a></li>' +
+                               '<li class="mt-close-other-tabs"><a>{closeOtherTabs}</a></li>' +
+                           '</ul>' +
+                       '</li>' +
+                   '</ul>' +
+               '</div>' +
+           '</div>' +
+           '<div class="tab-content mt-tab-content " >' +
+               '<div id="multitabs_main_0" class="tab-pane"  data-content="main" data-index="0" data-url="welcome_to_use_multitabs"><h1>Demo page</h1><h2>Welcome to use bootstrap multi-tabs :) </h2></div>' +
+           '</div>' +
         '</div>',
         classic : '<div class="mt-wrapper {mainClass}" style="height: 100%;" >' +
-        '   <div class="mt-nav-bar {navBarClass}" style="background-color: {backgroundColor};">' +
-        '       <nav class="mt-nav mt-nav-panel">' +
-        '           <ul  class="nav {nav-tabs}">' +
-        '               <li><a data-id="multitabs_main_0" class="mt-nav-tab" data-content="main" data-index="0" data-url="welcome_to_use_multitabs"> Home </a></li>' +
-        '           </ul>' +
-        '       </nav>' +
-        '       <div class="mt-nav mt-nav-tools-right">' +
-        '           <ul  class="nav {nav-tabs}">' +
-        '               <li class="mt-dropdown dropdown">' +
-        '                   <a href="#"  class="dropdown-toggle" data-toggle="dropdown">{dropdown}<span class="caret"></span></a>' +
-        '                   <ul role="menu" class="mt-hidden-list dropdown-menu dropdown-menu-right"></ul>' +
-        '               </li>' +
-        '           </ul>' +
-        '       </div>' +
-        '   </div>' +
-        '   <div class="tab-content mt-tab-content " >' +
-        '       <div id="multitabs_main_0" class="tab-pane"  data-content="main" data-index="0" data-url="welcome_to_use_multitabs"><h1>Demo page</h1><h2>Welcome to use bootstrap multi-tabs :) </h2></div>' +
-        '   </div>' +
+           '<div class="mt-nav-bar {navBarClass}" style="background-color: {backgroundColor};">' +
+               '<nav class="mt-nav mt-nav-panel">' +
+                   '<ul  class="nav {nav-tabs}">' +
+                       '<li><a data-id="multitabs_main_0" class="mt-nav-tab" data-content="main" data-index="0" data-url="welcome_to_use_multitabs"> Home </a></li>' +
+                   '</ul>' +
+               '</nav>' +
+               '<div class="mt-nav mt-nav-tools-right">' +
+                   '<ul  class="nav {nav-tabs}">' +
+                       '<li class="mt-dropdown dropdown">' +
+                           '<a href="#"  class="dropdown-toggle" data-toggle="dropdown">{dropdown}<span class="caret"></span></a>' +
+                           '<ul role="menu" class="mt-hidden-list dropdown-menu dropdown-menu-right"></ul>' +
+                       '</li>' +
+                   '</ul>' +
+               '</div>' +
+           '</div>' +
+           '<div class="tab-content mt-tab-content " >' +
+               '<div id="multitabs_main_0" class="tab-pane"  data-content="main" data-index="0" data-url="welcome_to_use_multitabs"><h1>Demo page</h1><h2>Welcome to use bootstrap multi-tabs :) </h2></div>' +
+           '</div>' +
         '</div>',
         simple : '<div class="mt-wrapper {mainClass}" style="height: 100%;" >' +
-        '   <div class="mt-nav-bar {navBarClass}" style="background-color: {backgroundColor};">' +
-        '       <nav class="mt-nav mt-nav-panel">' +
-        '           <ul  class="nav {nav-tabs}">' +
-        '               <li><a data-id="multitabs_main_0" class="mt-nav-tab" data-content="main" data-index="0" data-url="welcome_to_use_multitabs"> Home </a></li>' +
-        '           </ul>' +
-        '       </nav>' +
-        '   </div>' +
-        '   <div class="tab-content mt-tab-content " >' +
-        '       <div id="multitabs_main_0" class="tab-pane"  data-content="main" data-index="0" data-url="welcome_to_use_multitabs"><h1>Demo page</h1><h2>Welcome to use bootstrap multi-tabs :) </h2></div>' +
-        '   </div>' +
+           '<div class="mt-nav-bar {navBarClass}" style="background-color: {backgroundColor};">' +
+               '<nav class="mt-nav mt-nav-panel">' +
+                   '<ul  class="nav {nav-tabs}">' +
+                       '<li><a data-id="multitabs_main_0" class="mt-nav-tab" data-content="main" data-index="0" data-url="welcome_to_use_multitabs"> Home </a></li>' +
+                   '</ul>' +
+               '</nav>' +
+           '</div>' +
+           '<div class="tab-content mt-tab-content " >' +
+               '<div id="multitabs_main_0" class="tab-pane"  data-content="main" data-index="0" data-url="welcome_to_use_multitabs"><h1>Demo page</h1><h2>Welcome to use bootstrap multi-tabs :) </h2></div>' +
+           '</div>' +
         '</div>',
         navTab : '<a data-id="{navTabId}" class="mt-nav-tab" data-content="{content}" data-index="{index}" data-url="{url}">{title}</a>',
         closeBtn : ' <i class="mt-close-tab fa fa-times" style="{style}"></i>',
@@ -179,9 +177,6 @@ if (typeof jQuery === "undefined") {
     MultiTabs = function (element, options) {
         var self = this;
         self.$element = $(element);
-        if (!self._validate()) {
-            return;
-        }
         self._init(options)._listen()._final();
     };
 
@@ -195,37 +190,32 @@ if (typeof jQuery === "undefined") {
         constructor: MultiTabs,
 
         /**
-         * create tab and return self.
+         * create tab and return this.
          * @param obj           the obj to trigger multitabs
          * @param active        if true, active tab after create
-         * @returns self        Chain structure.
+         * @returns this        Chain structure.
          */
         create : function (obj, active) {
-            var self = this, options = self.options;
+            var options = this.options;
             var param, $navTab;
-            if(! ( param = self._getParam(obj) )) {
-                return self;   //return multitabs obj when is invaid obj
+            if(! ( param = this._getParam(obj) )) {
+                return this;   //return multitabs obj when is invaid obj
             }
-            if( $navTab = self._exist(param)){
-                self.active($navTab);
-                if(param.content === 'editor'){   //Prohibited open more than 1 editor tab
-                    self._getTabPane($navTab).prepend('<div class="help-block alert alert-warning">' + options.language.editorUnsave.cover + '</div>');
-                }
-                return self;
+            if( $navTab = this._exist(param)){
+                this.active($navTab);
+                return this;
             }
             param.active = param.active === undefined ? active : param.active;
-            param.index = getTabIndex(param.content, options.navBar.maxTabs);
-            param.id = self._generateId(param);
             //nav tab create
-            $navTab = self._createNavTab(param);
+            $navTab = this._createNavTab(param);
             //tab-pane create
-            self._createTabPane(param);
+            this._createTabPane(param);
             //add tab to storage
-            self._storage( param.id, param);
+            this._storage( param.id, param);
             if(param.active) {
-                self.active($navTab);
+                this.active($navTab);
             }
-            return self;
+            return this;
         },
 
         /**
@@ -345,11 +335,6 @@ if (typeof jQuery === "undefined") {
             self._fixTabContentLayout($tabPane);
             //fill tab pane
             self._fillTabPane($tabPane, navTabParam);
-            //when showHash is true and have url
-            if(options.showHash && navTabParam.url) {
-                _ignoreHashChange = true;
-                window.location.hash = '#' + navTabParam.url;
-            }
             return self;
         },
         /**
@@ -456,7 +441,6 @@ if (typeof jQuery === "undefined") {
             //close unsave tab confirm
             if($navTabLi.length 
                 && $tabPane.length
-                && $navTab.attr('data-content') === 'editor' 
                 && $tabPane.hasClass('unsave')
                 && !self._unsaveConfirm()){
                 return self;
@@ -481,7 +465,7 @@ if (typeof jQuery === "undefined") {
          */
         closeOthers : function () {
             var self = this, $el = self.$element;
-            $el.navPanelList.find('li:not(.active)').find('a:not([data-content="main"]):not([data-content="editor"])').each(function () {
+            $el.navPanelList.find('li:not(.active)').find('a:not([data-content="main"])').each(function () {
                 var $navTab = $(this);
                 self._delStorage( $navTab.attr('data-id') ); //remove tab from session storage
                 self._getTabPane($navTab).remove(); //remove tab-content
@@ -503,12 +487,12 @@ if (typeof jQuery === "undefined") {
         },
 
         /**
-         * close all tabs, (except main and editor tab)
+         * close all tabs, (except main tab)
          * @return self     Chain structure.
          */
         closeAll : function(){
             var self = this, $el = self.$element;
-            $el.navPanelList.find('a:not([data-content="main"]):not([data-content="editor"])').each(function(){
+            $el.navPanelList.find('a:not([data-content="main"])').each(function(){
                 var $navTab = $(this);
                 self._delStorage( $navTab.attr('data-id') ); //remove tab from session storage
                 self._getTabPane($navTab).remove(); //remove tab-content
@@ -580,28 +564,10 @@ if (typeof jQuery === "undefined") {
                 }
             }
             //if no any tab actived, active the main tab
-            if(!$el.navPanelList.children('li.active').length && !window.location.hash.substr(1)) {
+            if(!$el.navPanelList.children('li.active').length) {
                 self.active($el.navPanelList.find('[data-content="main"]:first'));
             }
             return self;
-        },
-
-        /**
-         * validate check
-         * @return boolean
-         * @private
-         */
-        _validate: function () {
-            var self = this, $exception;
-            if( $.isEmptyObject($(document).data('multitabs'))) {
-                return true;
-            }
-            $exception = '<div class="help-block alert alert-warning">' +
-                '<h4>Duplicate Instance</h4>' +
-                'MultiTabs only can be 1 Instance.' +
-                '</div>';
-            self.$element.before($exception);
-            return false;
         },
 
         /**
@@ -619,7 +585,6 @@ if (typeof jQuery === "undefined") {
             //active tab
             handler($el.navBar, 'click', '.mt-nav-tab', function(){
                 self.active(this);
-                // return false; //fixed while showHash is false, still change hash
             });
 
             //drag tab
@@ -700,12 +665,6 @@ if (typeof jQuery === "undefined") {
                 self.closeOthers();
                 return false; //Avoid possible BUG
             });
-            //close window warning.
-            handler($(window), 'beforeunload',function(){
-                if($el.tabContent.find('.tab-pane[data-content="editor"]').hasClass('unsave')){
-                    return options.language.editorUnsave.close;
-                }
-            });
 
             //fixed the nav-bar
             var navBarHeight = $el.navBar.outerHeight();
@@ -716,34 +675,6 @@ if (typeof jQuery === "undefined") {
                     scrollTop = scrollTop < ($el.wrapper.height() - navBarHeight) ? scrollTop + 'px' : 'auto';
                     $el.navBar.css('top',scrollTop);
                     return false; //Avoid possible BUG
-                });
-            }
-            //if show hash， bind hash change
-            if(options.showHash){
-                handler($(window), 'hashchange load', function(){
-                    if(!_ignoreHashChange){
-                        var hash, url, $navTabLi, $navTab, a;
-                        hash = window.location.hash;
-                        if(!hash) {
-                            return false;
-                        }
-                        url = hash.replace('#','');
-                        $navTab = $el.navPanelList.find('[data-url="'+ url +'"]:first');
-                        if($navTab.length){
-                            $navTabLi = $navTab.parent('li');
-                            if(!$navTabLi.hasClass('active')){
-                                self.active($navTabLi);
-                            }
-                            return false;
-                        }else{
-                            a = document.createElement('a');
-                            a.href=url;
-                            self.create(a, true);
-                            return false;
-                        }
-                    }
-                    _ignoreHashChange = false;
-                    return false;
                 });
             }
             //if layout === 'classic' show hide list in dropdown menu
@@ -784,10 +715,6 @@ if (typeof jQuery === "undefined") {
             if (!param.url.length){
                 return false;
             }
-            //id
-            param.id = $obj.data('id') || obj.id;
-            //index
-            param.index = $obj.data('index') || obj.index;
             //iframe
             param.iframe = $obj.data('iframe') || obj.iframe || isExtUrl(param.url) || options.iframe;
             //content
@@ -797,6 +724,10 @@ if (typeof jQuery === "undefined") {
             param.title = trimText(param.title, options.navBar.maxTitleLength);
             //active
             param.active = $obj.data('active') || obj.active;
+            //index
+            param.index = $obj.data('index') || obj.index || getTabIndex(param.content, options.navBar.maxTabs);
+            //id
+            param.id = $obj.data('id') || obj.id || this._generateId(param);
             return param;
         },
 
@@ -982,38 +913,28 @@ if (typeof jQuery === "undefined") {
                 $('body').removeClass('full-height-layout');
             }
         },
-
-        /**
-         * editor unsave confirm
-         * @private
-         */
-        _unsaveConfirm : function(){
-            var self = this, options = self.options;
-            return confirm(options.language.editorUnsave.close);
-        }
     };
 
     /**
      * Entry function
      * @param option
      */
-    $.fn.multitabs = function(option){
-        var self = $(this), multitabs = $(document).data('multitabs'), options = typeof option === 'object' && option, opts;
+    $.fn.multitabs = function(option,id){
+        var self = $(this), did = id ? id :'multitabs', multitabs = $(document).data(did), options = typeof option === 'object' && option, opts;
         if (!multitabs) {
             opts = $.extend(true, {}, $.fn.multitabs.defaults, options, self.data());
             opts.style = (opts.style === 'nav-pills') ? 'nav-pills' : 'nav-tabs';
             multitabs = new MultiTabs(this, opts);
-            $(document).data('multitabs', multitabs);
+            $(document).data(did, multitabs);
         }
-        return $(document).data('multitabs');
+        return $(document).data(did);
     };
 
     /**
      * Default Options
-     * @type {{showHash: boolean, mode: string, maxTabs: number, maxTitleLength: number, tabTitle: string, content: string}}
+     * @type {}
      */
     $.fn.multitabs.defaults = {
-        showHash : false,                           //While is true, show hash in URL.
         showClose : false,                          //while is false, show close button in hover, if true, show close button always
         draggable : true,                           //nav tab draggable option
         fixed : false,                              //fixed the nav-bar
@@ -1026,7 +947,7 @@ if (typeof jQuery === "undefined") {
         init : [],                                    //tabs in initial
         navBar : {
             class : '',                             //class of navBar
-            maxTabs : 15,                           //Max tabs number (without counting main and editor), when is 1, hide the whole navBar
+            maxTabs : 15,                           //Max tabs number (without counting main tab), when is 1, hide the whole navBar
             maxTitleLength : 25,                    //Max title length of tab
             backgroundColor : '#f5f5f5',            //default nav-bar background color
         },
@@ -1043,10 +964,6 @@ if (typeof jQuery === "undefined") {
                 showActivedTab : 'Show Activated Tab',          //show active tab
                 closeAllTabs : 'Close All Tabs',                //close all tabs
                 closeOtherTabs : 'Close Other Tabs',            //close other tabs
-            },
-            editorUnsave: {
-                colse : 'Your data is not save, are you sure to lose it?',   //the warning of closing editor without save
-                cover : 'Can not cover Editor without saving the old one!'   //the warning of open another editor without save the old one.
             }
         },
         ajaxSuccess : function (htmlCallBack) {
@@ -1058,5 +975,4 @@ if (typeof jQuery === "undefined") {
             return htmlCallBack;
         }
     };
-
 })(jQuery));
