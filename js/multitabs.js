@@ -909,6 +909,11 @@ if (typeof jQuery === "undefined") {
             var $tabPane = $(tabPane);
             if($tabPane.is('iframe')){
                 $('body').addClass('full-height-layout');
+                /** fix chrome croll disappear bug **/
+                $tabPane.css("height", "99%");
+                window.setTimeout(function () {
+                    $tabPane.css("height", "100%");
+                }, 0);
             }else{
                 $('body').removeClass('full-height-layout');
             }
