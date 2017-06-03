@@ -55,7 +55,7 @@ Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/demo/index-simple.html)
 ##Advanced setting
 
 ###Parameter of link
-1. ```[data-content="info"]``` content type, can be (main | editor | info), info is the default and the normal one. Main and editor just can be 1 tab.
+1. ```[data-type="info"]``` content type, can be (main | info), info is the default and the normal one. Main just can be 1 tab.
 2. ```[data-iframe="true"]``` iframe mode, default is false. While false, is the auto mode (for the self page, use ajax, and the external, use iframe)
 3. ```[data-title="new tab"]``` tab's tittle, if empty or undefined, tab's tittle will be link's text.
 4. ```[data-url="index.html"]``` this parameter for the object not link.
