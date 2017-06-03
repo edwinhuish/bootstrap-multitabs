@@ -20,7 +20,7 @@ Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/demo/index-simple.html)
 5. While ``` maxTabs : 1 ``` or small screen, hide the tab header.
 
 ##Requirements
-1. [Bootstrap css](http://getbootstrap.com/)
+1. [Bootstrap](http://getbootstrap.com/)
 2. [JQuery](http://jquery.com/)
 3. [Font Awesone](http://fontawesome.io/icons/)
 
