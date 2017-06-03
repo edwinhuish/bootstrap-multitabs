@@ -73,12 +73,13 @@ The following is the default configuration, you can modify as you want.
         link : '.multitabs',                        //selector text to trigger multitabs. 
         iframe : false,                             //Global iframe mode, default is false, is the auto mode (for the self page, use ajax, and the external, use iframe)
         class : '',                                 //class for whole multitabs
-        content : 'info',                           //change the data-content name, is not necessary to change.
+        type : 'info',                              //change the default content type name, is not necessary to change.
         init : [                                    //tabs in initial
             {                                       
-                content :'',                        //content type, may be main | info | editor, if empty, default is 'info'
+                type :'',                           //content type, may be main | info, if empty, default is 'info'
                 title : '',                         //title of tab, if empty, show the URL
-                url : ''                            //URL, if it's external link, content type change to 'info'
+                content: '',                        //content html, the url value is useless if set the content.
+                url : ''                            //URL
             }, 
             {    /** more tabs**/    },             //add more page.
             {    /** more tabs**/    },             //add more page.

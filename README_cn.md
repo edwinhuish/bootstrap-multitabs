@@ -72,12 +72,13 @@ Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/demo/index-simple.html)
         link : '.multitabs',                        //触发multitabs的selector text，注意需要有".","#"等
         iframe : false,                             //iframe模式的总局设置。当值为false的时候，为智能模式，自动判断（内网用ajax，外网用iframe）。缺省为false。
         class : '',                                 //主框架的class
-        content : 'info',                           //此处可以指定标签页类型名称，一般不需要修改。
+        type : 'info',                              //此处可以指定缺省标签页类型名称，一般不需要修改。
         init : [                                    //需要在初始加载的tab
             {                                       
-                content :'',                        //标签页的类型，有 main | info | editor
+                type :'',                           //标签页的类型，有 main | info，缺省为 info
                 title : '',                         //标题（可选），没有则显示网址
-                url : ''                            //链接，如为外链，强制为info页
+                content: '',                        //html内容，如果设定此值，下面的URL设定则无效
+                url : ''                            //链接
             }, 
             {  /** 更多tab。。**/  },                //依次添加需要的页面
             {  /** 更多tab。。**/  },                //依次添加需要的页面
