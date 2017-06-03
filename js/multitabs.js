@@ -550,7 +550,7 @@ if (typeof jQuery === "undefined") {
                 })
             }
             if( $.isEmptyObject(storage)){
-                init = (init instanceof Array) ? init : defaultInit;
+                init = (!$.isEmptyObject(init) && init instanceof Array) ? init : defaultInit;
                 for(var i = 0; i < init.length; i++){
                     param = self._getParam( init[i]);
                     if( param ) {
