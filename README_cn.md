@@ -102,10 +102,6 @@ Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/demo/index-simple.html)
                 showActivedTab : 'Show Activated Tab',          //下拉菜单的显示激活页面
                 closeAllTabs : 'Close All Tabs',                //下拉菜单的关闭所有页面
                 closeOtherTabs : 'Close Other Tabs',            //下拉菜单的关闭其他页面
-            },
-            editorUnsave: {
-                colse : 'Your data is not save, are you sure to lose it?',   //关闭未保存editor标签页的警示
-                cover : 'Can not cover Editor without saving the old one!'   //覆盖未保存editor标签页的警示
             }
         },
         ajaxSuccess : function (htmlCallBack) {
