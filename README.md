@@ -86,7 +86,7 @@ The following is the default configuration, you can modify as you want.
         ],       
         navBar : {
             class : '',                             //class of navBar
-            maxTabs : 15,                           //Max tabs number (without counting main and editor), when is 1, hide the whole navBar
+            maxTabs : 15,                           //Max tabs number (without counting main tab), when is 1, hide the whole navBar
             maxTitleLength : 25,                    //Max title length of tab
             backgroundColor : '#f5f5f5',            //default nav-bar background color
         },
@@ -143,12 +143,3 @@ The following is the default configuration, you can modify as you want.
     }, true);                                         //true for active tab
 </script>
 ```
-
-## editor tab
-editor tab just can be 1.
-
-While editor tab ```.tab-tape ``` have ``` .unsave ``` class:
-
-1. Disallow overriding.
-2. close confirm
-3. close/refresh window confirm.

@@ -121,11 +121,9 @@ Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/demo/index-simple.html)
 ```
 
 ### 关于 content 的类型
-标签页 content 的类型，有 main | info | editor。 
+标签页 content 的类型，有 main | info 。 
 1. main页放产品列表，用户列表，邮件列表，这些需要id，且js操作容易混乱，故限制只能有1个。当然，你也可以仅仅main页放网站概况，其他一律用info页。只是容易冲突。
 2. info放产品详情，用户详情，邮件详情这些少id，以及js操作重复的页面。
-3. editor是作为编辑页面，一般很少用，一般都是以浮动div的形式修改。设定editor是以防有需要。同时限制只能有一个是避免多个editor同时修改造成的资料混乱或者没有及时关闭引起的资料丢失。
-
 
 ## iframe注意事项
 1. 为了自适应iframe高度，请依照下面这个样式添加CSS。 其中 ```.content-wrapper``` 是当前使用multitabs的wrapper。 ```.wrapper``` 为 ```.content-wrapper``` 的父层，需要将所有父层都添加 ```height: 100%```
@@ -153,12 +151,3 @@ Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/demo/index-simple.html)
     }, true);                                         //true 则激活新增的tab页
 </script>
 ```
-
-## editor标签页
-editor标签页默认只有一个.
-
-editor标签页```.tab-tape ```内有 ``` .unsave ``` class的时：
-
-1. 禁止覆盖。
-2. 关闭确认提示
-3. 关闭整个窗口提醒。
