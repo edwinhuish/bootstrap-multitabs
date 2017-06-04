@@ -49,7 +49,7 @@ Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/demo/index-simple.html)
 <a class="multitabs" href="pages/index-ajax-2.html">ajax INFO Tab 2</a>
 ```
 
-** Now, the simple bootstrap-multitabs works!**
+** Now, the simple bootstrap-multitabs works! **
 
 
 ## Advanced setting ##
