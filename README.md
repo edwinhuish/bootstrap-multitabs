@@ -2,10 +2,10 @@
 For chinese README.md, please read [简体中文](README_cn.md)
 
 ## Screenshot ##
-### default ###  (with left/right/option button)
+### default (with left/right/option button) ###
 Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/demo/index.html) and [nav-pills](http://edwinhuish.oschina.io/multi-tabs/demo/index-default-pills.html)
 ![Multi Tabs Screenshot](screenshot-default.jpg)
-### classic ### (fold hidden tabs)
+### classic (fold hidden tabs) ###
 Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/demo/index-classic.html) and [nav-pills](http://edwinhuish.oschina.io/multi-tabs/demo/index-classic-pills.html)
 ![Multi Tabs Screenshot](screenshot-classic.jpg)
 ### simple ###

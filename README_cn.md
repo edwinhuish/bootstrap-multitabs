@@ -1,10 +1,10 @@
 # bootstrap-multitabs / bootstrap 多标签页 #
 
 ## 效果图 ##
-### default/默认 ### (带有向左、向右移动以及选项菜单)
+### default/默认 (带有向左、向右移动以及选项菜单) ###
 Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/demo/index.html) and [nav-pills](http://edwinhuish.oschina.io/multi-tabs/demo/index-default-pills.html)
 ![Multi Tabs Screenshot](screenshot-default.jpg)
-### classic/折叠 ### (折叠隐藏tab)
+### classic/折叠 (折叠隐藏tab) ###
 Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/demo/index-classic.html) and [nav-pills](http://edwinhuish.oschina.io/multi-tabs/demo/index-classic-pills.html)
 ![Multi Tabs Screenshot](screenshot-classic.jpg)
 ### simple ###
