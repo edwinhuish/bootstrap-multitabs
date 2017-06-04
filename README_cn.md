@@ -1,29 +1,29 @@
-#bootstrap-multitabs / bootstrap 多标签页
+# bootstrap-multitabs / bootstrap 多标签页 #
 
-##效果图
-###default/默认 (带有向左、向右移动以及选项菜单)
+## 效果图 ##
+### default/默认 ### (带有向左、向右移动以及选项菜单)
 Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/demo/index.html) and [nav-pills](http://edwinhuish.oschina.io/multi-tabs/demo/index-default-pills.html)
 ![Multi Tabs Screenshot](screenshot-default.jpg)
-###classic/折叠 (折叠隐藏tab)
+### classic/折叠 ### (折叠隐藏tab)
 Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/demo/index-classic.html) and [nav-pills](http://edwinhuish.oschina.io/multi-tabs/demo/index-classic-pills.html)
 ![Multi Tabs Screenshot](screenshot-classic.jpg)
-###simple
+### simple ###
 Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/demo/index-simple.html) and [nav-pills](http://edwinhuish.oschina.io/multi-tabs/demo/index-simple-pills.html)
 ![Multi Tabs Screenshot](screenshot-simple.jpg)
 
-##作用与优势
+## 作用与优势 ##
 1. 通过简单的配置，生成可智能适配ajax和iframe的多标签页。
 2. 可以直接套用bootstrap的各种模板样式。
 3. 在不关闭窗口的情况下，直接刷新页面能保留所有标签页。（如果使用了表单，请完成表单后再进行此操作）
 4. 导航标签tab可移动
 5. 当标签数量设置为 1 的时候，隐藏便签列表
 
-##安装需求
+## 安装需求 ##
 1. [Bootstrap](http://getbootstrap.com/)
 2. [JQuery](http://jquery.com/)
 3. [Font Awesone](http://fontawesome.io/icons/)
 
-##使用
+## 使用 ##
 1. 在html的head内引用multitabs的CSS
 ```html
 <!-- Multi Tabs -->
@@ -51,15 +51,15 @@ Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/demo/index-simple.html)
 ** 至此，最简单的bootstrap-multitabs配置成功！**
 
 
-##进阶配置
+## 进阶配置 ##
 
-###链接可添加参数
+###链接可添加参数###
 1. ```[data-type="info"]``` 指定为content类型为info，共有3种( main | info ), info 为缺省配置，可以不用指定。
 2. ```[data-iframe="true"]``` 指定为iframe模式，当值为false的时候，为智能模式，自动判断（内网用ajax，外网用iframe）。缺省为false。
 3. ```[data-title="new tab"]``` 设置后指定标签页的标题，默认读取链接字体。
 4. ```[data-url="index.html"]``` 如果对象不是```<a>```链接，此值可以指定链接URL
 
-###初始化配置
+### 初始化配置 ###
 下面这些为默认配置，可以自行修改
 ```html
 <script>
@@ -116,12 +116,12 @@ Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/demo/index-simple.html)
 </script>
 ```
 
-### 关于 content 的类型
+### 关于 content 的类型 ###
 标签页 content 的类型，有 main | info 。 
 1. main页放产品列表，用户列表，邮件列表，这些需要id，且js操作容易混乱，故限制只能有1个。当然，你也可以仅仅main页放网站概况，其他一律用info页。只是容易冲突。
 2. info放产品详情，用户详情，邮件详情这些少id，以及js操作重复的页面。
 
-## iframe注意事项
+## iframe注意事项 ##
 1. 为了自适应iframe高度，请依照下面这个样式添加CSS。 其中 ```.content-wrapper``` 是当前使用multitabs的wrapper。 ```.wrapper``` 为 ```.content-wrapper``` 的父层，需要将所有父层都添加 ```height: 100%```
 ```html
 <style type="text/css">

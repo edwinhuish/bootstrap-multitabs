@@ -1,30 +1,30 @@
-#bootstrap-multitabs
+# bootstrap-multitabs #
 For chinese README.md, please read [简体中文](README_cn.md)
 
-##Screenshot
-###default  (with left/right/option button)
+## Screenshot ##
+### default ###  (with left/right/option button)
 Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/demo/index.html) and [nav-pills](http://edwinhuish.oschina.io/multi-tabs/demo/index-default-pills.html)
 ![Multi Tabs Screenshot](screenshot-default.jpg)
-###classic (fold hidden tabs)
+### classic ### (fold hidden tabs)
 Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/demo/index-classic.html) and [nav-pills](http://edwinhuish.oschina.io/multi-tabs/demo/index-classic-pills.html)
 ![Multi Tabs Screenshot](screenshot-classic.jpg)
-###simple
+### simple ###
 Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/demo/index-simple.html) and [nav-pills](http://edwinhuish.oschina.io/multi-tabs/demo/index-simple-pills.html)
 ![Multi Tabs Screenshot](screenshot-simple.jpg)
 
-##Role and Benefits
+## Role and Benefits ##
 1. Zero configuration and auto ajax / iframe
 2. Can use the templates of bootstrap
 3. Can refresh window, and all the tabs will keep same as before.
 4. Navigation tab draggable.
 5. While ``` maxTabs : 1 ``` or small screen, hide the tab header.
 
-##Requirements
+## Requirements ###
 1. [Bootstrap](http://getbootstrap.com/)
 2. [JQuery](http://jquery.com/)
 3. [Font Awesone](http://fontawesome.io/icons/)
 
-##Use
+## Use ##
 1. Add multitabs's CSS in the head
 ```html
 <!-- Multi Tabs -->
@@ -52,15 +52,15 @@ Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/demo/index-simple.html)
 ** Now, the simple bootstrap-multitabs works!**
 
 
-##Advanced setting
+## Advanced setting ##
 
-###Parameter of link
+### Parameter of link ###
 1. ```[data-type="info"]``` content type, can be (main | info), info is the default and the normal one. Main just can be 1 tab.
 2. ```[data-iframe="true"]``` iframe mode, default is false. While false, is the auto mode (for the self page, use ajax, and the external, use iframe)
 3. ```[data-title="new tab"]``` tab's tittle, if empty or undefined, tab's tittle will be link's text.
 4. ```[data-url="index.html"]``` this parameter for the object not link.
 
-###Initial Configuration
+### Initial Configuration ###
 The following is the default configuration, you can modify as you want.
 ```html
 <script>
@@ -117,7 +117,7 @@ The following is the default configuration, you can modify as you want.
 </script>
 ```
 
-##Attention for iframe
+## Attention for iframe ##
 1. For iframe's auto-height, please add CSS as blew to your page. ```.content-wrapper``` is the selector using multitabs. ```.wrapper``` is parent of ```.content-wrapper``` , all parent of wrapper multitabs must add ```height: 100%```
 ```html
 <style type="text/css">
