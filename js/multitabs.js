@@ -279,7 +279,7 @@ if (typeof jQuery === "undefined") {
                 options = self.options;
             var closeBtnHtml, display;
 
-            display = options.showClose ? 'display:inline;' : '';
+            display = options.smartBtn ? '' : 'display:inline;';
             closeBtnHtml = (param.type === 'main') ? '' : defaultLayoutTemplates.closeBtn.replace('{style}', display); //main content can not colse.
             return defaultLayoutTemplates.navTab
                     .replace('{index}', param.index)
@@ -941,7 +941,7 @@ if (typeof jQuery === "undefined") {
      * @type {}
      */
     $.fn.multitabs.defaults = {
-        showClose : false,                          //while is false, show close button in hover, if true, show close button always
+        smartBtn : true,                            //while is true, show close button in hover, if false, show close button always
         draggable : true,                           //nav tab draggable option
         fixed : false,                              //fixed the nav-bar
         layout : 'default',                         //it can be 'default', 'classic' (all hidden tab in dropdown list), and simple

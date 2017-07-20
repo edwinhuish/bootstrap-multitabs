@@ -64,7 +64,7 @@ Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/demo/index-simple.html)
 ```html
 <script>
     $('#content_wrapper').multitabs({
-        showClose : false,                          //当值为false，仅在鼠标悬浮时显示关闭按钮。true时一直显示
+        smartBtn : true,                            //当值为true，仅在鼠标悬浮时显示关闭按钮。false时一直显示
         draggable : true,                           //nav tab 可拖动选项
         fixed : false,                              //固定标签头列表
         layout : 'default',                         //有两种模式，'default', 'classic'(所有隐藏tab都在下拉菜单里) 和 'simple'

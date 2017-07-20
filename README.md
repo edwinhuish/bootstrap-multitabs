@@ -65,7 +65,7 @@ The following is the default configuration, you can modify as you want.
 ```html
 <script>
     $('#content_wrapper').multitabs({
-        showClose : false,                          //while is false, show close button in hover, if true, show close button always
+        smartBtn : true,                            //while is true, show close button in hover, if false, show close button always
         draggable : true,                           //nav tab draggable option
         fixed : false,                              //fixed the nav-bar
         layout : 'default',                         //it can be 'default', 'classic' (all hidden tab in dropdown list), and simple
