@@ -100,7 +100,7 @@ if (typeof jQuery === "undefined") {
          * Main Layout
          */
         default : '<div class="mt-wrapper {mainClass}" style="height: 100%;" >' +
-           '<div class="mt-nav-bar {navBarClass}" style="background-color: {backgroundColor};">' +
+           '<div class="mt-nav-bar {navClass}" style="background-color: {backgroundColor};">' +
                '<div class="mt-nav mt-nav-tools-left">' +
                    '<ul  class="nav {nav-tabs}">' +
                        '<li class="mt-move-left"><a><i class="fa fa-backward"></i></a></li>' +
@@ -127,7 +127,7 @@ if (typeof jQuery === "undefined") {
            '<div class="tab-content mt-tab-content " > </div>' +
         '</div>',
         classic : '<div class="mt-wrapper {mainClass}" style="height: 100%;" >' +
-           '<div class="mt-nav-bar {navBarClass}" style="background-color: {backgroundColor};">' +
+           '<div class="mt-nav-bar {navClass}" style="background-color: {backgroundColor};">' +
                '<nav class="mt-nav mt-nav-panel">' +
                    '<ul  class="nav {nav-tabs}"> </ul>' +
                '</nav>' +
@@ -143,7 +143,7 @@ if (typeof jQuery === "undefined") {
            '<div class="tab-content mt-tab-content " > </div>' +
         '</div>',
         simple : '<div class="mt-wrapper {mainClass}" style="height: 100%;" >' +
-           '<div class="mt-nav-bar {navBarClass}" style="background-color: {backgroundColor};">' +
+           '<div class="mt-nav-bar {navClass}" style="background-color: {backgroundColor};">' +
                '<nav class="mt-nav mt-nav-panel">' +
                    '<ul  class="nav {nav-tabs}"> </ul>' +
                '</nav>' +
@@ -156,6 +156,10 @@ if (typeof jQuery === "undefined") {
         iframeTabPane : '<iframe id="{tabPaneId}" class="tab-pane {class}"  width="100%" height="100%" frameborder="0" src="" seamless></iframe>'
     };
 
+    /**
+     * Default init page
+     * @type {*[]}
+     */
     defaultInit = [{                              //default tabs in initial;
         type : 'main',                            //default is info;
         title : 'main',                           //default title;
@@ -199,13 +203,13 @@ if (typeof jQuery === "undefined") {
                 this.active($navTab);
                 return this;
             }
-            param.active = param.active === undefined ? active : param.active;
+            param.active = !param.active ? active : param.active;
             //nav tab create
             $navTab = this._createNavTab(param);
             //tab-pane create
             this._createTabPane(param);
             //add tab to storage
-            this._storage( param.id, param);
+            this._storage( param.did, param);
             if(param.active) {
                 this.active($navTab);
             }
@@ -222,7 +226,7 @@ if (typeof jQuery === "undefined") {
         _createTabPane : function (param) {
             var self = this, $el = self.$element;
             $el.tabContent.append(self._getTabPaneHtml(param));
-            return $el.tabContent.find('#' + param.id);
+            return $el.tabContent.find('#' + param.did);
         },
 
         /**
@@ -236,12 +240,12 @@ if (typeof jQuery === "undefined") {
             var self = this,  options = self.options;
             if(!param.content && param.iframe){
                 return defaultLayoutTemplates.iframeTabPane
-                    .replace('{class}', options.iframeTabPane.class)
-                    .replace('{tabPaneId}', param.id);
+                    .replace('{class}', options.content.iframe.class)
+                    .replace('{tabPaneId}', param.did);
             }else{
                 return defaultLayoutTemplates.ajaxTabPane
-                    .replace('{class}', options.ajaxTabPane.class)
-                    .replace('{tabPaneId}', param.id)
+                    .replace('{class}', options.content.ajax.class)
+                    .replace('{tabPaneId}', param.did)
                     .replace('{content}', param.content);
             }
         },
@@ -279,11 +283,11 @@ if (typeof jQuery === "undefined") {
                 options = self.options;
             var closeBtnHtml, display;
 
-            display = options.smartBtn ? '' : 'display:inline;';
+            display = options.nav.showCloseOnHover ? '' : 'display:inline;';
             closeBtnHtml = (param.type === 'main') ? '' : defaultLayoutTemplates.closeBtn.replace('{style}', display); //main content can not colse.
             return defaultLayoutTemplates.navTab
                     .replace('{index}', param.index)
-                    .replace('{navTabId}', param.id)
+                    .replace('{navTabId}', param.did)
                     .replace('{url}', param.url)
                     .replace('{title}', param.title)
                     .replace('{type}', param.type)
@@ -346,10 +350,10 @@ if (typeof jQuery === "undefined") {
                         url: param.url,
                         dataType: "html",
                         success: function(callback) {
-                            $tabPane.html(options.ajaxSuccess(callback));
+                            $tabPane.html(options.content.ajax.success(callback));
                         },
                         error : function (callback) {
-                            $tabPane.html(options.ajaxError(callback));
+                            $tabPane.html(options.content.ajax.error(callback));
                         }
                     });
 
@@ -505,31 +509,31 @@ if (typeof jQuery === "undefined") {
          */
         _init: function (options) {
             var self = this, $el = self.$element;
-            $el.html(defaultLayoutTemplates[options.layout]
+            $el.html(defaultLayoutTemplates[options.nav.layout]
                 .replace('{mainClass}', options.class)
-                .replace('{navBarClass}' , options.navBar.class)
-                .replace(/\{nav-tabs\}/g , options.style)
-                .replace(/\{backgroundColor\}/g, options.navBar.backgroundColor)
-                .replace('{dropdown}' , options.language.navBar.dropdown)
-                .replace('{showActivedTab}' , options.language.navBar.showActivedTab)
-                .replace('{closeAllTabs}' , options.language.navBar.closeAllTabs)
-                .replace('{closeOtherTabs}' , options.language.navBar.closeOtherTabs)
+                .replace('{navClass}' , options.nav.class)
+                .replace(/\{nav-tabs\}/g , options.nav.style)
+                .replace(/\{backgroundColor\}/g, options.nav.backgroundColor)
+                .replace('{dropdown}' , options.language.nav.dropdown)
+                .replace('{showActivedTab}' , options.language.nav.showActivedTab)
+                .replace('{closeAllTabs}' , options.language.nav.closeAllTabs)
+                .replace('{closeOtherTabs}' , options.language.nav.closeOtherTabs)
             );
             $el.wrapper       = $el.find('.mt-wrapper:first');
-            $el.navBar        = $el.find('.mt-nav-bar:first');
-            $el.navToolsLeft  = $el.navBar.find('.mt-nav-tools-left:first');
-            $el.navPanel      = $el.navBar.find('.mt-nav-panel:first');
-            $el.navPanelList  = $el.navBar.find('.mt-nav-panel:first ul');
+            $el.nav        = $el.find('.mt-nav-bar:first');
+            $el.navToolsLeft  = $el.nav.find('.mt-nav-tools-left:first');
+            $el.navPanel      = $el.nav.find('.mt-nav-panel:first');
+            $el.navPanelList  = $el.nav.find('.mt-nav-panel:first ul');
             //$el.navTabMain    = $('#multitabs_main_0');
-            $el.navToolsRight = $el.navBar.find('.mt-nav-tools-right:first');
+            $el.navToolsRight = $el.nav.find('.mt-nav-tools-right:first');
             $el.tabContent    = $el.find('.tab-content:first');
             //hide tab-header if maxTabs less than 1
-            if(options.navBar.maxTabs <= 1){
-                options.navBar.maxTabs = 1;
-                $el.navBar.hide();
+            if(options.nav.maxTabs <= 1){
+                options.nav.maxTabs = 1;
+                $el.nav.hide();
             }
             //set the nav-panel width
-            var toolWidth = $el.navBar.find('.mt-nav-tools-left:visible:first').width() + $el.navBar.find('.mt-nav-tools-right:visible:first').width();
+            var toolWidth = $el.nav.find('.mt-nav-tools-left:visible:first').width() + $el.nav.find('.mt-nav-tools-right:visible:first').width();
             $el.navPanel.css('width', 'calc(100% - ' + toolWidth + 'px)');
             self.options = options;
             return self;
@@ -578,18 +582,18 @@ if (typeof jQuery === "undefined") {
                 return false; //Prevent the default link action
             });
             //active tab
-            handler($el.navBar, 'click', '.mt-nav-tab', function(){
+            handler($el.nav, 'click', '.mt-nav-tab', function(){
                 self.active(this);
             });
 
             //drag tab
-            if(options.draggable){
+            if(options.nav.draggable){
                 handler($el.navPanelList, 'mousedown', '.mt-nav-tab', function (event) {
                     var $navTab = $(this), $navTabLi = $navTab.closest('li');
                     var $prevNavTabLi = $navTabLi.prev();
                     var dragMode = true, moved = false, isMain = ($navTab.data('type') === "main");
                     var navTabBlankHtml = '<li id="multitabs_tmp_tab_blank" class="mt-drag-tmp" style="width:' + $navTabLi.outerWidth() + 'px; height:'+ $navTabLi.outerHeight() +'px;"><a style="width: 100%;  height: 100%; "></a></li>';
-                    var abs_x = event.pageX - $navTabLi.offset().left + $el.navBar.offset().left;
+                    var abs_x = event.pageX - $navTabLi.offset().left + $el.nav.offset().left;
                     $navTabLi.before(navTabBlankHtml);
                     $navTabLi.css({'left': event.pageX - abs_x + 'px', 'position': 'absolute', 'z-index': 9999})
                         .addClass('mt-drag-tmp')
@@ -631,50 +635,50 @@ if (typeof jQuery === "undefined") {
             }
 
             //close tab
-            handler($el.navBar, 'click', '.mt-close-tab', function(){
+            handler($el.nav, 'click', '.mt-close-tab', function(){
                 self.close($(this).closest('li'));
                 return false; //Avoid possible BUG
             });
             //move left
-            handler($el.navBar, 'click', '.mt-move-left', function(){
+            handler($el.nav, 'click', '.mt-move-left', function(){
                 self.moveLeft();
                 return false; //Avoid possible BUG
             });
             //move right
-            handler($el.navBar, 'click', '.mt-move-right', function(){
+            handler($el.nav, 'click', '.mt-move-right', function(){
                 self.moveRight();
                 return false; //Avoid possible BUG
             });
             //show actived tab
-            handler($el.navBar, 'click', '.mt-show-actived-tab', function(){
+            handler($el.nav, 'click', '.mt-show-actived-tab', function(){
                 self.showActive();
                 return false; //Avoid possible BUG
             });
             //close all tabs
-            handler($el.navBar, 'click', '.mt-close-all-tabs', function(){
+            handler($el.nav, 'click', '.mt-close-all-tabs', function(){
                 self.closeAll();
                 return false; //Avoid possible BUG
             });
             //close other tabs
-            handler($el.navBar, 'click', '.mt-close-other-tabs', function(){
+            handler($el.nav, 'click', '.mt-close-other-tabs', function(){
                 self.closeOthers();
                 return false; //Avoid possible BUG
             });
 
             //fixed the nav-bar
-            var navBarHeight = $el.navBar.outerHeight();
-            $el.tabContent.css('paddingTop', navBarHeight);
-            if(options.fixed){
+            var navHeight = $el.nav.outerHeight();
+            $el.tabContent.css('paddingTop', navHeight);
+            if(options.nav.fixed){
                 handler($(window), 'scroll', function(){
                     var scrollTop = $(this).scrollTop();
-                    scrollTop = scrollTop < ($el.wrapper.height() - navBarHeight) ? scrollTop + 'px' : 'auto';
-                    $el.navBar.css('top',scrollTop);
+                    scrollTop = scrollTop < ($el.wrapper.height() - navHeight) ? scrollTop + 'px' : 'auto';
+                    $el.nav.css('top',scrollTop);
                     return false; //Avoid possible BUG
                 });
             }
             //if layout === 'classic' show hide list in dropdown menu
-            if(options.layout === 'classic'){
-                handler($el.navBar, 'click', '.mt-dropdown:not(.open)', function(){ //just trigger when dropdown not open.
+            if(options.nav.layout === 'classic'){
+                handler($el.nav, 'click', '.mt-dropdown:not(.open)', function(){ //just trigger when dropdown not open.
                     var list = self._getHiddenList();
                     var $dropDown  = $el.navToolsRight.find('.mt-hidden-list:first').empty();
                     if(list) {  //when list is not empty
@@ -703,12 +707,14 @@ if (typeof jQuery === "undefined") {
             if($.isEmptyObject(obj)){
                 return false;
             }
-            var self = this,  options = self.options, param = {}, $obj = $(obj);
+            var self = this,  options = self.options, param = {}, data = $(obj).data(), $obj = $(obj);
+
             //content
-            param.content = $obj.data('content') || obj.content || options.content || '';
+            param.content = data.content || obj.content || '';
+
             if(!param.content.length){
                 //url
-                param.url = $obj.data('url') || obj.url || $obj.attr('href') || $obj.attr('url') || '';
+                param.url = data.url || obj.url || $obj.attr('href') || $obj.attr('url') || '';
                 param.url = $.trim(decodeURIComponent(param.url.replace('#', '')));
             }else{
                 param.url = '';
@@ -717,18 +723,18 @@ if (typeof jQuery === "undefined") {
                 return false;
             }
             //iframe
-            param.iframe = $obj.data('iframe') || obj.iframe || isExtUrl(param.url) || options.iframe;
+            param.iframe = data.iframe || obj.iframe || isExtUrl(param.url) || options.iframe;
             //type
-            param.type = $obj.data('type') || obj.type || options.type;
+            param.type = data.type || obj.type || options.type;
             //title
-            param.title = $obj.data('title') || obj.title || $obj.text() || param.url.replace('http://', '').replace('https://', '') || options.language.navBar.title;
-            param.title = trimText(param.title, options.navBar.maxTitleLength);
+            param.title = data.title || obj.title || $obj.text() || param.url.replace('http://', '').replace('https://', '') || options.language.nav.title;
+            param.title = trimText(param.title, options.nav.maxTitleLength);
             //active
-            param.active = $obj.data('active') || obj.active;
+            param.active = data.active || obj.active || false;
             //index
-            param.index = $obj.data('index') || obj.index || getTabIndex(param.type, options.navBar.maxTabs);
+            param.index = data.index || obj.index ||  getTabIndex(param.type, options.nav.maxTabs);
             //id
-            param.id = $obj.data('id') || obj.id || this._generateId(param);
+            param.did = data.did || obj.did || this._generateId(param);
             return param;
         },
 
@@ -929,7 +935,7 @@ if (typeof jQuery === "undefined") {
         var self = $(this), did = id ? id :'multitabs', multitabs = $(document).data(did), options = typeof option === 'object' && option, opts;
         if (!multitabs) {
             opts = $.extend(true, {}, $.fn.multitabs.defaults, options, self.data());
-            opts.style = (opts.style === 'nav-pills') ? 'nav-pills' : 'nav-tabs';
+            opts.nav.style = (opts.nav.style === 'nav-pills') ? 'nav-pills' : 'nav-tabs';
             multitabs = new MultiTabs(this, opts);
             $(document).data(did, multitabs);
         }
@@ -941,44 +947,46 @@ if (typeof jQuery === "undefined") {
      * @type {}
      */
     $.fn.multitabs.defaults = {
-        smartBtn : true,                            //while is true, show close button in hover, if false, show close button always
-        draggable : true,                           //nav tab draggable option
-        fixed : false,                              //fixed the nav-bar
-        layout : 'default',                         //it can be 'default', 'classic' (all hidden tab in dropdown list), and simple
-        style : 'nav-tabs',                         //can be nav-tabs or nav-pills
         link : '.multitabs',                        //selector text to trigger multitabs.
         iframe : false,                             //Global iframe mode, default is false, is the auto mode (for the self page, use ajax, and the external, use iframe)
         class : '',                                 //class for whole multitabs
         type : 'info',                              //change the info content name, is not necessary to change.
         init : [],
-        navBar : {
-            class : '',                             //class of navBar
-            maxTabs : 15,                           //Max tabs number (without counting main tab), when is 1, hide the whole navBar
-            maxTitleLength : 25,                    //Max title length of tab
+        nav : {
             backgroundColor : '#f5f5f5',            //default nav-bar background color
+            class : '',                             //class of nav
+            draggable : true,                       //nav tab draggable option
+            fixed : false,                          //fixed the nav-bar
+            layout : 'default',                     //it can be 'default', 'classic' (all hidden tab in dropdown list), and simple
+            maxTabs : 15,                           //Max tabs number (without counting main tab), when is 1, hide the whole nav
+            maxTitleLength : 25,                    //Max title length of tab
+            showCloseOnHover : true,                //while is true, show close button in hover, if false, show close button always
+            style : 'nav-tabs'                      //can be nav-tabs or nav-pills
         },
-        ajaxTabPane : {
-            class : '',                             //Class for ajax tab-pane
+        content :{
+            ajax : {
+                class : '',                         //Class for ajax tab-pane
+                error : function (htmlCallBack) {
+                    //modify html and return
+                    return htmlCallBack;
+                },
+                success : function (htmlCallBack) {
+                    //modify html and return
+                    return htmlCallBack;
+                }
+            },
+            iframe : {
+                class : ''
+            }
         },
-        iframeTabPane : {
-            class : '',                             //Class for iframe tab-pane
-        },
-        language : {                                //language setting
-            navBar : {
+        language : {                                            //language setting
+            nav : {
                 title : 'Tab',                                  //default tab's tittle
                 dropdown : '<i class="fa fa-bars"></i>',        //right tools dropdown name
                 showActivedTab : 'Show Activated Tab',          //show active tab
                 closeAllTabs : 'Close All Tabs',                //close all tabs
                 closeOtherTabs : 'Close Other Tabs',            //close other tabs
             }
-        },
-        ajaxSuccess : function (htmlCallBack) {
-            //modify html and return
-            return htmlCallBack;
-        },
-        ajaxError : function (htmlCallBack) {
-            //modify html and return
-            return htmlCallBack;
         }
     };
 })(jQuery));

@@ -65,15 +65,9 @@ The following is the default configuration, you can modify as you want.
 ```html
 <script>
     $('#content_wrapper').multitabs({
-        smartBtn : true,                            //while is true, show close button in hover, if false, show close button always
-        draggable : true,                           //nav tab draggable option
-        fixed : false,                              //fixed the nav-bar
-        layout : 'default',                         //it can be 'default', 'classic' (all hidden tab in dropdown list), and simple
-        style : 'nav-tabs',                         //can be nav-tabs or nav-pills
         link : '.multitabs',                        //selector text to trigger multitabs. 
         iframe : false,                             //Global iframe mode, default is false, is the auto mode (for the self page, use ajax, and the external, use iframe)
         class : '',                                 //class for whole multitabs
-        type : 'info',                              //change the default content type name, is not necessary to change.
         init : [                                    //tabs in initial
             {                                       
                 type :'',                           //content type, may be main | info, if empty, default is 'info'
@@ -84,34 +78,41 @@ The following is the default configuration, you can modify as you want.
             {    /** more tabs**/    },             //add more page.
             {    /** more tabs**/    },             //add more page.
         ],       
-        navBar : {
-            class : '',                             //class of navBar
-            maxTabs : 15,                           //Max tabs number (without counting main tab), when is 1, hide the whole navBar
-            maxTitleLength : 25,                    //Max title length of tab
+        nav : {
             backgroundColor : '#f5f5f5',            //default nav-bar background color
+            class : '',                             //class of nav
+            draggable : true,                       //nav tab draggable option
+            fixed : false,                          //fixed the nav-bar
+            layout : 'default',                     //it can be 'default', 'classic' (all hidden tab in dropdown list), and simple
+            maxTabs : 15,                           //Max tabs number (without counting main tab), when is 1, hide the whole nav
+            maxTitleLength : 25,                    //Max title length of tab
+            showCloseOnHover : true,                //while is true, show close button in hover, if false, show close button always
+            style : 'nav-tabs',                     //can be nav-tabs or nav-pills
         },
-        ajaxTabPane : {
-            class : '',                             //Class for ajax tab-pane
-        },
-        iframeTabPane : {
-            class : '',                             //Class for iframe tab-pane 
+        content : {
+            ajax : {
+                class : '',                         //Class for ajax tab-pane
+                error : function (htmlCallBack) {
+                    //modify html and return
+                    return htmlCallBack;
+                },
+                success : function (htmlCallBack) {
+                    //modify html and return
+                    return htmlCallBack;
+                }
+            },
+            iframe : {
+                class : ''                          //Class for iframe tab-pane 
+            }
         },
         language : {                                //language setting
-            navBar : {
+            nav : {
                 title : 'Tab',                                  //default tab's tittle
                 dropdown : '<i class="fa fa-bars"></i>',        //right tools dropdown name
                 showActivedTab : 'Show Activated Tab',          //show active tab
                 closeAllTabs : 'Close All Tabs',                //close all tabs
                 closeOtherTabs : 'Close Other Tabs',            //close other tabs
             }
-        },
-        ajaxSuccess : function (htmlCallBack) {
-            //modify html and return
-            return htmlCallBack;
-        },
-        ajaxError : function (htmlCallBack) {
-            //modify html and return
-            return htmlCallBack;
         }
     });
 </script>
