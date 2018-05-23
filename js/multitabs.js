@@ -550,6 +550,10 @@ if (typeof jQuery === "undefined") {
                 storage = self._storage();
                 self._resetStorage({});
                 $.each(storage, function (k,v) {
+                       if (v.type === 'info') {
+                        tabIndex = tabIndex || 0;
+                        tabIndex++;
+                    }
                     self.create(v, false);
                 })
             }
