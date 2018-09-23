@@ -58,6 +58,7 @@ Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/demo/index-simple.html)
 2. ```[data-iframe="true"]``` 指定为iframe模式，当值为false的时候，为智能模式，自动判断（内网用ajax，外网用iframe）。缺省为false。
 3. ```[data-title="new tab"]``` 设置后指定标签页的标题，默认读取链接字体。
 4. ```[data-url="index.html"]``` 如果对象不是```<a>```链接，此值可以指定链接URL
+5. ```[data-refresh="true"]``` 强制更新
 
 ### 初始化配置 ###
 下面这些为默认配置，可以自行修改
@@ -67,6 +68,7 @@ Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/demo/index-simple.html)
         link : '.multitabs',                        //触发multitabs的selector text，注意需要有".","#"等
         iframe : false,                             //iframe模式的总局设置。当值为false的时候，为智能模式，自动判断（内网用ajax，外网用iframe）。缺省为false。
         class : '',                                 //主框架的class
+        refresh: false,                             //全局强制更新
         init : [                                    //需要在初始加载的tab
             {                                       
                 type :'',                           //标签页的类型，有 main | info，缺省为 info

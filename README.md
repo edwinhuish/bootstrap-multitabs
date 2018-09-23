@@ -59,6 +59,7 @@ Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/demo/index-simple.html)
 2. ```[data-iframe="true"]``` iframe mode, default is false. While false, is the auto mode (for the self page, use ajax, and the external, use iframe)
 3. ```[data-title="new tab"]``` tab's tittle, if empty or undefined, tab's tittle will be link's text.
 4. ```[data-url="index.html"]``` this parameter for the object not link.
+5. ```[data-refresh="true"]``` for force refresh
 
 ### Initial Configuration ###
 The following is the default configuration, you can modify as you want.
@@ -68,6 +69,7 @@ The following is the default configuration, you can modify as you want.
         link : '.multitabs',                        //selector text to trigger multitabs. 
         iframe : false,                             //Global iframe mode, default is false, is the auto mode (for the self page, use ajax, and the external, use iframe)
         class : '',                                 //class for whole multitabs
+        refresh: false,                             //set to true for global force refresh tab
         init : [                                    //tabs in initial
             {                                       
                 type :'',                           //content type, may be main | info, if empty, default is 'info'
