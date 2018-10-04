@@ -52,3 +52,11 @@ a{
     -webkit-overflow-scrolling:touch;
     overflow:auto;
 }
+.mt-dragging-tab{
+    left: auto;
+    position: absolute !important;
+    z-index: 9999 !important;
+}
+.mt-dragging-tab > a{
+    background: #f39c12 !important;
+}

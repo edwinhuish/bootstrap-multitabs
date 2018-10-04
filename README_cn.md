@@ -65,7 +65,7 @@ Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/demo/index-simple.html)
 ```html
 <script>
     $('#content_wrapper').multitabs({
-        link : '.multitabs',                        //触发multitabs的selector text，注意需要有".","#"等
+        selector : '.multitabs',                    //触发multitabs的selector text，注意需要有".","#"等
         iframe : false,                             //iframe模式的总局设置。当值为false的时候，为智能模式，自动判断（内网用ajax，外网用iframe）。缺省为false。
         class : '',                                 //主框架的class
         refresh: false,                             //全局强制更新

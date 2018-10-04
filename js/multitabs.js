@@ -4,7 +4,7 @@ if (typeof jQuery === "undefined") {
 }((function ($) {
     "use strict";
     var NAMESPACE, tabIndex; //variable
-    var MultiTabs, handler, getTabIndex, isExtUrl, sumWidth, trimText, supportStorage; //function
+    var MultiTabs, handler, getTabIndex, isExtUrl, sumDomWidth, trimText, supportStorage; //function
     var defaultLayoutTemplates, defaultInit; //default variable
 
     NAMESPACE = '.multitabs'; // namespace for on() function
@@ -65,12 +65,12 @@ if (typeof jQuery === "undefined") {
 
     /**
      * Calculate the total width
-     * @param WidthObjList      the object list for calculate
+     * @param JqueryDomObjList      the object list for calculate
      * @returns {number}        return total object width (int)
      */
-    sumWidth = function (WidthObjList) {
+    sumDomWidth = function (JqueryDomObjList) {
         var width = 0;
-        $(WidthObjList).each(function () {
+        $(JqueryDomObjList).each(function () {
             width += $(this).outerWidth(true)
         });
         return width
@@ -316,8 +316,7 @@ if (typeof jQuery === "undefined") {
          */
         active: function (navTab) {
             var self = this,
-                $el = self.$element,
-                options = self.options;
+                $el = self.$element;
             var $navTab = self._getNavTab(navTab),
                 $tabPane = self._getTabPane($navTab),
                 $prevActivedTab = $el.navPanelList.find('li.active:first a');
@@ -353,7 +352,11 @@ if (typeof jQuery === "undefined") {
             var $tabPane = $(tabPane);
             //if navTab-pane empty, load content
             if (!$tabPane.html()) {
-                if (!$tabPane.is('iframe')) {
+                if ($tabPane.is('iframe')) {
+                    if (!$tabPane.attr('src')) {
+                        $tabPane.attr('src', param.url);
+                    }
+                } else {
                     $.ajax({
                         url: param.url,
                         dataType: "html",
@@ -364,11 +367,6 @@ if (typeof jQuery === "undefined") {
                             $tabPane.html(options.content.ajax.error(callback));
                         }
                     });
-
-                } else {
-                    if (!$tabPane.attr('src')) {
-                        $tabPane.attr('src', param.url);
-                    }
                 }
 
             }
@@ -382,7 +380,7 @@ if (typeof jQuery === "undefined") {
                 $el = self.$element,
                 navPanelListMarginLeft = Math.abs(parseInt($el.navPanelList.css("margin-left"))),
                 navPanelWidth = $el.navPanel.outerWidth(true),
-                sumTabsWidth = sumWidth($el.navPanelList.children('li')),
+                sumTabsWidth = sumDomWidth($el.navPanelList.children('li')),
                 leftWidth = 0,
                 marginLeft = 0,
                 $navTabLi;
@@ -395,12 +393,12 @@ if (typeof jQuery === "undefined") {
                     $navTabLi = $navTabLi.next();
                 }
                 marginLeft = 0;
-                if (sumWidth($navTabLi.prevAll()) > navPanelWidth) {
+                if (sumDomWidth($navTabLi.prevAll()) > navPanelWidth) {
                     while (((marginLeft + $navTabLi.width()) < navPanelWidth) && $navTabLi.length > 0) {
                         marginLeft += $navTabLi.outerWidth(true);
                         $navTabLi = $navTabLi.prev();
                     }
-                    leftWidth = sumWidth($navTabLi.prevAll());
+                    leftWidth = sumDomWidth($navTabLi.prevAll());
                 }
             }
             $el.navPanelList.animate({
@@ -418,7 +416,7 @@ if (typeof jQuery === "undefined") {
                 $el = self.$element,
                 navPanelListMarginLeft = Math.abs(parseInt($el.navPanelList.css("margin-left"))),
                 navPanelWidth = $el.navPanel.outerWidth(true),
-                sumTabsWidth = sumWidth($el.navPanelList.children('li')),
+                sumTabsWidth = sumDomWidth($el.navPanelList.children('li')),
                 leftWidth = 0,
                 $navTabLi, marginLeft;
             if (sumTabsWidth < navPanelWidth) {
@@ -435,7 +433,7 @@ if (typeof jQuery === "undefined") {
                     marginLeft += $navTabLi.outerWidth(true);
                     $navTabLi = $navTabLi.next();
                 }
-                leftWidth = sumWidth($navTabLi.prevAll());
+                leftWidth = sumDomWidth($navTabLi.prevAll());
                 if (leftWidth > 0) {
                     $el.navPanelList.animate({
                         marginLeft: 0 - leftWidth + "px"
@@ -607,9 +605,9 @@ if (typeof jQuery === "undefined") {
                 $el = self.$element,
                 options = self.options;
             //create tab
-            handler($(document), 'click', options.link, function () {
+            handler($(document), 'click', options.selector, function () {
                 self.create(this, true);
-                return false; //Prevent the default link action
+                return false; //Prevent the default selector action
             });
             //active tab
             handler($el.nav, 'click', '.mt-nav-tab', function () {
@@ -625,31 +623,26 @@ if (typeof jQuery === "undefined") {
                     var dragMode = true,
                         moved = false,
                         isMain = ($navTab.data('type') === "main");
-                    var navTabBlankHtml = '<li id="multitabs_tmp_tab_blank" class="mt-drag-tmp" style="width:' + $navTabLi.outerWidth() + 'px; height:' + $navTabLi.outerHeight() + 'px;"><a style="width: 100%;  height: 100%; "></a></li>';
+                    var tmpId = 'mt_tmp_id_' + new Date().getTime(),
+                        navTabBlankHtml = '<li id="' + tmpId + '"  style="width:' + $navTabLi.outerWidth() + 'px; height:' + $navTabLi.outerHeight() + 'px;"><a style="width: 100%;  height: 100%; "></a></li>';
                     var abs_x = event.pageX - $navTabLi.offset().left + $el.nav.offset().left;
                     $navTabLi.before(navTabBlankHtml);
-                    $navTabLi.css({
-                            'left': event.pageX - abs_x + 'px',
-                            'position': 'absolute',
-                            'z-index': 9999
-                        })
-                        .addClass('mt-drag-tmp')
-                        .find('a:first').css({
-                            'background': '#f39c12'
-                        });
+                    $navTabLi.addClass('mt-dragging-tab').css({
+                        'left': event.pageX - abs_x + 'px'
+                    });
 
                     $(document).on('mousemove', function (event) {
                         if (dragMode && !isMain) {
                             $navTabLi.css({
                                 'left': event.pageX - abs_x + 'px'
                             });
-                            $el.navPanelList.children('li:not(".mt-drag-tmp")').each(function () {
+                            $el.navPanelList.children('li:not(".mt-dragging-tab")').each(function () {
                                 var leftWidth = $(this).offset().left + $(this).outerWidth() + 20; //20 px more for gap
                                 if (leftWidth > $navTabLi.offset().left) {
-                                    if ($(this).next().attr('id') !== 'multitabs_tmp_tab_blank') {
+                                    if ($(this).next().attr('id') !== tmpId) {
                                         moved = true;
                                         $prevNavTabLi = $(this);
-                                        $('#multitabs_tmp_tab_blank').remove();
+                                        $('#' + tmpId).remove();
                                         $prevNavTabLi.after(navTabBlankHtml);
                                     }
                                     return false;
@@ -662,16 +655,9 @@ if (typeof jQuery === "undefined") {
                         }
                     }).on('mouseup', function () {
                         if (dragMode) {
-                            $navTabLi.css({
-                                    'left': '0px',
-                                    'position': 'relative',
-                                    'z-index': 'inherit'
-                                })
-                                .removeClass('mt-drag-tmp')
-                                .find('a:first').css({
-                                    'background': ''
-                                });
-                            $('#multitabs_tmp_tab_blank').remove();
+                            $navTabLi.removeClass('mt-dragging-tab')
+                                     .css({'left': '0'});
+                            $('#' + tmpId).remove();
                             if (moved) {
                                 $prevNavTabLi.after($navTabLi);
                             }
@@ -757,8 +743,8 @@ if (typeof jQuery === "undefined") {
             var self = this,
                 options = self.options,
                 param = {},
-                data = $(obj).data(),
-                $obj = $(obj);
+                $obj = $(obj),
+                data = $obj.data();
 
             //content
             param.content = data.content || obj.content || '';
@@ -811,6 +797,7 @@ if (typeof jQuery === "undefined") {
                 sessionStorage.multitabs = JSON.stringify(storage);
                 return storage;
             }
+            return {};
         },
 
         /**
@@ -828,6 +815,7 @@ if (typeof jQuery === "undefined") {
                 sessionStorage.multitabs = JSON.stringify(storage);
                 return storage;
             }
+            return {};
         },
 
         /**
@@ -895,10 +883,10 @@ if (typeof jQuery === "undefined") {
                 tabWidth = $navTabLi.outerWidth(true),
                 prevWidth = $navTabLi.prev().outerWidth(true),
                 pprevWidth = $navTabLi.prev().prev().outerWidth(true),
-                sumPrevWidth = sumWidth($navTabLi.prevAll()),
-                sumNextWidth = sumWidth($navTabLi.nextAll()),
+                sumPrevWidth = sumDomWidth($navTabLi.prevAll()),
+                sumNextWidth = sumDomWidth($navTabLi.nextAll()),
                 navPanelWidth = $el.navPanel.outerWidth(true),
-                sumTabsWidth = sumWidth($el.navPanelList.children('li')),
+                sumTabsWidth = sumDomWidth($el.navPanelList.children('li')),
                 leftWidth = 0;
             //all nav navTab's width no more than nav-panel's width
             if (sumTabsWidth < navPanelWidth) {
@@ -935,7 +923,7 @@ if (typeof jQuery === "undefined") {
                 $el = self.$element,
                 navPanelListMarginLeft = Math.abs(parseInt($el.navPanelList.css("margin-left"))),
                 navPanelWidth = $el.navPanel.outerWidth(true),
-                sumTabsWidth = sumWidth($el.navPanelList.children('li')),
+                sumTabsWidth = sumDomWidth($el.navPanelList.children('li')),
                 tabPrevList = [],
                 tabNextList = [],
                 $navTabLi, marginLeft;
@@ -1015,7 +1003,7 @@ if (typeof jQuery === "undefined") {
      * @type {}
      */
     $.fn.multitabs.defaults = {
-        link: '.multitabs', //selector text to trigger multitabs.
+        selector: '.multitabs', //selector text to trigger multitabs.
         iframe: false, //Global iframe mode, default is false, is the auto mode (for the self page, use ajax, and the external, use iframe)
         class: '', //class for whole multitabs
         type: 'info', //change the info content name, is not necessary to change.

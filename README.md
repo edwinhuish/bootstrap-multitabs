@@ -3,13 +3,13 @@ For chinese README.md, please read [简体中文](README_cn.md)
 
 ## Screenshot ##
 ### default (with left/right/option button) ###
-Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/demo/index.html) and [nav-pills](http://edwinhuish.oschina.io/multi-tabs/demo/index-default-pills.html)
+Demo: [nav-tabs](https://edwinhuish.github.io/bootstrap-multitabs/demo/index.html) and [nav-pills](https://edwinhuish.github.io/bootstrap-multitabs/demo/index-default-pills.html)
 ![Multi Tabs Screenshot](screenshot-default.jpg)
 ### classic (fold hidden tabs) ###
-Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/demo/index-classic.html) and [nav-pills](http://edwinhuish.oschina.io/multi-tabs/demo/index-classic-pills.html)
+Demo: [nav-tabs](https://edwinhuish.github.io/bootstrap-multitabs/demo/index-classic.html) and [nav-pills](https://edwinhuish.github.io/bootstrap-multitabs/demo/index-classic-pills.html)
 ![Multi Tabs Screenshot](screenshot-classic.jpg)
 ### simple ###
-Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/demo/index-simple.html) and [nav-pills](http://edwinhuish.oschina.io/multi-tabs/demo/index-simple-pills.html)
+Demo: [nav-tabs](https://edwinhuish.github.io/bootstrap-multitabs/demo/index-simple.html) and [nav-pills](https://edwinhuish.github.io/bootstrap-multitabs/demo/index-simple-pills.html)
 ![Multi Tabs Screenshot](screenshot-simple.jpg)
 
 ## Role and Benefits ##
@@ -66,7 +66,7 @@ The following is the default configuration, you can modify as you want.
 ```html
 <script>
     $('#content_wrapper').multitabs({
-        link : '.multitabs',                        //selector text to trigger multitabs. 
+        selector : '.multitabs',                    //selector text to trigger multitabs. 
         iframe : false,                             //Global iframe mode, default is false, is the auto mode (for the self page, use ajax, and the external, use iframe)
         class : '',                                 //class for whole multitabs
         refresh: false,                             //set to true for global force refresh tab
