@@ -624,10 +624,10 @@ if (typeof jQuery === "undefined") {
                         moved = false,
                         isMain = ($navTab.data('type') === "main");
                     var tmpId = 'mt_tmp_id_' + new Date().getTime(),
-                        navTabBlankHtml = '<li id="' + tmpId + '"  style="width:' + $navTabLi.outerWidth() + 'px; height:' + $navTabLi.outerHeight() + 'px;"><a style="width: 100%;  height: 100%; "></a></li>';
+                        navTabBlankHtml = '<li id="' + tmpId + '" class="mt-dragging" style="width:' + $navTabLi.outerWidth() + 'px; height:' + $navTabLi.outerHeight() + 'px;"><a style="width: 100%;  height: 100%; "></a></li>';
                     var abs_x = event.pageX - $navTabLi.offset().left + $el.nav.offset().left;
                     $navTabLi.before(navTabBlankHtml);
-                    $navTabLi.addClass('mt-dragging-tab').css({
+                    $navTabLi.addClass('mt-dragging mt-dragging-tab').css({
                         'left': event.pageX - abs_x + 'px'
                     });
 
@@ -636,7 +636,7 @@ if (typeof jQuery === "undefined") {
                             $navTabLi.css({
                                 'left': event.pageX - abs_x + 'px'
                             });
-                            $el.navPanelList.children('li:not(".mt-dragging-tab")').each(function () {
+                            $el.navPanelList.children('li:not(".mt-dragging")').each(function () {
                                 var leftWidth = $(this).offset().left + $(this).outerWidth() + 20; //20 px more for gap
                                 if (leftWidth > $navTabLi.offset().left) {
                                     if ($(this).next().attr('id') !== tmpId) {
@@ -655,12 +655,11 @@ if (typeof jQuery === "undefined") {
                         }
                     }).on('mouseup', function () {
                         if (dragMode) {
-                            $navTabLi.removeClass('mt-dragging-tab')
-                                     .css({'left': '0'});
-                            $('#' + tmpId).remove();
+                            $navTabLi.removeClass('mt-dragging mt-dragging-tab').css({'left': 'auto'});
                             if (moved) {
                                 $prevNavTabLi.after($navTabLi);
                             }
+                            $('#' + tmpId).remove();
                         }
                         dragMode = false;
                     });
