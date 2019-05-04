@@ -464,9 +464,9 @@ if (typeof jQuery === "undefined") {
             if ($navTabLi.hasClass("active")) {
                 var $nextLi = $navTabLi.next("li:first"),
                     $prevLi = $navTabLi.prev("li:last");
-                if ($nextLi.size()) {
+                if ($nextLi.length) {
                     self.active($nextLi);
-                } else if ($prevLi.size()) {
+                } else if ($prevLi.length) {
                     self.active($prevLi);
                 }
             }
