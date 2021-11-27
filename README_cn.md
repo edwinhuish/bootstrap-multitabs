@@ -2,13 +2,13 @@
 
 ## 效果图 ##
 ### default/默认 (带有向左、向右移动以及选项菜单) ###
-Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/demo/index.html) and [nav-pills](http://edwinhuish.oschina.io/multi-tabs/demo/index-default-pills.html)
+Demo: [nav-tabs](http://edwinhuish.gitee.io/multi-tabs/demo/index.html) and [nav-pills](http://edwinhuish.gitee.io/multi-tabs/demo/index-default-pills.html)
 ![Multi Tabs Screenshot](screenshot-default.jpg)
 ### classic/折叠 (折叠隐藏tab) ###
-Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/demo/index-classic.html) and [nav-pills](http://edwinhuish.oschina.io/multi-tabs/demo/index-classic-pills.html)
+Demo: [nav-tabs](http://edwinhuish.gitee.io/multi-tabs/demo/index-classic.html) and [nav-pills](http://edwinhuish.gitee.io/multi-tabs/demo/index-classic-pills.html)
 ![Multi Tabs Screenshot](screenshot-classic.jpg)
 ### simple ###
-Demo: [nav-tabs](http://edwinhuish.oschina.io/multi-tabs/demo/index-simple.html) and [nav-pills](http://edwinhuish.oschina.io/multi-tabs/demo/index-simple-pills.html)
+Demo: [nav-tabs](http://edwinhuish.gitee.io/multi-tabs/demo/index-simple.html) and [nav-pills](http://edwinhuish.gitee.io/multi-tabs/demo/index-simple-pills.html)
 ![Multi Tabs Screenshot](screenshot-simple.jpg)
 
 ## 作用与优势 ##
